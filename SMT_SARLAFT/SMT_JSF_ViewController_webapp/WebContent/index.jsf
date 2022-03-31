@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+        <h:head></h:head>
+        <h:body>
+            <ui:include src="inhabilitarSesion.jsf"/>
+            <div id="top" class="top">
+                <h2>Bienvenido</h2>
+                 
+                <ui:include src="./cabecera.jsf"/>
+            </div>
+            <div id="menu_contenido">
+                <div id="left">
+                    <!--ui:include src="./menu.jsf"/-->
+                </div>
+                <div id="content">
+                    <ui:include src="./contenido.jsf"/>
+                </div>
+            </div>
+        </h:body>
+    </html>
+</f:view>

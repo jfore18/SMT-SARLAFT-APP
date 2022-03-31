@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head>
+        <ui:include src="/siscla/compartido/lenguajecalendario.jsf"/>
+    </h:head>
+    <h:body onload="#{ConsultarrepController.limpiarCampos()}">
+        <h:form id="frmConsultarRep">
+            <p:panel id="pnlConsultarRep" style="width:100%;height:auto;padding:0px;">
+                <f:facet name="header">
+                    <p:commandButton id="btnConsRep" value="" update="frmConsultarRep:tblReportes frmCabecera:messages"
+                                     icon="ui-icon-search" style="height:25px;width:30px"
+                                     action="#{ConsultarrepController.buscarReportes}"/>
+                    <p:spacer width="100" height="10"/>
+                    <h:outputLabel value="Reportes recibidos" style="#{tittle3}"/>
+                </f:facet>
+                <p:panelGrid id="pgConsultarRep" style="width:100%;margin:auto;">
+                    <p:row style="border:none;#{tittle2}">
+                        <p:column style="border:none;">
+                            <h:outputLabel value="Fecha:" style=""/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:datePicker id="pkrFechRep" value="#{ConsultarrepController.fechaRep}" locale="es"
+                                          monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+                                          pattern="yyyy/MM/dd" placeholder="Click aquí"/>
+                        </p:column>
+                        <p:column style="border:none">
+                            <h:outputLabel value="Número:" style=""/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtNumeroRep" value="#{ConsultarrepController.numeroRep}"
+                                         style="width:100px"/>
+                        </p:column>
+                        <p:column style="border:none">
+                            <h:outputLabel value="ROS:" style=""/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtRosRep" value="#{ConsultarrepController.ros}" style="width:100px"/>
+                        </p:column>
+                        <p:column style="border:none">
+                            <h:outputLabel value="Estado:" style=""/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="selEstadoRep" value="#{ConsultarrepController.estadoRep}"
+                                             style="width:110px;" effect="blind">
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ConsultarrepController.listEstados}" var="ob"
+                                               itemLabel="#{ob.DESCRIPCION}" itemValue="#{ob.CODIGO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none">
+                            <h:outputLabel value="Clase:" style=""/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="selClaseRep" value="#{ConsultarrepController.claseRep}"
+                                             style="width:80px;" effect="blind">
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ConsultarrepController.listClases}" var="ob"
+                                               itemLabel="#{ob.DESCRIPCION}" itemValue="#{ob.CODIGO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none">
+                            <h:outputLabel value="Perfil:" style=""/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="selPerfilRep" value="#{ConsultarrepController.perfil}"
+                                             style="width:80px;" effect="blind">
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListavaloresController.perfiles}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none;#{tittle2}">
+                        <p:column style="border:none">
+                            <h:outputLabel value="Región:" style=""/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="selRegionRep" value="#{ConsultarrepController.region}"
+                                             style="width:180px" effect="blind">
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListavaloresController.regiones}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                                <p:ajax listener="#{ConsultarrepController.buscarZonas}" event="change"
+                                        update="frmConsultarRep:selZonaRep"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputLabel value="Zona:" style=""/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="selZonaRep" value="#{ConsultarrepController.zonaT}" style="width:150px"
+                                             effect="blind">
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ConsultarrepController.listZonas}" var="zon"
+                                               itemLabel="#{zon.NOMBRE_LARGO}" itemValue="#{zon.CODIGO_ZONA}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputLabel value="Oficina:" style=""/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtOficinaReg" value="#{ConsultarrepController.oficina}"
+                                         style="width:180px"/>
+                        </p:column>
+                        <p:column style="border:none" colspan="3">
+                            <h:outputLabel value="Identificación:" style=""/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="selTipoIdRep" value="#{ConsultarrepController.tipoId}"
+                                             style="width:170px" effect="blind">
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListavaloresController.tiposDocumento}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                            </p:selectOneMenu>
+                            <p:spacer width="10"/>
+                            <p:inputText id="txtNumeroIdRep" value="#{ConsultarrepController.numeroId}"
+                                         style="width:150px"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="tblReportes" var="ob" value="#{ConsultarrepController.listReportes}"
+                         rows="#{ListavaloresController.rows}" rowKey="#{ob.ID_REPORTE}"
+                         emptyMessage="No se encontraron datos para mostrar" paginator="true" paginatorPosition="bottom"
+                         paginatorAlwaysVisible="false" selectionMode="single"
+                         selection="#{ConsultarrepController.reporteSel}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="#{ListavaloresController.rowsPerPage}" style="width:100%;height:auto;">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="Número" width="6%" style="#{columnHeader}"/>
+                        <p:column headerText="ROS" width="5%" style="#{columnHeader}"/>
+                        <p:column headerText="Región" width="5%" style="#{columnHeader}"/>
+                        <p:column headerText="Zona" width="4%" style="#{columnHeader}"/>
+                        <p:column headerText="Oficina" sortBy="#{ob.OFICINA}" width="21%" style="#{columnHeader}"/>
+                        <p:column headerText="Fecha" width="7%" style="#{columnHeader}"/>
+                        <p:column headerText="Usuario" sortBy="#{ob.USUARIO}" width="18%" style="#{columnHeader}"/>
+                        <p:column headerText="Perfil" sortBy="#{ob.PERFIL}" width="17%" style="#{columnHeader}"/>
+                        <p:column headerText="Clase" width="6%" style="#{columnHeader}"/>
+                        <p:column headerText="Estado" width="10%" style="#{columnHeader}"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.ID_REPORTE}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.ROS}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.REGION}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.ZONA}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.OFICINA}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.FECHA}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.USUARIO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.PERFIL}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.CLASE}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                <p:row rendered="#{ob.CARGO eq sessionScope.datosRegistro.CODIGO_CARGO and ob.CODIGO_CLASE != '1' and (ob.CODIGO_ESTADO eq '1' or ob.CODIGO_ESTADO eq '2' or ob.CODIGO_ESTADO eq '4')}">
+                        <p:column style="#{label}">
+                            <p:commandLink style="color:#676F76;"
+                                           action="#{ContenidoController.updateUrl('/siscla/rep/an/procesar.jsf')}"
+                                           actionListener="#{ConsultarrepController.actualizarReporte(ob.ID_REPORTE)}">
+                                <h:outputText value="#{ob.ESTADO}"/>
+                             
+                            </p:commandLink>
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{ob.CARGO != sessionScope.datosRegistro.CODIGO_CARGO or ob.CODIGO_CLASE eq '1' or (ob.CODIGO_ESTADO != '1' and ob.CODIGO_ESTADO != '2' and ob.CODIGO_ESTADO != '4')}">
+                        <p:column style="#{label}">
+                            <h:outputText value="#{ob.ESTADO}"/>
+                        </p:column>
+                    </p:row>
+                </p:column>
+                <p:ajax event="rowSelect" listener="#{ContenidoController.updateUrl('/siscla/rep/sc/rep.jsf')}"/>
+                <p:ajax event="rowSelect" listener="#{ConsultarrepController.consultarDatosRep('ConsultarRep')}"/>
+            </p:dataTable>
+        </h:form>
+        <script>
+          window.scrollTo(500, 0);
+        </script>
+        <ui:include src="/siscla/compartido/refrescarunavez.jsf"/>
+    </h:body>
+</html>

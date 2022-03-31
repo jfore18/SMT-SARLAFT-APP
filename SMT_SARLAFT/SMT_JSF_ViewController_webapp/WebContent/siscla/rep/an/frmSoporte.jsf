@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<h:head></h:head>
+<h:body>
+	<p:panelGrid id="pgDocsSoporte" >
+	
+	
+		<c:if test="#{sessionScope.procesoRep eq 'NoReportar'}">
+
+			<c:forEach var="ob" items="#{FrmgestionController.preguntasRep}"
+				varStatus="i">
+				<p:row style="border:none;">
+					<p:column style="border:none;#{tittle};font-size:8pt">
+						<h:outputLabel value="#{ob.DESCRIPCION}" />
+					</p:column>
+					<p:column style="border:none;#{label}">
+						<p:selectOneRadio id="rdRes_#{i.index}" value="#{ob.RESPUESTA}">
+							<f:selectItem itemLabel="Si" itemValue="true" />
+							<f:selectItem itemLabel="No" itemValue="false" />
+							<p:ajax event="change"
+								update="frmGestion:tabViewGestion:rdRes_#{i.index}" />
+						</p:selectOneRadio>
+					</p:column>
+				</p:row>
+			</c:forEach>
+			<p:row style="border:none;">
+				<p:column style="border:none;#{tittle};font-size:8pt">
+					<p:outputLabel style="vertical-align:top;" value="OBSERVACIONES" />
+
+				</p:column>
+				<p:column style="border:none">
+
+					<p:inputTextarea id="txtObserv" rows="6" cols="70"
+						autoResize="false" value="#{FrmgestionController.justIni}" />
+				</p:column>
+			</p:row>
+			<c:set var="idTabAdjuntar"
+				value="#{'frmGestion:tabViewGestion'}" />
+
+		</c:if>
+		<c:if test="#{sessionScope.procesoRep != 'NoReportar'}">
+
+			<c:forEach var="ob" items="#{DatosreporteController.docsSoporte}"
+				varStatus="k">
+				<p:row style="border:none;#{tittle};font-size:8pt">
+					<c:set var="valor1" value="" />
+					<c:forEach var="ob2" items="#{ob}" varStatus="i">
+						<c:if test="#{ob2.TIPO_PREGUNTA_V eq 'S'}">
+							<p:column style="border:none;">
+								<c:set var="desc" value="#{ob2.DESCRIPCION}" />
+								<h:outputLabel value="#{ob2.DESCRIPCION}" />
+							</p:column>
+							<p:column style="border:none;">
+								<p:selectBooleanCheckbox value="#{ob2.CHECKED}">
+									<p:ajax event="change"
+										listener="#{DatosreporteController.validarDisabled(ob2.ID)}"
+										update="#{idElmPadre}:pgDocsSoporte" />
+								</p:selectBooleanCheckbox>
+							</p:column>
+						</c:if>
+						<c:if test="#{ob2.TIPO_PREGUNTA_V != 'S'}">
+							<c:set var="index" value="#{fn:indexOf(ob2.DESCRIPCION, desc)}" />
+							<c:set var="desc2"
+								value="#{fn:substring(ob2.DESCRIPCION,0,index)}" />
+							<p:column style="border:none;">
+								<h:outputLabel value="#{desc2}" />
+								<c:if test="#{fn:contains(desc2,'FECHA')}">
+									<p:datePicker id="pkr_#{k.index}" value="#{ob2.VALOR}"
+										locale="es" yearNavigator="true" monthNavigator="true"
+										yearRange="#{ListavaloresController.rangoAnios}"
+										pattern="yyyy/MM/dd" placeholder="Click aquí"
+										style="width:50px" disabled="#{ob2.DISABLED}">
+										<p:ajax event="dateSelect"
+											update="#{idElmPadre}:pkr_#{k.index}" />
+										<p:ajax event="change" update="#{idElmPadre}:pkr_#{k.index}" />
+									</p:datePicker>
+								</c:if>
+								<c:if test="#{fn:contains(desc2,'VALOR')}">
+									<p:inputText id="txt_#{k.index}" value="#{ob2.VALOR}"
+										disabled="#{ob2.DISABLED}">
+										<p:ajax event="change" update="#{idElmPadre}:txt_#{k.index}" />
+									</p:inputText>
+								</c:if>
+							</p:column>
+						</c:if>
+					</c:forEach>
+				</p:row>
+			</c:forEach>
+			<p:row style="border:none;#{tittle}">
+				<p:column style="border:none;">
+					<h:outputLabel value="OTRO" />
+				</p:column>
+				<p:column colspan="2" style="border:none;">
+					<p:inputText id="txtOtroDoc" value="#{DatosreporteController.otro}"
+						maxlength="30" size="30">
+						<p:ajax event="change" update="#{idElmPadre}:txtOtroDoc" />
+					</p:inputText>
+				</p:column>
+			</p:row>
+			<c:set var="idTabAdjuntar" value="#{idElmPadre}" />
+		</c:if>
+		<!--JFORE18 -->
+		<p:row style="border:none;#{tittle}">
+
+			
+			<c:if test="#{sessionScope.datosRegistro.CODIGO_PERFIL eq '2'}">
+
+				<p:column colspan="1" style="border:none;">
+
+					<p:selectBooleanCheckbox value="#{FrmgestionController.adjuntar}"
+						itemLabel="Cargue de documentos">
+						<p:ajax update="#{idTabAdjuntar}:pgDocsSoporte"
+							listener="#{FrmgestionController.habilitarCargue}" />
+					</p:selectBooleanCheckbox>
+
+				</p:column>
+
+			</c:if>
+
+
+
+			<c:if test="#{FrmgestionController.visualiza}">
+
+				<p:column style="border:none;">
+					<!-- JFORE18: BOTON DE CARGAR DOCUMENTOS -->
+					<h:form id="myform" enctype="multipart/form-data">
+						<p:fileUpload
+							fileUploadListener="#{FrmgestionController.cargaArchivo}"
+							mode="advanced" multiple="false" sizeLimit="3000000" auto="true"
+							allowTypes="/(\.|\/)(zip)$/" uploadLabel="Cargar"
+							cancelLabel="Cancelar" label="Buscar archivo" required="false"
+							fileLimit="1" fileLimitMessage="SOLO SE PERMITE UN ARCHIVO"
+							invalidFileMessage="SOLO ARCHIVOS .ZIP"
+							invalidSizeMessage="TAMAÑO MAXIMO PERMITIDO: 3 MB"
+							update="#{idTabAdjuntar}:fileName" />
+					</h:form>
+					<p:panel id="fileName" style="border:none;">
+						<p:outputPanel style="#{columnContent}"
+							rendered="#{FrmgestionController.fileName ne null}">
+							<h:outputLabel value="Archivo cargado: " />
+							<h:outputLabel value="#{FrmgestionController.fileName}" />
+
+						</p:outputPanel>
+					</p:panel>
+
+				</p:column>
+
+			</c:if>
+
+		</p:row>
+		<c:if test="#{FrmgestionController.visualiza}">
+			<p:row style="border:none;">
+				<p:column colspan="2" style="border:none;">
+					<div class="p-col-12 p-md-4">
+						<p:staticMessage severity="info" summary="NOTA"
+							detail="Tenga presente que si selecciona un documento para adjuntar,
+								 este proceso puede tardar. Por favor espere..."
+							style="width: 100%" />
+					</div>
+				</p:column>
+			</p:row>
+		</c:if>
+
+
+	</p:panelGrid>
+</h:body>
+</html>

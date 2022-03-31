@@ -1,0 +1,295 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head></h:head>
+<h:body>
+	<c:set var="borde" value="border:none;" />
+
+	<p:panelGrid id="pgConsultarRep" style="width:100%">
+		<p:row>
+			<p:column>
+				<h:outputLabel value="Número interno: " style="#{tittle}" />
+			</p:column>
+			<p:column>
+				<h:outputLabel value="#{DatosreporteController.idRep} "
+					style="#{tittle}" />
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Fecha reporte: " style="#{tittle}" />
+			</p:column>
+			<p:column>
+				<h:outputText value="#{DatosreporteController.fechaReporte}"
+					style="#{tittle}" />
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Número acta: " style="#{tittle}" />
+			</p:column>
+			<p:column>
+				<p:inputText id="txtNumActa"
+					value="#{DatosreporteController.numeroActa}" size="10"
+					maxlength="5">
+					<p:ajax event="change"
+						listener="#{DatosreporteController.validarActa()}"
+						oncomplete="PF('dgwvActa').show();"
+						update="#{elemPadre}:dgActa #{elemPadre}:txtFechaActa" />
+				</p:inputText>
+			</p:column>
+			<p:column>
+				<h:outputLabel value="Fecha acta: " style="#{tittle}" />
+			</p:column>
+			<p:column>
+				<p:inputText id="txtFechaActa"
+					value="#{DatosreporteController.fechaActa}" size="10"
+					readonly="#{DatosreporteController.readFechActa}" />
+			</p:column>
+
+		</p:row>
+		<p:row>
+			<p:column>
+				<p:selectOneRadio id="customRadio"
+					value="#{DatosreporteController.decision_RosRel}" layout="custom">
+					<f:selectItem itemLabel="Decisión" itemValue="Decision" />
+					<f:selectItem itemLabel="Ros relacionado" itemValue="RosRel" />
+					<p:ajax event="change"
+						listener="#{DatosreporteController.disabledEstadoReporte}"
+						update="#{elemPadre}:selEstRep,#{elemPadre}:btnRos #{elemPadre}:selTipRep #{elemPadre}:txtJustif" />
+				</p:selectOneRadio>
+				<p:radioButton id="opt1" for="customRadio" itemIndex="0" />
+				<p:spacer width="6" height="10" />
+				<h:outputLabel value="Decisión:" style="#{tittle}" />
+			</p:column>
+			<p:column>
+				<p:selectOneMenu id="selEstRep"
+					value="#{DatosreporteController.estadoReporte}"
+					style="width:150px;" effect="blind"
+					disabled="#{DatosreporteController.disabledEstRep}">
+					<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+					<f:selectItems value="#{DatosreporteController.estadosReporte}"
+						var="ob" itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}" />
+					<p:ajax event="change"
+						listener="#{DatosreporteController.validarDisplayTipoDescRep}"
+						update="#{elemPadre}:pgConsultarRep,#{elemPadre}:selTipRep" />
+				</p:selectOneMenu>
+			</p:column>
+			<p:column>
+				<p:radioButton id="opt2" for="customRadio" itemIndex="1" />
+				<p:spacer width="6" height="10" />
+				<h:outputLabel value="Ros relacionado:" style="#{tittle}" />
+			</p:column>
+			<p:column style="#{borde}">
+				<p:inputText id="txtRos"
+					value="#{DatosreporteController.rosRelacionado}" size="20"
+					disabled="true" />
+			</p:column>
+			<p:column>
+
+
+
+				<p:commandButton id="btnRos" value="ROS" process="@this"
+					style="#{buttom}" update="#{elemPadre}:dgRos"
+					action="#{DatosreporteController.consultaRos}"
+					disabled="#{DatosreporteController.disabledROS}"
+					oncomplete="PF('dgwvRos').show()" />
+
+			</p:column>
+			<p:column style="#{borde}">
+				<p:commandButton id="btnEnvProcAna" value="Enviar proceso análisis"
+					process="#{elemPadre}:pgConsultarRep" style="#{buttom}"
+					update="frmCabecera:messages"
+					action="#{DatosreporteController.enviarProcesoAnalisis}" />
+			</p:column>
+
+		</p:row>
+		<p:row>
+			<p:column colspan="4">
+				<h:outputLabel value="Tipos de reporte: "
+					style="#{tittle};display:#{DatosreporteController.displayTipRep};" />
+				<p:selectOneMenu id="selTipRep"
+					value="#{DatosreporteController.tipoReporte}"
+					style="width:150px;display:#{DatosreporteController.displayTipRep};"
+					effect="blind" disabled="#{DatosreporteController.disabledEstRep}">
+					<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+					<f:selectItems value="#{DatosreporteController.tiposReporte}"
+						var="ob1" itemLabel="#{ob1.NOMBRE_LARGO}"
+						itemValue="#{ob1.CODIGO}" />
+				</p:selectOneMenu>
+
+
+
+
+				<h:outputLabel value="Justificación: "
+					style="#{tittle};display:#{DatosreporteController.displayDescRep}" />
+				<p:inputTextarea id="txtJustif"
+					value="#{DatosreporteController.justReporte}" rows="5" cols="45"
+					autoResize="true"
+					style="#{borde};display:#{DatosreporteController.displayDescRep}" />
+			</p:column>
+
+		</p:row>
+	</p:panelGrid>
+
+	<p:dialog id="dgActa" header="Acta" widgetVar="dgwvActa" modal="true"
+		resizable="false" scroll="true" closable="false" width="550"
+		height="100">
+		<p:panelGrid style="width:100%;height:100px;">
+			<p:row style="#{borde}">
+				<p:column style="#{borde}">
+					<h:outputLabel value="#{DatosreporteController.msg} "
+						style="#{tittle}" />
+				</p:column>
+			</p:row>
+			<p:row style="#{borde}">
+				<p:column style="#{borde}">
+					<p:commandButton id="btnAceptar" value="Aceptar" style="#{buttom}"
+						actionListener="#{DatosreporteController.validarFechaActa()}"
+						oncomplete="PF('dgwvActa').hide();enfocarElemento('frmActRep:tabViewActReporte:txtFechaActa');"
+						update="#{elemPadre}:txtFechaActa" />
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+	</p:dialog>
+
+	<p:dialog id="dgRos" header="Consulta ROS" widgetVar="dgwvRos"
+		modal="true" resizable="false" scroll="true" closable="true"
+		width="400" height="300">
+		<p:dataTable id="tblROS" widgetVar="tblwROS" var="ob1"
+			value="#{DatosreporteController.numRos}" rows="15"
+			rowKey="#{ob1.ROS_RELACIONADO}"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			emptyMessage="No se encontraron datos para mostrar" paginator="true"
+			paginatorPosition="bottom"
+			selection="#{DatosreporteController.rosSel}"
+			rowsPerPageTemplate="10,15,20" selectionMode="single"
+			paginatorAlwaysVisible="false">
+			<p:columnGroup type="header">
+				<p:row>
+					<p:column headerText="Código ROS" width="15%"
+						style="#{columnHeader}" />
+
+				</p:row>
+			</p:columnGroup>
+			<p:column style="#{columnContent}">
+				<h:outputText value="#{ob1.ROS_RELACIONADO}" />
+			</p:column>
+			<p:ajax event="rowSelect" oncomplete="PF('dgwvRos').hide();"
+				update="#{elemPadre}:txtRos, #{elemPadre}:txtFechaActa #{elemPadre}:txtNumActa"
+				listener="#{DatosreporteController.actualizarAnalisis}" />
+		</p:dataTable>
+	</p:dialog>
+
+	<p:dialog id="dgGen" header="Confirmación" widgetVar="dgwvGen"
+		modal="true" resizable="false" scroll="true" closable="false"
+		width="550" height="100">
+		<p:panelGrid style="width:100%;height:100px;">
+			<p:row style="#{borde}">
+				<p:column style="#{borde}">
+					<h:outputLabel value="#{DatosreporteController.msg} "
+						style="#{tittle}" />
+				</p:column>
+			</p:row>
+			<p:row style="#{borde}">
+				<p:column style="#{borde}">
+					<p:commandButton id="btnAcepGen" value="Aceptar" style="#{buttom}"
+						update="#{elemPadre}:txtFechaActa"
+						oncomplete="PF('dgwvGen').hide();enfocarElemento('frmActRep:tabViewActReporte:txtFechaActa');" />
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+	</p:dialog>
+	<p:dialog id="dgAnalis" header="Analisis" widgetVar="dgwvAnalisis"
+		modal="true" resizable="false" scroll="true" closable="true"
+		width="550" height="100">
+		<p:panelGrid style="width:100%;height:100px;">
+			<p:row style="#{borde}">
+				<p:column style="#{borde}">
+					<h:outputLabel value="#{DatosreporteController.msg} "
+						style="#{tittle}" />
+				</p:column>
+			</p:row>
+			<p:row style="#{borde}">
+				<p:column style="#{borde}">
+					<p:commandButton id="btnAcepClose" value="Aceptar"
+						style="#{buttom}" oncomplete="PF('dgwvAnalisis').hide();"
+						action="#{ContenidoController.updateUrl('/siscla/rep/frmConsultarRep.jsf')}" />
+				</p:column>
+
+			</p:row>
+
+		</p:panelGrid>
+	</p:dialog>
+
+	<p:separator
+		style="margin:0px;border:none;width:500px;height:30px; background:#fcfdfd" />
+	<p:dataTable id="tablaAnalisis" var="ob"
+		value="#{DatosreporteController.listAnalisis}" rows="15"
+		rowKey="#{ob.NO_ACTA}"
+		emptyMessage="No se encontraron datos para mostrar" paginator="true"
+		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		rowsPerPageTemplate="#{ListavaloresController.rowsPerPage}"
+		selectionMode="single" paginatorPosition="bottom"
+		paginatorAlwaysVisible="false">
+		<p:columnGroup type="header">
+			<p:row>
+				<p:column headerText="Numero Acta" width="10%"
+					style="#{columnHeader}" />
+				<p:column headerText="Fecha Acta " width="12%"
+					style="#{columnHeader}" />
+				<p:column headerText="Estado Reporte" width="10%"
+					style="#{columnHeader}" />
+				<p:column headerText="Tipo Reporte" width="10%"
+					style="#{columnHeader}" />
+				<p:column headerText="ROS" width="10%" style="#{columnHeader}" />
+			</p:row>
+		</p:columnGroup>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.NO_ACTA}" />
+		</p:column>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.FECHA_ACTA}" />
+		</p:column>
+		<p:column style="#{columnContent}">
+						<p:commandLink id="cmmJustFilt"
+				action="#{DatosreporteController.visualizaDescJust(ob)}"
+				style="text-decoration: underline ;#{columnContent}">
+				<h:outputText
+					value="#{ob.ESTADO_R}" />
+			</p:commandLink>
+		</p:column>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.TIPO_R}" />
+		</p:column>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.ROS}" />
+		</p:column>
+	</p:dataTable>
+
+	<p:dialog id="dgJust" header="Justificación" widgetVar="dgwvJust"
+		modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+		scroll="true" closable="false" style="#{tittle3}">
+		<p:panelGrid style="width:100%">
+			<p:row style="border:none;">
+				<p:column style="border:none;#{label}">
+					<h:outputText id="txtDescJustif"
+						value="#{DatosreporteController.detalleJust}" />
+				</p:column>
+			</p:row>
+			<p:row style="border:none;">
+				<p:column style="border:none;text-align:right">
+					<p:commandButton id="btnCerrarJust" value="Cerrar"
+						oncomplete="PF('dgwvJust').hide()" style="#{button}" />
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+	</p:dialog>
+
+
+
+	<ui:include src="/siscla/compartido/funciones.jsf" />
+</h:body>
+</html>

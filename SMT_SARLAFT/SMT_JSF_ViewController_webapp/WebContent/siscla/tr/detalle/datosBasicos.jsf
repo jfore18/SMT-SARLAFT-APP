@@ -1,0 +1,282 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body>
+        <h:form>
+            <p:panelGrid id="pnlGrdDetllTran" style="width:100%;margin:auto;">
+                <p:row style="border:none">
+                    <p:column colspan="6" style="text-align:center;border:none;#{header}" class=" ui-widget-header">
+                        <h:outputText value="Datos del producto"/>
+                    </p:column>
+                </p:row>
+                <p:row style="#{tittle}">
+                    <p:column style="width:33%;" colspan="2">
+                        <h:outputText value="Titular:"/>
+                    </p:column>
+                    <p:column style="width:12%;font-weight:bold;">
+                        <h:outputText value="Identificación:"/>
+                    </p:column>
+                    <p:column style="width:10%;font-weight:bold;">
+                        <h:outputText value="Producto:"/>
+                    </p:column>
+                    <p:column style="width:10.1%;font-weight:bold;">
+                        <h:outputText value="No. Producto:"/>
+                    </p:column>
+                    <p:column style="width:33.9%;font-weight:bold;">
+                        <h:outputText value="Oficina:"/>
+                    </p:column>
+                </p:row>
+                <p:row style="#{label}">
+                    <p:column style="" colspan="2">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.CLIENTE}"/>
+                    </p:column>
+                    <p:column style="">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.TIPO_IDENTIFICACION} - #{FrmpreinusualController.detalleTran.NUMERO_IDENTIFICACION}"/>
+                    </p:column>
+                    <p:column style="">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.FUENTE}"/>
+                    </p:column>
+                    <p:column style="">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.N_PRODUCTO}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.CODIGO_OFICINA} - #{FrmpreinusualController.detalleTran.OFICINA} - #{FrmpreinusualController.detalleTran.REGION}-#{FrmpreinusualController.detalleTran.ZONA}"/>
+                    </p:column>
+                </p:row>
+                <p:row style="">
+                    <p:column colspan="6" style="text-align:center;border:none;" class=" ui-widget-header">
+                        <h:outputText value="Datos de la transacción" style="#{header}"/>
+                    </p:column>
+                </p:row>
+                <p:row style="#{tittle}">
+                    <p:column style="font-weight:bold;">
+                        <h:outputText value="Fecha:"/>
+                    </p:column>
+                    <p:column style="font-weight:bold;">
+                        <h:outputText value="Tipo:"/>
+                    </p:column>
+                    <p:column style="font-weight:bold;">
+                        <h:outputText value="Valor:"/>
+                    </p:column>
+                    <p:column style="font-weight:bold;">
+                        <h:outputText value="Naturaleza:"/>
+                    </p:column>
+                    <p:column colspan="2" style="font-weight:bold;">
+                        <h:outputText value="Oficina origen:"/>
+                    </p:column>
+                </p:row>
+                <p:row style="#{label}">
+                    <p:column style="">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.FECHA}"/>
+                    </p:column>
+                    <p:column style="">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.CODIGO_TR} - #{FrmpreinusualController.detalleTran.DESCRIPCION_TR}"/>
+                    </p:column>
+                    <p:column style="">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.VALOR}"/>
+                    </p:column>
+                    <p:column style="">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.NATURALEZA_TR}"/>
+                    </p:column>
+                    <p:column colspan="2" style="">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.CODIGO_OFICINA_ORIGEN} - #{FrmpreinusualController.detalleTran.OFICINA_ORIGEN}"/>
+                    </p:column>
+                </p:row>
+                <p:row style="#{tittle}">
+                    <p:column style="">Estado:</p:column>
+                    <p:column style="">Filtrada:</p:column>
+                    <c:if test="#{datosRegistro.CODIGO_PERFIL == '5'}">
+                        <p:column style="">Estado(DUCC):</p:column>
+                        <p:column style="">Filtrada(DUCC):</p:column>
+                    </c:if>
+                    <p:column style="" colspan="#{datosRegistro.CODIGO_PERFIL == '5' ? '2':'4'}"></p:column>
+                </p:row>
+                <p:row style="#{label}">
+                    <p:column style="">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.ESTADO_OFICINA}"/>
+                    </p:column>
+                    <p:column style="">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.FILTRO_OF}"/>
+                    </p:column>
+                    <c:if test="#{datosRegistro.CODIGO_PERFIL == '5'}">
+                        <p:column style="">
+                            <h:outputText value="#{FrmpreinusualController.detalleTran.ESTADO_DUCC}"/>
+                        </p:column>
+                        <p:column style="">
+                            <h:outputText value="#{FrmpreinusualController.detalleTran.FILTRO_DUCC}"/>
+                        </p:column>
+                    </c:if>
+                    <p:column style="" colspan="#{datosRegistro.CODIGO_PERFIL == '5' ? '2':'4'}"></p:column>
+                </p:row>
+                 <p:row style="#{tittle}">
+                    <p:column style="bold">Descripcion:</p:column>
+                     <p:column style="" colspan="5">
+                        <h:outputText value="#{FrmpreinusualController.detalleTran.DESCRIPCION_TRANSACCION == 'null' ? 'No  existe detalle' : FrmpreinusualController.detalleTran.DESCRIPCION_TRANSACCION}"/>
+                    </p:column>
+                 </p:row>
+                 
+                <c:if test="#{FrmpreinusualController.tranSelec.FUENTE != 'CDT'}">
+                    <p:row style="#{header}">
+                        <p:column colspan="6" style="text-align:center" class=" ui-widget-header">
+                            <h:outputText value="Datos adicionales de la transacción" style=""/>
+                        </p:column>
+                    </p:row>
+                    <p:row style="#{tittle}">
+                        <p:column style="font-weight:bold;width:150px;">No. documento:</p:column>
+                        <p:column style="font-weight:bold;">Canje:</p:column>
+                        <p:column style="font-weight:bold;" colspan="4"></p:column>
+                    </p:row>
+                    <c:if test="#{FrmpreinusualController.detalleFte != null}">
+                        <p:row style="#{label}">
+                            <p:column style="">
+                                <h:outputText value="#{FrmpreinusualController.detalleFte.DOCUMENTO_TR}"/>
+                            </p:column>
+                            <p:column style="">
+                                <h:outputText value="$ #{FrmpreinusualController.detalleFte.VALOR_CANJE}"/>
+                            </p:column>
+                            <p:column style="" colspan="4"></p:column>
+                        </p:row>
+                    </c:if>
+                    <c:if test="#{FrmpreinusualController.detalleFte == null}">
+                        <p:row style="#{label}">
+                            <p:column>0000000000</p:column>
+                            <p:column>$ .00</p:column>
+                            <p:column colspan="4"></p:column>
+                        </p:row>
+                    </c:if>
+                    <c:if test="#{FrmpreinusualController.detalleCLE != null}">
+                        <p:row style="#{tittle}">
+                            <p:column colspan="6" style="">N&#250;mero de operaciones:</p:column>
+                        </p:row>
+                        <p:row style="#{tittle}">
+                            <p:column style="font-weight:bold;">Del d&#237;a:</p:column>
+                            <p:column style="font-weight:bold;">M&#225;ximo hist&#243;rico d&#237;a:</p:column>
+                            <p:column style="font-weight:bold;" colspan="2">Promedio hist&#243;rico d&#237;a:</p:column>
+                            <p:column colspan="2"></p:column>
+                        </p:row>
+                        <p:row style="#{label}">
+                            <p:column style="">
+                                <h:outputText value="#{FrmpreinusualController.detalleCLE.NUMERO_OPER_DIA}"/>
+                            </p:column>
+                            <p:column style="">
+                                <h:outputText value="#{FrmpreinusualController.detalleCLE.MAX_HISTO_OPER_DIA}"/>
+                            </p:column>
+                            <p:column style="" colspan="2">
+                                <h:outputText value="#{FrmpreinusualController.detalleCLE.PROM_NUMERO_OPER_DIA}"/>
+                            </p:column>
+                            <p:column style="" colspan="2"></p:column>
+                        </p:row>
+                        <p:row style="#{tittle}">
+                            <p:column colspan="6" style="font-weight:bold;">Valor operaciones:</p:column>
+                        </p:row>
+                        <p:row style="#{tittle}">
+                            <p:column style="font-weight:bold;">Del d&#237;a:</p:column>
+                            <p:column style="font-weight:bold;">M&#225;ximo hist&#243;rico d&#237;a:</p:column>
+                            <p:column style="font-weight:bold;" colspan="2">Promedio hist&#243;rico d&#237;a:</p:column>
+                            <p:column style="" colspan="2"></p:column>
+                        </p:row>
+                        <p:row style="#{label}">
+                            <p:column style="">
+                                <h:outputText value="$ #{FrmpreinusualController.detalleCLE.VALOR_OPER_DIA}"/>
+                            </p:column>
+                            <p:column style="">
+                                <h:outputText value="#{FrmpreinusualController.detalleCLE.MAX_HISTO_VALOR_OPER_DIA}"/>
+                            </p:column>
+                            <p:column style="" colspan="2">
+                                <h:outputText value="$ #{FrmpreinusualController.detalleCLE.PROM_VALOR_OPER_DIA}"/>
+                            </p:column>
+                            <p:column style="" colspan="2"></p:column>
+                        </p:row>
+                    </c:if>
+                    <p:row style="#{header}">
+                        <p:column colspan="6" style="text-align:center" class="ui-widget-header">
+                            Datos adicionales de la cuenta (Informaci&#243;n con corte a
+                            #{FrmpreinusualController.tranSelec.FECHA}
+                            )
+                        </p:column>
+                    </p:row>
+                    <p:row style="#{tittle}">
+                        <p:column style="font-weight:bold;" colspan="2">Fecha apertura:</p:column>
+                        <p:column style="font-weight:bold;" colspan="2">Estado:</p:column>
+                        <p:column style="" colspan="2"></p:column>
+                    </p:row>
+                    <p:row style="#{label}">
+                        <p:column style="" colspan="2">
+                            <h:outputText value="#{FrmpreinusualController.detalleFte.FECHA_APERTURA}"/>
+                        </p:column>
+                        <p:column style="" colspan="2">
+                            <h:outputText value="#{FrmpreinusualController.detalleFte.ESTADO_CUENTA}"/>
+                        </p:column>
+                        <p:column style="" colspan="2"></p:column>
+                    </p:row>
+                    <p:row style="#{tittle}">
+                        <p:column style="width:140px;font-weight:bold;" colspan="2">Saldo:</p:column>
+                        <p:column style="font-weight:bold;" colspan="2">Promedio Sem./Trim.</p:column>
+                        <p:column style="" colspan="2"></p:column>
+                    </p:row>
+                    <p:row style="#{label}">
+                        <p:column style="" colspan="2">
+                            <h:outputText value="#{FrmpreinusualController.detalleFte.SIGNO_SOBREGIRO}"/>
+                            <h:outputText value=" $ #{FrmpreinusualController.detalleFte.SALDO}"/>
+                        </p:column>
+                        <p:column style="" colspan="2">
+                            <h:outputText value="#{FrmpreinusualController.detalleFte.SIGNO_PROMEDIO}"/>
+                            <h:outputText value=" $ #{FrmpreinusualController.detalleFte.PROMEDIO_SEMESTRAL}"/>
+                        </p:column>
+                        <p:column style="" colspan="2"></p:column>
+                    </p:row>
+                </c:if>
+                <c:if test="#{FrmpreinusualController.tranSelec.FUENTE == 'CDT'}">
+                    <p:row style="#{header}">
+                        <p:column colspan="6" style="text-align:center" class="ui-widget-header">
+                            Datos adicionales del CDT (Informaci&#243;n con corte a
+                            #{FrmpreinusualController.tranSelec.FECHA}
+                            )
+                        </p:column>
+                    </p:row>
+                    <p:row style="#{tittle}">
+                        <p:column style="font-weight:bold;">Tipo CDT:</p:column>
+                        <p:column style="font-weight:bold;">Fecha apertura:</p:column>
+                        <p:column style="font-weight:bold;">Inter&#233;s:</p:column>
+                        <p:column style="font-weight:bold;">Per&#237;odo:</p:column>
+                        <p:column style="font-weight:bold;">Plazo:</p:column>
+                    </p:row>
+                    <p:row style="#{label}">
+                        <p:column style="">
+                            <c:if test="#{FrmpreinusualController.detalleFte.TIPO_CDT != 'null'}">
+                                <h:outputText value="#{FrmpreinusualController.detalleFte.TIPO_CDT}"/>
+                            </c:if>
+                        </p:column>
+                        <p:column style="">
+                            <c:if test="#{FrmpreinusualController.detalleFte.FECHA_APERTURA != 'null'}">
+                                <h:outputText value="#{FrmpreinusualController.detalleFte.FECHA_APERTURA}"/>
+                            </c:if>
+                        </p:column>
+                        <p:column style="">
+                            <h:outputText value="#{FrmpreinusualController.detalleFte.TASA} #{FrmpreinusualController.detalleFte.TIPO_INTERES}"/>
+                        </p:column>
+                        <p:column style="">
+                            <h:outputText value="#{FrmpreinusualController.detalleFte.PERIODO}"/>
+                        </p:column>
+                        <p:column style="">
+                            <h:outputText value="#{FrmpreinusualController.detalleFte.PLAZO} días"/>
+                        </p:column>
+                        <p:column style=""></p:column>
+                    </p:row>
+                    <c:if test="#{FrmpreinusualController.detalleFte.NOMBRE_TITULAR_2 != ''}">
+                        <p:row style="#{tittle}">
+                            <p:column style="font-weight:bold;" colspan="6">Otros titulares:</p:column>
+                        </p:row>
+                        <p:row style="#{label}">
+                            <p:column style="font-weight:bold;" colspan="6">
+                                <h:outputText value="#{FrmpreinusualController.detalleFte.NOMBRE_TITULAR_2}"/>
+                            </p:column>
+                        </p:row>
+                    </c:if>
+                </c:if>
+            </p:panelGrid>
+        </h:form>
+    </h:body>
+</html>

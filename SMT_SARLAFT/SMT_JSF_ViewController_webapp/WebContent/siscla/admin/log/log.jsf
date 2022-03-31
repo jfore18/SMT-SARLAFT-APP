@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <ui:include src="/siscla/compartido/lenguajecalendario.jsf"/>
+    </h:head>
+    <h:body onload="#{LogController.consultaInicial()}">
+        <c:set var="noBorde" value="border:none;"/>
+         
+        <h:form id="formLogs">
+            <p:panel id="panBusqLogs" style="width:auto;align:center">
+                <f:facet name="header">
+                    <p:commandButton id="btnBuscarLogs" action="#{LogController.busquedaLogs}" value=""
+                                     icon="ui-icon-search" update="frmCabecera:messages formLogs:tablaLogs"
+                                     style="height:30px;width:35px"/>
+                    <p:spacer width="100" height="10"/>
+                    <h:outputLabel value="Consulta de log de procesos" style="#{tittle3}"/>
+                </f:facet>
+                <p:panelGrid style="border:none;width:auto;">
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;">
+                            <h:outputText value="Fecha: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:datePicker id="pkrFechLog" value="#{LogController.fecha}" locale="es" size="25"
+                                          monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+                                          pattern="yyyy/MM/dd"/>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Proceso: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="menuLogs" value="#{LogController.proceso}" style="width:300px"
+                                             effect="blind">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{LogController.procesos}" var="proc"
+                                               itemLabel="#{proc.NOMBRE_LARGO}" itemValue="#{proc.NOMBRE_LARGO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Usuario: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="usuario" value="#{LogController.codUsuario}" size="30"
+                                         placeholder="Escriba algo"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel style="width:auto;">
+                <p:dataTable id="tablaLogs" var="log" value="#{LogController.logs}" rows="10" rowKey="#{log.ID_PROCESO}"
+                             emptyMessage="No se encontraron datos para mostrar" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{LogController.log}"
+                             paginatorAlwaysVisible="false">
+                    <f:facet name="header">
+                        <h:outputText value="Lista de logs" style="#{tittle3}"/>
+                    </f:facet>
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" headerText="Fecha" sortBy="#{log.INICIO}" width="14%"
+                                      style="#{columnHeader}"/>
+                            <p:column rowspan="2" headerText="Proceso" sortBy="#{log.PROCESO}" width="25%"
+                                      style="#{columnHeader}"/>
+                            <p:column colspan="2" headerText="Registros" width="18%" style="#{columnHeader}"/>
+                            <p:column rowspan="2" headerText="Duración" width="14%" style="#{columnHeader}"/>
+                            <p:column rowspan="2" headerText="Usuario" width="30%" style="#{columnHeader}"/>
+                        </p:row>
+                        <p:row>
+                            <p:column headerText="Reportados" style="#{columnHeader}"/>
+                            <p:column headerText="Procesados" style="#{columnHeader}"/>
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{log.INICIO}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:MM"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{log.PROCESO}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{log.REPORTADOS}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{log.PROCESADOS}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{log.DURACION}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{log.USUARIO}"/>
+                    </p:column>
+                    <p:ajax event="rowSelect" update=":dlgRepLogs" listener="#{LogController.reportesLog}"/>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+         
+        <p:dialog id="dlgRepLogs" header="Mensajes del proceso" widgetVar="dlgvRepLogs" showEffect="fade" hideEffect="fade"
+                  severity="alert" style="width:500px;height:600px;float:auto;#{tittle}">
+            <h:outputText value="#{LogController.msgRep}" style="#{label}"/>
+            <p:separator style="margin:3px;#{noBorde};"/>
+            <c:if test="#{LogController.logErrores != null and not empty LogController.logErrores}">
+                <h:outputText value="#{LogController.logErrores.size()} ERRORES REPORTADOS EN EL PROCESO: " style="#{label}"/>
+                <p:separator style="margin:2px;#{noBorde};"/>
+                <c:forEach var="ob" items="#{LogController.logErrores}" varStatus="i">
+                    <h:outputText value="#{(i.index) + (1)}) #{ob.ERROR}" style="#{label}"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                </c:forEach>
+            </c:if>
+            <p:separator style="margin:5px;#{noBorde};"/>
+            <p:commandButton value="Aceptar" icon="ui-icon-close" style="width: 150px; height: 30px; #{button}"
+                             onclick="PF('dlgvRepLogs').hide()"/>
+        </p:dialog>
+         
+        <c:if test="#{!LogController.dfault}">
+            <p:remoteCommand name="rcmLog" autoRun="true" update=":formLogs:tablaLogs"
+                             actionListener="#{LogController.busquedaLogs}"/>
+        </c:if>
+         
+        <ui:include src="/siscla/compartido/refrescarunavez.jsf"/>
+    </h:body>
+</html>

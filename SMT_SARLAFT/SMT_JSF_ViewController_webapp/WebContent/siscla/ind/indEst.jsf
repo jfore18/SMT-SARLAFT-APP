@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head></h:head>
+    <h:body onload="#{IndestController.iniciarNivel()}">
+        <h:form id="frmIndicadores">
+            <p:panel id="pnlConsultarInd" style="width:100%;height:auto;padding:0px;">
+                <f:facet name="header">
+                    <c:if test="#{IndestController.nivel != 15 and IndestController.nivel != 19}">
+                        <p:commandButton id="btnVolver" tittle="Volver" style="width:30px;height:25px;float:left;"
+                                         update="frmIndicadores" icon="ui-icon-seek-prev"
+                                         action="#{IndestController.volver}"/>
+                    </c:if>
+                    <p:spacer width="50" height="10"/>
+                    <h:outputLabel value="#{IndestController.nombreProceso}" style="#{tittle3}"/>
+                    <h:outputLabel value=", Información con corte a #{IndestController.fechaCorte}" style="#{tittle3}"/>
+                </f:facet>
+                <h:outputLabel value="#{IndestController.encabezado}" style="#{tittle}"/>
+                <p:dataTable id="tblIndicadores" var="ob" value="#{IndestController.listIndicadores}"
+                             rows="#{IndestController.listIndicadores.size()}"
+                             rowKey="#{ob.REGION != null ? ob.REGION:ob.ZONA != null ? ob.ZONA:ob.OFICINA != null ? ob.OFICINA:ob.FUENTE}"
+                             emptyMessage="No se encontraron datos para mostrar" selectionMode="single"
+                             selection="#{IndestController.indicadorSel}" style="width:100%;height:auto;">
+                    <p:columnGroup type="header">
+                        <p:row style="#{columnHeader}">
+                            <p:column rowspan="2" headerText="#{IndestController.miConsulta.alias[0]}" width="30%"/>
+                            <p:column colspan="2" headerText="Transacciones"/>
+                            <p:column rowspan="2" headerText="% Gestionadas"/>
+                            <p:column colspan="3" headerText="Transacciones pendientes"/>
+                        </p:row>
+                        <p:row style="#{columnHeader}">
+                            <p:column headerText="Recibidas"/>
+                            <p:column headerText="Gestionadas"/>
+                            <p:column headerText="Menor a 3 dias"/>
+                            <p:column headerText="Entre 3 y 5 dias"/>
+                            <p:column headerText="Mayor a 5 dias"/>
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.REGION != null ? ob.REGION:ob.ZONA != null ? ob.ZONA:ob.OFICINA != null ? ob.OFICINA:ob.FUENTE}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.RECIBIDAS}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.GESTIONADAS}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.PORCENTAJE_GESTIONADAS}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.MENOR_TRES}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.ENTRE_TRES_Y_CINCO}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.MAYOR_CINCO}"/>
+                    </p:column>
+                    <p:ajax event="rowSelect" update="frmIndicadores" listener="#{IndestController.avanzar}"/>
+                    <p:columnGroup type="footer">
+                        <p:row style="#{columnFooter}">
+                            <p:column footerText="Total"/>
+                            <p:column footerText="#{IndestController.totales.TOTAL_RECIBIDAS}"/>
+                            <p:column footerText="#{IndestController.totales.TOTAL_GESTIONADAS}"/>
+                            <p:column footerText="#{IndestController.totales.TOTAL_PORCENTAJE_GESTIONADAS}"/>
+                            <p:column footerText="#{IndestController.totales.TOTAL_MENOR_TRES}"/>
+                            <p:column footerText="#{IndestController.totales.TOTAL_ENTRE_TRES_Y_CINCO}"/>
+                            <p:column footerText="#{IndestController.totales.TOTAL_MAYOR_CINCO}"/>
+                        </p:row>
+                    </p:columnGroup>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+         
+        <p:remoteCommand autoRun="true" update="frmIndicadores"/>
+    </h:body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link type="text/css" rel="stylesheet" href="css/cssLayout.css"/>
+        <link type="text/css" rel="stylesheet" href="css/default.css"/>
+        <title>
+            #{msg['titulo']}
+        </title>
+    </h:head>
+    <h:body>
+        <ui:include src="inhabilitarSesion.jsf"/>
+        <div id="top" class="top">
+            <ui:include src="./cabecera.jsf"/>
+        </div>
+        <div id="content" class="contenido">
+            <ui:include src="./contenido.jsf"/>
+        </div>
+    </h:body>
+</html>

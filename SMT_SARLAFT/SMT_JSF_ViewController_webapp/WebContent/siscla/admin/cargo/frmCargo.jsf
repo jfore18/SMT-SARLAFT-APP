@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head></h:head>
+    <h:body onload="#{FrmcargoController.limpiar()}">
+        <c:set var="flagBtnNuevo" value="false"/>
+         
+        <h:form id="frmCargo">
+            <p:panel id="pnlConsCargo" style="width:100%;height:auto;padding:0px;">
+                <f:facet name="header">
+                    <p:commandButton id="btnBuscar" action="#{FrmcargoController.buscarCargos}" value=""
+                                     icon="ui-icon-search" update="frmCargo" title="Buscar"
+                                     style="height:30px;width:35px"/>
+                    <p:commandButton id="btnLimpiar" value="" icon="ui-icon-star" style="height:30px;width:35px"
+                                     action="#{FrmcargoController.limpiar}" update="frmCargo" title="Limpiar"/>
+                    <c:if test="#{!FrmcargoController.flagBtnNuevo and sessionScope.datosRegistro.CODIGO_PERFIL eq '8'}">
+                        <p:commandButton id="btnNuevo" value="" icon="ui-icon-plusthick" style="height:30px;width:35px"
+                                         action="#{FrmcargoController.nuevo}" update="frmCargo" title="Nuevo"/>
+                    </c:if>
+                    <c:if test="#{FrmcargoController.flagBtnNuevo and sessionScope.datosRegistro.CODIGO_PERFIL eq '8'}">
+                        <p:commandButton id="btnGuardar" value="" icon="ui-icon-disk" style="height:30px;width:35px"
+                                         action="#{FrmcargoController.guardar}"
+                                         update="frmCargo dgResultado frmCabecera:messages" title="Guardar"/>
+                    </c:if>
+                    <p:spacer width="100" height="10"/>
+                    <h:outputLabel value="Administración de cargos" style="#{tittle3}"/>
+                </f:facet>
+                <p:panelGrid id="pgrCargo" style="border:none;">
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;" colspan="4">
+                            <h:outputText value="Datos del cargo: "/>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;">
+                            <h:outputText value=" Código Cargo: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtCargo" value="#{FrmcargoController.cargo}" size="10"
+                                         disabled="#{FrmcargoController.flagBtnNuevo}" maxlength="6"/>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Unidad de negocio: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtUnidadNegocio" value="#{FrmcargoController.un}" size="30"
+                                         readonly="true"/>
+                            <p:spacer width="6" height="10"/>
+                            <p:commandButton id="btnUN" value="" process="@this" icon="ui-icon-eject"
+                                             style="width:34px;height:25px;vertical-align:bottom" update="dgUN"
+                                             oncomplete="PF('dgwvUN').show()"/>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Tipo de cargo: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="tiposCargo" value="#{FrmcargoController.tipoCargoSel}" effect="blind"
+                                             style="width:200px">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListavaloresController.tiposCargo}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                                <p:ajax event="change" update="frmCargo:tiposCargo"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Perfil: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="perf" value="#{FrmcargoController.perfilSel}" style="width:240px"
+                                             effect="blind">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListavaloresController.perfiles}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                                <p:ajax event="change" listener="#{FrmcargoController.displayRegiones()}"
+                                        update="frmCargo:pgrCargo"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;" colspan="3">
+                            <h:outputText value=" Activo: "/>
+                             <p:separator style="margin:0px;border:none;"/>
+                            <p:selectBooleanCheckbox id="activo" value="#{FrmcargoController.activo}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none;#{tittle}">
+                        <p:column colspan="3" style="border:none"></p:column>
+                        <p:column  id="colReg" style="border:none;display:#{FrmcargoController.displayReg};">
+                            <p:selectCheckboxMenu id="chkReg" value="#{FrmcargoController.regionesChk}"
+                                                  label="Seleccione aquí las regiones" style="width:250px;height:20px;"
+                                                  effect="blind"
+                                                  styleClass="ui-selectonemenu-label ui-inputfield ui-corner-all">
+                                <f:selectItems value="#{ListavaloresController.regiones}" var="ob"
+                                               itemLabel="(#{ob.NOMBRE_CORTO}) #{ob.NOMBRE_LARGO}"
+                                               itemValue="#{ob.CODIGO}"
+                                               styleClass="ui-selectonemenu-label ui-inputfield ui-corner-all"/>
+                            </p:selectCheckboxMenu>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:spacer></p:spacer>
+                <p:panelGrid id="pgrUsuario" style="border:none;">
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;" colspan="4">
+                            <h:outputText value="Datos del usuario: "/>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;">
+                            <h:outputText value="Nombre: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtNombreUsuario" value="#{FrmcargoController.nombreUsuario}" size="45"/>
+                            <p:spacer width="6" height="10"/>
+                            <p:commandButton id="btnNombreUsuario" value="" process="@this" icon="ui-icon-eject"
+                                             style="width:34px;height:25px;vertical-align:bottom"
+                                             update="frmCargo:dgNombreUsuario"
+                                             oncomplete="PF('dgwvNombreUsuario').show()"/>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Cédula: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtCedula" value="#{FrmcargoController.cedulaUsuario}" size="10"
+                                         maxlength="10"/>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Dominio: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtDominio" value="#{FrmcargoController.dominioUsuario}" size="30" maxlength="30"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="tablaCargo" var="ob" value="#{FrmcargoController.listCargos}"
+                         rows="#{ListavaloresController.rows}" rowKey="#{ob.CODIGO_CARGO}"
+                         emptyMessage="No se encontraron datos para mostrar" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="#{ListavaloresController.rowsPerPage}" selectionMode="single" paginatorPosition="bottom"
+                         selection="#{FrmcargoController.cargoSel}" paginatorAlwaysVisible="false">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="Cargo" width="6%" style="#{columnHeader}"/>
+                        <p:column headerText="Tipo de cargo" width="12%" style="#{columnHeader}"/>
+                        <p:column headerText="Perfil" style="#{columnHeader}"/>
+                        <p:column headerText="Unidad de negocio" style="#{columnHeader}"/>
+                        <p:column headerText="Usuario" style="#{columnHeader}"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.CODIGO_CARGO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.NOMBRE_TIPO_CARGO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.NOMBRE_PERFIL}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.NOMBRE_UNIDAD_NEGOCIO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.NOMBRE_USUARIO}"/>
+                </p:column>
+                <p:ajax event="rowSelect" update="frmCargo" listener="#{FrmcargoController.actualizar}"/>
+            </p:dataTable>
+            <p:dialog id="dgUN" header="Unidad de negocio" widgetVar="dgwvUN" modal="true" resizable="false"
+                      scroll="true" closable="true" width="950" height="550" style="text-align:center;">
+                <p:inputText id="txtBuscarUN" size="40" placeholder="Ingrese termino a buscar"
+                             value="#{FrmcargoController.txtBuscUN}"></p:inputText>
+                <p:commandButton id="btnBuscUN" value="" icon="ui-icon-search"
+                                 style="width:34px;height:25px;vertical-align:bottom"
+                                 action="#{FrmcargoController.consultaUN()}" update="frmCargo:tblUN"/>
+                <p:dataTable id="tblUN" widgetVar="tblwvUN" var="ob" value="#{FrmcargoController.listUN}" rows="15"
+                             rowKey="#{ob.CODIGO_UNIDAD_NEGOCIO}_#{ob.NOMBRE_UNIDAD_NEGOCIO}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             emptyMessage="No se encontraron datos para mostrar" paginator="true"
+                             selection="#{FrmcargoController.unSel}" rowsPerPageTemplate="10,15,20"
+                             selectionMode="single">
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="Código" width="15%" style="#{columnHeader}"/>
+                            <p:column headerText="Nombre" width="85%" style="#{columnHeader}"/>
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.CODIGO_UNIDAD_NEGOCIO}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.NOMBRE_UNIDAD_NEGOCIO}"/>
+                    </p:column>
+                    <p:ajax event="rowSelect" oncomplete="PF('dgwvUN').hide();" update="frmCargo:txtUnidadNegocio"
+                            listener="#{FrmcargoController.actualizarUn}"/>
+                </p:dataTable>
+            </p:dialog>
+            <p:dialog id="dgNombreUsuario" header="Nombre usuario" widgetVar="dgwvNombreUsuario" modal="true"
+                      resizable="false" scroll="true" closable="true" width="950" height="550"
+                      style="text-align:center;">
+                <p:inputText id="txtBuscarNombreUsuario" size="40" placeholder="Ingrese termino a buscar"
+                             value="#{FrmcargoController.txtBuscNombreUsuario}"></p:inputText>
+                <p:commandButton id="btnBuscNombreUsuario" value="" icon="ui-icon-search"
+                                 style="width:34px;height:25px;vertical-align:bottom"
+                                 action="#{FrmcargoController.consultaNombreUsuario()}"
+                                 update="frmCargo:tblNombreUsuario"/>
+                <p:dataTable id="tblNombreUsuario" widgetVar="tblwvNombreUsuario" var="ob"
+                             value="#{FrmcargoController.listNombresUsuario}" rows="15"
+                             rowKey="#{ob.CODIGO_USUARIO}_#{ob.NOMBRE_USUARIO}_#{ob.CODIGO_CARGO}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             emptyMessage="No se encontraron datos para mostrar" paginator="true" paginatorPosition="bottom"
+                             selection="#{FrmcargoController.nombreUsuarioSel}" rowsPerPageTemplate="10,15,20"
+                             selectionMode="single">
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="Cédula" width="20%" style="#{columnHeader}"/>
+                            <p:column headerText="Nombre" width="60%" style="#{columnHeader}"/>
+                            <p:column headerText="Cargo" width="20%" style="#{columnHeader}"/>
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.CODIGO_USUARIO}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.NOMBRE_USUARIO}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.CODIGO_CARGO}"/>
+                    </p:column>
+                    <p:ajax event="rowSelect" oncomplete="PF('dgwvNombreUsuario').hide();" update="frmCargo:pgrUsuario"
+                            listener="#{FrmcargoController.actualizarUsuario}"/>
+                </p:dataTable>
+            </p:dialog>
+        </h:form>
+         
+        <ui:include src="/siscla/compartido/resultado.jsf"/>
+    </h:body>
+</html>

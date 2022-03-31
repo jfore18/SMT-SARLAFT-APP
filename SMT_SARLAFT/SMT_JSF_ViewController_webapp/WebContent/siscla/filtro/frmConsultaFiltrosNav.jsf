@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head></h:head>
+    <h:body onload="#{ConsultaclienteController.iniciar('CLI_FIL')}">
+        <ui:include src="../cliente/tablaCli.jsf"/>
+    </h:body>
+</html>

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body onload="#{FrmpreinusualController.consuntaClientesConTxPrein()}">
+        <h:form id="frmConsCli">
+        	<h:outputLabel style="#{tittle}" value="Clientes con transacciones preinusuales: #{FrmpreinusualController.cantClientesPre}" />
+            <p:dataTable id="tblConsCli" var="ob" value="#{FrmpreinusualController.trans}" rows="20"
+                         rowKey="#{ob.TI}-#{ob.NI}" emptyMessage="No se encontraron datos para mostrar" paginator="true"
+                         paginatorAlwaysVisible="false" selectionMode="single"
+                         selection="#{FrmpreinusualController.tranSelec}" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20" paginatorPosition="bottom" style="width:100%;height:auto;">
+                <p:columnGroup type="header">
+                    <p:row style="#{columnHeader}">
+                        <p:column colspan="2" headerText="Cliente" width="80%"/>
+                        <p:column rowspan="2" headerText="Total transacciones"/>
+                    </p:row>
+                    <p:row style="#{columnHeader}">
+                        <p:column headerText="Identificación" />
+                        <p:column headerText="Nombre"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.TI} - #{ob.NI}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.CLIENTE}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.TOTAL}"/>
+                </p:column>
+                <p:ajax event="rowSelect" update="frmConsCli" listener="#{FrmpreinusualController.irDetalleTr(ob)}"/>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>

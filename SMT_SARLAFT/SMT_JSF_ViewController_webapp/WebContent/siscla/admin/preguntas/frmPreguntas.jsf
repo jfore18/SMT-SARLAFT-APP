@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <ui:include src="/siscla/compartido/lenguajecalendario.jsf"/>
+    </h:head>
+    <h:body>
+        <h:form id="frmPreguntas">
+            <p:panel id="pnlConsPreguntas" style="width:100%;height:auto;padding:0px;">
+                <f:facet name="header">
+                    <p:commandButton id="btnBuscar" action="#{FrmpreguntasController.buscarPreguntas()}" value=""
+                                     icon="ui-icon-search" update="frmPreguntas:tablaPreguntas" title="Buscar"
+                                     style="height:30px;width:35px"/>
+                    <p:commandButton id="btnLimpiar" value="" icon="ui-icon-star" style="height:30px;width:35px"
+                                     action="#{FrmpreguntasController.limpiar()}"
+                                     update="frmPreguntas:tablaPreguntas frmPreguntas:pgrPreguntas" title="Limpiar"/>
+                    <p:commandButton id="btnNuevo" value="" icon="ui-icon-disk" style="height:30px;width:35px"
+                                     action="#{FrmpreguntasController.guardar()}"
+                                     update="frmPreguntas:tablaPreguntas frmPreguntas:pgrPreguntas frmCabecera:messages"
+                                     title="Guardar"/>
+                    <p:spacer width="100" height="10"/>
+                    <h:outputLabel value="Administración de preguntas" style="#{tittle3}"/>
+                </f:facet>
+                <p:panelGrid id="pgrPreguntas" style="border:none;">
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;">
+                            <h:outputText value="Tipo de pregunta: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="tipoPreg" value="#{FrmpreguntasController.tipoPregunta}" effect="blind"
+                                             style="width:260px" disabled="#{FrmpreguntasController.disabled}">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{FrmpreguntasController.listTiposPreguntas}" var="ob"
+                                               itemLabel="#{ob.LABEL}" itemValue="#{ob.VALOR}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                            <p:column style="border:none;">
+                            <h:outputText value="Vigente desde: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:datePicker id="pkrVigDesd" value="#{FrmpreguntasController.desde}" locale="es"
+                                          monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+                                          pattern="yyyy/MM/dd" size="30"/>
+                            <p:separator style="margin:0px;border:none;display:#{FrmpreguntasController.displayDesde}"/>
+                            <p:datePicker id="pkrVigDesd2" value="#{FrmpreguntasController.desde2}" locale="es"
+                                          monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+                                          pattern="yyyy/MM/dd" size="30"
+                                          style="display:#{FrmpreguntasController.displayDesde}"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                       </p:column>
+                        
+                             <p:column style="border:none;">
+                            <h:outputText value="Vigente hasta: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:datePicker id="pkrVigHast" value="#{FrmpreguntasController.hasta}" locale="es"
+                                          monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+                                          pattern="yyyy/MM/dd" size="30"/>
+                            <p:separator style="margin:0px;border:none;display:#{FrmpreguntasController.displayHasta}"/>
+                            <p:datePicker id="pkrVigHast2" value="#{FrmpreguntasController.hasta2}" locale="es"
+                                          monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+                                          pattern="yyyy/MM/dd" size="20"
+                                          style="display:#{FrmpreguntasController.displayHasta}"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                          </p:column>
+                       
+                    </p:row>
+                    
+                    <p:row style="border:none;#{tittle}">
+                     <p:column style="border:none;" colspan="1">
+                            <h:outputText value="Texto: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputTextarea id="txtTexto" value="#{FrmpreguntasController.texto}" rows="3" cols="30" maxlength="90"/>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Fecha actualización: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtFecAct" value="#{FrmpreguntasController.fechaAct}" size="30"
+                                         readonly="true"/>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Usuario actualización: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtUsuAct" value="#{FrmpreguntasController.usuarioAct}" size="35"
+                                         readonly="true"/>
+                        </p:column>
+                     
+                    </p:row>
+                    <p:row style="border:none;#{tittle}">
+                     
+                     </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="tablaPreguntas" var="ob" value="#{FrmpreguntasController.listPreguntas}" rows="10"
+                         rowKey="#{ob.ID_PREGUNTA}" emptyMessage="No se encontraron datos para mostrar" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20" selectionMode="single"
+                         selection="#{FrmpreguntasController.preguntaSel}" paginatorAlwaysVisible="false">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="Tipo pregunta" width="25%" style="#{columnHeader}"/>
+                        <p:column headerText="Texto" width="55%" style="#{columnHeader}"/>
+                        <p:column headerText="Vigente desde" width="10%" style="#{columnHeader}"/>
+                        <p:column headerText="Vigente hasta" width="10%" style="#{columnHeader}"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.DESCRIPCION_TIPO_PREGUNTA}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.PREGUNTA}" width="55%"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.VIGENTE_DESDE}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.VIGENTE_HASTA}"/>
+                </p:column>
+                <p:ajax event="rowSelect" update="frmPreguntas" listener="#{FrmpreguntasController.actualizar}"/>
+            </p:dataTable>
+        </h:form>
+         
+        <ui:include src="/siscla/compartido/refrescarunavez.jsf"/>
+    </h:body>
+</html>

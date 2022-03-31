@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <ui:include src="/siscla/compartido/lenguajecalendario.jsf"/>
+    </h:head>
+    <h:body>
+        <h:form id="frmInicioDia">
+            <p:panel id="pnlIniDia" style="width:auto;">
+                <p:panelGrid id="pnlInicioDia" style="width:100%;margin:auto">
+                    <f:facet name="header">
+                        <p:row style="border:none">
+                            <p:column colspan="2">
+                                <h:outputLabel value="Inicio de día" style="#{tittle3}"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row style="border:none">
+                        <p:column style="border:none;text-align:right;">
+                            <h:outputLabel value="Fecha de proceso actual:" style="#{tittle}"/>
+                        </p:column>
+                        <p:column style="border:none">
+                            <p:inputText id="txtFechProcAct" value="#{IniciodiaController.fechaProcAct}"
+                                         readonly="true"/>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none">
+                        <p:column style="border:none;text-align:right;">
+                            <h:outputLabel value="Nueva fecha de proceso:" style="#{tittle}"/>
+                        </p:column>
+                        <p:column style="border:none">
+                            <p:datePicker id="pkrFechProcNue" value="#{IniciodiaController.fechaNue}" locale="es"
+                                          monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+                                          pattern="yyyy/MM/dd" placeholder="#{IniciodiaController.fechaProcNue}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none">
+                        <p:column style="border:none"></p:column>
+                        <p:column style="border:none">
+                            <p:commandButton id="btnCambFech" value="Cambiar Fecha"
+                                             onclick="PF('dlgCambiarFecha_wv').show()" style="#{buttom}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+         
+        <p:confirmDialog id="dlgCambiarFecha" header="Cambiar fecha" widgetVar="dlgCambiarFecha_wv"
+                         message="Seguro que desea cambiar la fecha" severity="alert">
+            <p:commandButton value="Aceptar" onclick="PF('dlgCambiarFecha_wv').hide()"
+                             action="#{IniciodiaController.cambiarFechaProceso}"
+                             update="frmCabecera:messages frmInicioDia:txtFechProcAct frmInicioDia:pkrFechProcNue"/>
+            <p:commandButton value="Cancelar" onclick="PF('dlgCambiarFecha_wv').hide()"/>
+        </p:confirmDialog>
+        <ui:include src="/siscla/compartido/refrescarunavez.jsf"/>
+    </h:body>
+</html>

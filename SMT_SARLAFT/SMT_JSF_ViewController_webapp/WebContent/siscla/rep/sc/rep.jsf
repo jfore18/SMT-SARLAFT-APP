@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<h:head></h:head>
+<h:body>
+	<h:outputLabel
+		value="Consulta de reporte de #{ConsultarrepController.listTransRep != null ? 'transacciones':'clientes'}"
+		style="#{tittle}" />
+	<p:tabView id="tabRep"
+		activeIndex="#{ConsultarrepController.tab1Index}"
+		style="width:100%;min-height:480px" cache="false">
+		<c:if test="#{ConsultarrepController.listTransRep != null}">
+			<p:tab id="tabTrRelRep" title="Trans relacionadas" closable="false">
+				<ui:include src="./tr.jsf" />
+			</p:tab>
+		</c:if>
+		<p:tab id="tabRepRep" title="Reporte" closable="false">
+			<ui:include src="./reporte.jsf" />
+		</p:tab>
+		<c:if
+			test="#{ConsultarrepController.codPerfilCreacionRep == '5' and LoginController.datosRegistro.CODIGO_PERFIL == '5'}">
+			<p:tab id="tabAnalRep" title="Análisis" closable="false">
+				<ui:include src="./analisis.jsf" />
+			</p:tab>
+		</c:if>
+
+		<c:if
+			test="#{ConsultarrepController.codPerfilCreacionRep == '5' and LoginController.datosRegistro.CODIGO_PERFIL == '5' and ConsultarrepController.reporteSel.get('ESTADO')=='REPORTADO' }">
+			<p:tab id="tabAnalisis" title="Proceso Analisis" closable="false">
+
+				<ui:include src="./conAnalisis.jsf" />
+			</p:tab>
+		</c:if>
+		<p:ajax event="tabChange"
+			listener="#{ConsultarrepController.onTab1Change}" />
+	</p:tabView>
+
+	<c:if test="#{ConsultarrepController.proceso eq 'ConsultarRep'}">
+		<p:commandButton id="btnCancelarRep" value="Cancelar"
+			style="float:right;"
+			action="#{ContenidoController.updateUrl('/siscla/rep/frmConsultarRep.jsf')}" />
+	</c:if>
+
+	<c:if test="#{ConsultarrepController.proceso eq 'ConsultarRepTr'}">
+		<p:commandButton id="btnCancelarRep" value="Cancelar"
+			style="float:right;"
+			action="#{ContenidoController.updateUrl('/siscla/tr/consultaTr.jsf')}" />
+	</c:if>
+
+	<h:form id="frmImprimirRep">
+		<c:if test="#{LoginController.datosRegistro.CODIGO_PERFIL eq '5'}">
+			<p:commandButton id="btnImprimirRep" value="Imprimir"
+				style="float:right;" action="#{ConsultarrepController.generarPDF}"
+				icon="icon-report" ajax="false" />
+		</c:if>
+
+	</h:form>
+</h:body>
+</html>

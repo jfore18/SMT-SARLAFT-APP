@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+	<ui:include src="/siscla/compartido/lenguajecalendario.jsf" />
+</h:head>
+<h:body onload="#{ElegirarchController.menuArch()}">
+	<h:form id="frmElegArch">
+		<p:menu id="menuElegArch" model="#{ElegirarchController.menuModel}"
+			style="width:80%;" styleClass="#{tittle1}" />
+		<p:confirmDialog id="dlgConfirmReprocArch"
+			widgetVar="wvdlgConfirmReprocArch">
+			<f:facet name="header">
+				<h:outputText value="#{ElegirarchController.msgTituloDlg}"
+					style="#{tittle3}" />
+			</f:facet>
+			<f:facet name="message">
+				<h:outputText value="#{ElegirarchController.msgProceso}"
+					style="#{tittle}" />
+			</f:facet>
+			<p:commandButton value="Aceptar" process="@this" style="#{buttom}"
+				onclick="PF('wvdlgConfirmReprocArch').hide()"
+				action="#{ElegirarchController.preProcesoArch2()}" />
+			<p:commandButton value="Cancelar" style="#{buttom}"
+				onclick="PF('wvdlgConfirmReprocArch').hide()" />
+		</p:confirmDialog>
+		<p:dialog id="dlgGener1" header="#{ElegirarchController.msgTituloDlg}"
+			widgetVar="wvdlgGener1" modal="true" showEffect="fade"
+			hideEffect="fade" resizable="false" closable="false">
+			<p:panel id="panElegArch" style="width:650px;height:250px">
+				<p:panel id="panFechProc" style="width:auto;height:50px">
+					<h:outputLabel value="#{ElegirarchController.msgProceso}"
+						style="#{tittle}" />
+					<p:datePicker id="dpkFechProcArch111"
+						value="#{ElegirarchController.fecha}" locale="es"
+						monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+						pattern="yyyy/MM/dd"
+						placeholder="#{ElegirarchController.fechaStr}"
+						style="width:auto;float:right;" />
+				</p:panel>
+				<p:separator />
+				<p:commandButton value="Aceptar" style="#{buttom}"
+					onclick="PF('wvdlgGener1').hide()"
+					action="#{ElegirarchController.preProcesoArch3}" />
+				<p:commandButton value="Cancelar" style="#{buttom}"
+					onclick="PF('wvdlgGener1').hide()" />
+			</p:panel>
+		</p:dialog>
+		<p:confirmDialog id="dlgConfirmProcArch"
+			widgetVar="dlgwvConfirmProcArch">
+			<f:facet name="header">
+				<h:outputText value="#{ElegirarchController.msgTituloDlg}"
+					style="#{tittle3}" />
+			</f:facet>
+			<f:facet name="message">
+				<h:outputText value="#{ElegirarchController.msgProceso}"
+					style="#{tittle}" />
+			</f:facet>
+			<p:commandButton value="Aceptar" process="@this" style="#{buttom}"
+				action="#{ElegirarchController.procesoArch()}"
+				oncomplete="PF('pbProgreso').start();"
+				onclick="PF('dlgwvConfirmProcArch').hide(); PF('wvdlgProgreso').show();" />
+			<p:commandButton value="Cancelar" style="#{buttom}"
+				onclick="PF('dlgwvConfirmProcArch').hide()" />
+		</p:confirmDialog>
+		<p:confirmDialog id="dlgProcArch" widgetVar="dlgwvProcArch"
+			modal="true" resizable="false" severity="info">
+			<f:facet name="header">
+				<h:outputText value="#{ElegirarchController.msgTituloDlg}"
+					style="#{tittle3}" />
+			</f:facet>
+			<f:facet name="message">
+				<h:outputText value="#{ElegirarchController.msgProceso}"
+					style="#{tittle}" />
+			</f:facet>
+			<p:commandButton value="Aceptar" style="#{buttom}"
+				onclick="PF('dlgwvProcArch').hide()" />
+		</p:confirmDialog>
+		<p:dialog id="dlgProgreso" widgetVar="wvdlgProgreso" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false"
+			closable="false">
+			<p:panel id="panProg" style="width:650px;height:250px">
+				<p:progressBar widgetVar="pbProgreso" ajax="true"
+					value="#{ElegirarchController.progreso}" labelTemplate="{value}%"
+					styleClass="p-mt-3" global="false">
+					<p:ajax event="complete"
+						listener="#{ElegirarchController.posProcesoArch()}"
+						update="frmElegArch:dlgProcArch" />
+				</p:progressBar>
+			</p:panel>
+		</p:dialog>
+	</h:form>
+</h:body>
+</html>

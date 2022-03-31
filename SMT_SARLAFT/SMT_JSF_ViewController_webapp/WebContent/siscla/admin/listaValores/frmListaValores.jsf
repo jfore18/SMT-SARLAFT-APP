@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        
+    </h:head>
+    <h:body>
+        <h:form id="frmListaValores">
+            <p:panel id="pnlListaValores" style="width:100%;height:auto;padding:0px;">
+                <f:facet name="header">
+                    <p:commandButton id="btnBuscar" action="#{FrmlistavaloresController.buscarListaValores}" value=""
+                                     icon="ui-icon-search" update="frmListaValores" title="Buscar"
+                                     style="height:30px;width:35px"/>
+                    <p:commandButton id="btnLimpiar" value="" icon="ui-icon-star" style="height:30px;width:35px"
+                                     action="#{FrmlistavaloresController.limpiar}" update="frmListaValores "
+                                     title="Limpiar"/>
+                    <p:commandButton id="btnNuevo" value="" icon="ui-icon-disk" style="height:30px;width:35px"
+                                     action="#{FrmlistavaloresController.guardar}"
+                                     update="frmListaValores  frmCabecera:messages" title="Guardar"/>
+                    <p:spacer width="100" height="10"/>
+                    <h:outputLabel value="Administración lista de valores" style="#{tittle3}"/>
+                </f:facet>
+                <p:panelGrid id="pgrListaValores" style="border:none;">
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;" colspan="4">
+                            <h:outputText value="Lista: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="menuListas" value="#{FrmlistavaloresController.lista}"
+                                             style="width:200px" effect="blind">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{FrmlistavaloresController.listas}" var="o"
+                                               itemLabel="#{o.DESCRIPCION_TIPO_DATO}" itemValue="#{o.TIPO_DATO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;" colspan="4">
+                            <h:outputText value="Codigo: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtCodigo" value="#{FrmlistavaloresController.ob.CODIGO}" size="6"
+                                         maxlength="3"/>
+                        </p:column>
+                        <p:column style="border:none;" colspan="4">
+                            <h:outputText value="Nombre corto: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtNombreCorto" value="#{FrmlistavaloresController.ob.NOMBRE_CORTO}"
+                                         size="6" maxlength="3"/>
+                        </p:column>
+                        <p:column style="border:none;" colspan="4">
+                            <h:outputText value="Nombre largo: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtNombreLargo" value="#{FrmlistavaloresController.ob.NOMBRE_LARGO}"
+                                         size="30" maxlength="50"/>
+                        </p:column>
+                        <p:column style="border:none;" colspan="6">
+                            <h:outputText value="Aplica gerente: "/>
+                            <p:selectBooleanCheckbox id="chkAplicaGerente"
+                                                     value="#{FrmlistavaloresController.ob.APLICA_GERENTE}"/>
+                            <p:spacer width="20"/>
+                            <h:outputText value="Activo: "/>
+                            <p:selectBooleanCheckbox id="chkActivo" value="#{FrmlistavaloresController.ob.ACTIVO}"/>
+                        </p:column>
+                        
+                    </p:row>
+                    <p:row style="border:none;#{tittle}">
+                        
+                        <p:column style="border:none;" colspan="4">
+                            <h:outputText value="Usuario actualización: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtUsuarioActualizacion" readonly="true"
+                                         value="#{FrmlistavaloresController.ob.USUARIO_ACTUALIZACION}" size="29"/>
+                        </p:column>
+                        <p:column style="border:none;" colspan="4">
+                            <h:outputText value="Fecha actualización: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtFechaActualizacion" readonly="true"
+                                         value="#{FrmlistavaloresController.ob.FECHA_ACTUALIZACION}" size="15"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="tablaListaValores" var="ob" value="#{FrmlistavaloresController.listValores}" rows="10"
+                         rowKey="#{ob.CODIGO}_#{ob.DESCRIPCION_TIPO_DATO}"
+                         emptyMessage="No se encontraron datos para mostrar" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20" selectionMode="single"
+                         selection="#{FrmlistavaloresController.listValoresSel}" paginatorAlwaysVisible="false">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="Lista" style="#{columnHeader}"/>
+                        <p:column headerText="Código" width="8%" style="#{columnHeader}"/>
+                        <p:column headerText="Nombre largo" style="#{columnHeader}"/>
+                        <p:column headerText="Activo" width="8%" style="#{columnHeader}"/>
+                        <p:column headerText="Fecha actualización" width="15%" style="#{columnHeader}"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.DESCRIPCION_TIPO_DATO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.CODIGO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.NOMBRE_LARGO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.ACTIVO ? 'SI':'NO'}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.FECHA_ACTUALIZACION}"/>
+                </p:column>
+                <p:ajax event="rowSelect" update="frmListaValores" listener="#{FrmlistavaloresController.actualizar}"/>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>

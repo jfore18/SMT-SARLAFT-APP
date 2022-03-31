@@ -1,0 +1,76 @@
+#cabecera{
+    position: relative;
+    height: 55px;
+    margin: 0px 0px 0px 0px;
+}#cabIzq{
+    position: relative;
+    height: auto;
+    margin: 0px 0px 0px 0px;
+    width: 300px;
+    float: left;
+    text-align:left
+}#cabDer{
+    position: static;
+    height: auto;
+    margin: 0px 5px 0px 0px;
+    width: auto;
+    float: right;
+}
+#top {
+    position: relative;
+    color: white;
+    padding: 5px;
+    margin: 0px 0px 0px 0px;
+    height: auto;
+    text-align: center;
+}
+#btnInicio{
+    width: 350px;
+}
+#bottom {
+    position: relative;
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+}
+
+
+
+#right {
+    
+}
+#contenido{
+    position: relative;
+    padding: 5px;
+    height: auto;
+    margin-top: 0px;
+    width:100%;
+}
+#item{
+    position: relative;
+    background-color: #dddddd;
+    padding: 5px;
+}
+
+.center_content {
+    
+}
+
+.left_content {
+    
+}
+
+.right_content {
+    
+}
+
+#top a:link, #top a:visited {
+  font-weight : bold;
+  text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover  {
+  font-weight : bold;
+  text-decoration : underline;
+}
+
+

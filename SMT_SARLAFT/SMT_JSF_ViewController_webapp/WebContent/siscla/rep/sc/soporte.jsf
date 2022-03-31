@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head></h:head>
+    <h:body>
+        <p:panelGrid id="pgDocSopRep" cellpadding="1">
+            <c:forEach var="ob" items="#{ConsultarrepController.listPregRespRep}">
+                <p:row style="border:none;">
+                    <c:forEach var="ob2" items="#{ob}" varStatus="i">
+                        <c:if test="#{i.index == 0}">
+                            <p:column style="border:none;">
+                                <c:set var="desc" value="#{ob2.DESCRIPCION}"/>
+                                <h:outputLabel value="#{ob2.DESCRIPCION}" style="#{tittle}"/>
+                            </p:column>
+                            <p:column style="border:none;">
+                                <c:set var="res" value="#{ob2.CHECKED ? 'SI':'NO'}"/>
+                                <h:outputLabel value="#{res}" style="#{label}"/>
+                            </p:column>
+                        </c:if>
+                        <c:if test="#{i.index > 0 and ob2 != null and ob2.VALOR != null and not empty ob2.VALOR}">
+                            <p:column style="border:none;">
+                                <c:set var="index" value="#{fn:indexOf(ob2.DESCRIPCION, desc)}"/>
+                                <c:set var="desc2" value="#{fn:substring(ob2.DESCRIPCION,0,index)}"/>
+                                <h:outputLabel value="#{desc2}" style="#{tittle}"/>
+                            </p:column>
+                            <p:column style="border:none;">
+                                <h:outputLabel value="#{ob2.VALOR}" style="#{label}"/>
+                            </p:column>
+                        </c:if>
+                    </c:forEach>
+                </p:row>
+            </c:forEach>
+            <c:if test="#{ConsultarrepController.reporteSel.CLASE_REPORTE != 'NORMAL'}">
+                <p:row style="border:none">
+                    <p:column style="border:none;">
+                        <h:outputLabel value="OTRO DOCUMENTO SOPORTE:" style="#{tittle}"/>
+                    </p:column>
+                    <p:column style="border:none;">
+                        <h:outputLabel value="#{ConsultarrepController.otroDoc}" style="#{label}"/>
+                    </p:column>
+                </p:row>
+            </c:if>
+        </p:panelGrid>
+    </h:body>
+</html>

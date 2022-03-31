@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body>
+        <script type="text/javascript">
+      displayTablas(0);
+
+      function displayTablas(nivel) {
+          var tblZonas = document.getElementById("frmPrein:tblZonas");
+          var tblUnregs = document.getElementById("frmPrein:tblUnregs");
+          var tblFtes = document.getElementById("frmPrein:tblFtes");
+          if (nivel == 1) {
+              tblZonas.style.display = "block";
+              tblUnregs.style.display = "none";
+              tblFtes.style.display = "none";
+          }
+          else if (nivel == 2) {
+          
+              tblUnregs.style.display = "block";
+              tblUnregs.focus( {
+                  preventScroll : false
+              });
+             
+              tblFtes.style.display = "none";
+          }
+          else if (nivel == 3) {
+           
+              tblFtes.style.display = "block";
+              tblFtes.focus( {
+                  preventScroll : false
+              });
+          }
+          else {
+       
+              <c:if test="#{FrmpreinusualController.rol eq '5'}">
+              tblZonas.style.display = "none";
+              tblUnregs.style.display = "none";
+              </c:if>
+              <c:if test="#{FrmpreinusualController.rol eq '4'}">
+              tblUnregs.style.display = "none";
+              tblZonas.style.display = "block";
+              </c:if>
+              <c:if test="#{FrmpreinusualController.rol eq '3'}">
+              tblUnregs.style.display = "block";
+              </c:if>
+               <c:if test="#{FrmpreinusualController.tipoCargo eq 'N'}">
+              tblUnregs.style.display = "block";
+             
+              </c:if>
+              
+              <c:if test="#{FrmpreinusualController.rol eq '2' and  FrmpreinusualController.tipoCargo ne 'N' }">
+              tblFtes.style.display = "block";
+         
+              </c:if>
+              
+                <c:if test="#{FrmpreinusualController.rol eq '2' and  FrmpreinusualController.tipoCargo eq 'N' }">
+              tblFtes.style.display = "none";
+        
+              </c:if>
+              
+              <c:if test="#{FrmpreinusualController.rol != '2'}">
+              tblFtes.style.display = "none";
+              </c:if>
+          }
+      }
+    </script>
+    </h:body>
+</html>

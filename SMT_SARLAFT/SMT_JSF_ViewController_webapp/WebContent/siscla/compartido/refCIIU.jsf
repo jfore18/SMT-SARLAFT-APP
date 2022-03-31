@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head></h:head>
+    <h:body>
+        <h:form id="frmRefCIIU">
+            <p:dataTable id="tablaPerfiles" var="perf" value="#{LoginController.perfiles}" rows="15"
+                         rowKey="#{perf.CODIGO_USUARIO}" emptyMessage="No se encontraron datos para mostrar"
+                         paginator="true" selection="#{LoginController.datosRegistro}" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20" selectionMode="single">
+                <f:facet name="header">  </f:facet>
+                <p:column headerText="Uidad de negocio" style="width:18%" sortBy="#{perf.NOMBRE_UNIDAD_NEGOCIO}">
+                    <h:outputText value=""/>
+                    
+                </p:column>
+                <p:ajax event="rowSelect" update=":formPerfiles:tablaPerfiles"/>
+                <f:facet name="footer">
+                    <p:commandButton id="btnAcepAelPerf" value="Continuar" process="@this"
+                                     action="#{LoginController.btnContinuar}"/>
+                    <p:commandButton id="btnCancAelPerf" value="Cancelar" onclick="PF('dgwvPerfiles').hide()"/>
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head></h:head>
+    <h:body>
+        <p:tabView id="tabReporte" activeIndex="#{ConsultarrepController.tab2Index}" style="width:100%;min-height:410px"
+                   cache="false">
+            <p:tab id="tabEncReporte" title="Encabezado" closable="false">
+                <ui:include src="./encabezado.jsf"/>
+            </p:tab>
+            <c:if test="#{LoginController.datosRegistro.CODIGO_PERFIL == '5'}">
+                <p:tab id="tabPerRelReporte" title="Personas Relacionadas" closable="false" class="">
+                    <ui:include src="./cliente.jsf"/>
+                </p:tab>
+            </c:if>
+            <c:if test="#{ConsultarrepController.reporteSel.CLASE_REPORTE == 'NORMAL' and ConsultarrepController.codPerfilCreacionRep == '2'}">
+                <p:tab id="tabDocSopReporte" title="Conocimiento cliente" closable="false" class="">
+                    <ui:include src="./soporte.jsf"/>
+                </p:tab>
+            </c:if>
+            <c:if test="#{ConsultarrepController.reporteSel.CLASE_REPORTE != 'NORMAL'}">
+                <p:tab id="tabDocSopReporte" title="Documentos Soporte" closable="false" class="">
+                    <ui:include src="./soporte.jsf"/>
+                </p:tab>
+            </c:if>
+            <p:ajax event="tabChange" listener="#{ConsultarrepController.onTab2Change}"/>
+        </p:tabView>
+    </h:body>
+</html>

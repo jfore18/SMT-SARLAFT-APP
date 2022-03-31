@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body>
+        <c:set var="border" value="border:none;"/>
+         
+        <p:panelGrid id="pgFuentes" style="width:100%;">
+            <p:row style="#{border}#{tittle}">
+                <p:column style="border:none">
+                    <h:outputLabel value="Tipo de consulta:"/>
+                </p:column>
+                <p:column style="#{border}" colspan="3">
+                    <p:selectOneMenu id="slcTpCons" value="#{FrmgestionController.codTipConSel}"
+                                     style="width:150px;#{label}" effect="blind">
+                        <f:selectItem itemLabel="Seleccione" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{FrmgestionController.tiposConsult}" var="ob"
+                                       itemLabel="#{ob.DESCRIPCION}" itemValue="#{ob.CODIGO}"/>
+                    </p:selectOneMenu>
+                </p:column>
+            </p:row>
+            <p:row style="#{border}#{tittle}">
+                <p:column style="#{border}">
+                    <h:outputLabel value="Indagación:"/>
+                </p:column>
+                <p:column style="border:none" colspan="2">
+                    <p:inputTextarea id="txtIndag" value="#{FrmgestionController.indag}" rows="5" cols="50"
+                                     autoResize="false"/>
+                </p:column>
+            </p:row>
+            <c:if test="#{FrmgestionController.preguntasRep != null}">
+                <p:row style="#{border}border-bottom:solid 0.5px;#{tittle}">
+                    <p:column style="#{border}" colspan="4">
+                        <h:outputLabel value="Fuentes de información:"/>
+                    </p:column>
+                </p:row>
+                <c:set var="objTemp" value="null"/>
+                
+                <c:forEach var="ob" items="#{FrmgestionController.preguntasRep}" varStatus="i">
+                    <c:if test="#{(i.index+1) % 2 != 0}">
+                        <c:if test="#{not status.last}">
+                            <c:set var="obTemp" value="#{ob}"/>
+                        </c:if>
+                        <c:if test="#{status.last}">
+                            <p:column style="#{border}#{label}">
+                                <h:outputLabel value="#{ob.DESCRIPCION}"/>
+                            </p:column>
+                            <p:column style="#{border}">
+                                <p:selectBooleanCheckbox id="chkPreg_#{ob.ID}" value="#{ob.CHECKED}"/>
+                            </p:column>
+                            <p:column style="#{border}" colspan="2"/>
+                        </c:if>
+                    </c:if>
+                    <c:if test="#{(i.index+1) % 2 == 0}">
+                        <p:row style="#{border}border-bottom:solid 0.5px;#{label}">
+                            <p:column style="width:25%;#{border}">
+                                <h:outputLabel value="#{obTemp.DESCRIPCION}"/>
+                            </p:column>
+                            <p:column style="width:25%;#{border}">
+                                <p:selectBooleanCheckbox id="chkPreg_#{obTemp.ID}" value="#{obTemp.CHECKED}"/>
+                            </p:column>
+                            <p:column style="width:25%;#{border}">
+                                <h:outputLabel value="#{ob.DESCRIPCION}"/>
+                            </p:column>
+                            <p:column style="width:25%;#{border}">
+                                <p:selectBooleanCheckbox id="chkPreg_#{ob.ID}" value="#{ob.CHECKED}"/>
+                            </p:column>
+                        </p:row>
+                    </c:if>
+                </c:forEach>
+            </c:if>
+            <p:row style="#{border}border-bottom:solid 0.5px;#{label}">
+                <p:column style="#{border}">
+                    <h:outputLabel value="OTRO:"/>
+                </p:column>
+                <p:column style="#{border}" colspan="3">
+                    <p:inputText id="txtOtro" value="#{FrmgestionController.otro}"/>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+    </h:body>
+</html>

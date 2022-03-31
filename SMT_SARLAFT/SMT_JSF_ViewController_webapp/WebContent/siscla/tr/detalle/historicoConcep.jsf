@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head></h:head>
+<h:body>
+	<p:dataTable id="tablaTran" var="ob"
+		value="#{FrmpreinusualController.conceptosTr}" rows="10"
+		rowKey="#{ob.FECHA}"
+		emptyMessage="No se encontraron datos para mostrar"
+		selectionMode="single"
+		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom"
+		selection="#{FrmpreinusualController.conceptoSel}"
+		rowsPerPageTemplate="10,15,20" style="width:70%;height:auto;">
+		<p:columnGroup type="header">
+			<p:row>
+				<p:column headerText="Fecha" sortBy="#{ob.FECHA}" width="10%"
+					style="#{columnHeader}" />
+				<p:column headerText="Usuario" sortBy="#{ob.USUARIO}" width="15%"
+					style="#{columnHeader}" />
+				<p:column headerText="Perfil" sortBy="#{ob.PERFIL}" width="15%"
+					style="#{columnHeader}" />
+				<p:column headerText="Clase" sortBy="#{tran.CLASE}" width="10%"
+					style="#{columnHeader}" />
+				<c:if test="#{sessionScope.datosRegistro.CODIGO_PERFIL eq '5'}">
+					<p:column headerText="Estado" sortBy="#{tran.CLASE}" width="10%"
+						style="#{columnHeader}" />
+					<p:column headerText="Oficina" sortBy="#{tran.CLASE}" width="10%"
+						style="#{columnHeader}" />
+					<p:column headerText="Region" sortBy="#{tran.CLASE}" width="10%"
+						style="#{columnHeader}" />
+				</c:if>
+			</p:row>
+		</p:columnGroup>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.FECHA}" />
+		</p:column>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.USUARIO}" />
+		</p:column>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.PERFIL}" />
+		</p:column>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.CLASE}" />
+		</p:column>
+		<c:if test="#{sessionScope.datosRegistro.CODIGO_PERFIL eq '5'}">
+
+			<p:column style="#{columnContent}">
+				<h:outputText value="#{ob.ESTADO}" />
+			</p:column>
+			<p:column style="#{columnContent}">
+				<h:outputText value="#{ob.OFICINA}" />
+			</p:column>
+			<p:column style="#{columnContent}">
+				<h:outputText value="#{ob.REGION}" />
+			</p:column>
+		</c:if>
+		<p:ajax event="rowSelect"
+			update="#{elemPadre}:dlgDetalleConc #{elemPadre}:tablaTran"
+			listener="#{FrmpreinusualController.detalleConcepto}" />
+	</p:dataTable>
+
+	<p:dialog id="dlgDetalleConc" header="Reportes concepto"
+		widgetVar="dlgwvDetalleConc" showEffect="fade" hideEffect="fade"
+		severity="info" style="width:500px;height:600px;float:auto;"
+		closable="false" resizable="false">
+		<p:panelGrid style="border:none">
+			<c:forEach var="ob"
+				items="#{FrmpreinusualController.detallesConcepto}">
+				<p:row style="border:none">
+					<p:column style="border:none;#{tittle}">Referencia:</p:column>
+					<p:column style="border:none;#{label}">
+						<h:outputText value="#{ob.REFERENCIA}" />
+					</p:column>
+				</p:row>
+				<p:row style="border:none">
+					<p:column style="border:none;#{tittle}">Observaciones:</p:column>
+					<p:column style="border:none;#{label}">
+						<h:outputText value="#{ob.OBSERVACIONES}" />
+					</p:column>
+				</p:row>
+			</c:forEach>
+		</p:panelGrid>
+		<p:separator />
+		<p:commandButton value="Cerrar" icon="ui-icon-close" style="#{button}"
+			onclick="PF('dlgwvDetalleConc').hide()" />
+	</p:dialog>
+</h:body>
+</html>

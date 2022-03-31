@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head></h:head>
+<h:body>
+	<h:form id="frmCriterios">
+		<p:panel id="pnlCriterios" style="width:100%;height:auto;padding:0px;">
+			<f:facet name="header">
+				<p:commandButton id="btnBuscar"
+					action="#{FrmcriteriosController.buscar}" value=""
+					icon="ui-icon-search" update="frmCriterios" title="Buscar"
+					style="height:30px;width:35px" />
+				<p:commandButton id="btnLimpiar" value="" icon="ui-icon-star"
+					style="height:30px;width:35px"
+					action="#{FrmcriteriosController.limpiar}" update="frmCriterios"
+					title="Limpiar" />
+				<p:commandButton id="btnNuevo" value="" icon="ui-icon-disk"
+					style="height:30px;width:35px"
+					action="#{FrmcriteriosController.guardar}"
+					update="frmCriterios frmCabecera:messages" title="Guardar" />
+				<p:spacer width="100" height="10" />
+				<h:outputLabel
+					value="Administración de criterios de inusualidad modeler"
+					style="#{tittle3}" />
+			</f:facet>
+			<p:panelGrid id="pgrCriterios" style="border:none;">
+				<p:row style="border:none;#{tittle}">
+					<p:column style="border:none;">
+						<h:outputText value="Producto: " />
+						<p:separator style="margin:0px;border:none;" />
+						<p:selectOneMenu id="prod"
+							value="#{FrmcriteriosController.producto}" style="width:200px"
+							effect="blind">
+							<f:selectItem itemLabel="Seleccione una opción" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems value="#{ListavaloresController.productosCritInu}"
+								var="ob" itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column style="border:none;">
+						<h:outputText value="Descripción: " />
+						<p:separator style="margin:0px;border:none;" />
+						<p:inputText id="desc"
+							value="#{FrmcriteriosController.descripcion}" size="40" />
+					</p:column>
+				</p:row>
+				<p:row style="border:none;#{tittle}">
+					<p:column style="border:none;">
+						<h:outputText value="Id criterio: " />
+						<p:separator style="margin:0px;border:none;" />
+						<p:inputText id="idCrit"
+							value="#{FrmcriteriosController.idCriterio}" size="10" maxlength="5"
+							disabled="#{FrmcriteriosController.disabled}" />
+					</p:column>
+					<p:column style="border:none;">
+						<h:outputText value="Mensaje: " />
+						<p:separator style="margin:0px;border:none;" />
+						<p:inputTextarea id="msj" value="#{FrmcriteriosController.mensaje}"
+							rows="2" cols="60" maxlength="100"/>
+							 
+					</p:column>
+				</p:row>
+				<p:row style="border:none;#{tittle}">
+					
+					<p:column style="border:none;">
+						<h:outputText value="Activo: " />
+						<p:selectBooleanCheckbox value="#{FrmcriteriosController.activo}" />
+					</p:column>
+					<p:column style="border:none;">
+						<h:outputText value="Gerente unidad de negocio: " />
+						<p:selectBooleanCheckbox
+							value="#{FrmcriteriosController.gerenteUnNeg}" />
+						<p:spacer width="10" height="10" />
+						<h:outputText value="Gerente de zona: " />
+						<p:selectBooleanCheckbox
+							value="#{FrmcriteriosController.gerenteZona}" />
+						<p:spacer width="10" height="10" />
+						<h:outputText value="Director de región: " />
+						<p:selectBooleanCheckbox
+							value="#{FrmcriteriosController.directorReg}" />
+						<p:spacer width="10" height="10" />
+						<h:outputText value="DUCC: " />
+						<p:selectBooleanCheckbox value="#{FrmcriteriosController.ducc}" />
+						<p:spacer width="10" height="10" />
+						<h:outputText value="Consulta: " />
+						<p:selectBooleanCheckbox
+							value="#{FrmcriteriosController.consulta}" />
+					</p:column>
+				</p:row>
+				<p:row style="border:none;#{tittle}">
+					<p:column style="border:none;">
+						<h:outputText value="Función: " />
+						<p:separator style="margin:0px;border:none;" />
+						<p:inputText id="func" value="#{FrmcriteriosController.funcion}"
+							size="15" readonly="true" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+		<p:dataTable id="tblCriterios" var="ob"
+			value="#{FrmcriteriosController.listCriterios}" rows="10"
+			rowKey="#{ob.ID}_#{ob.NUMERO_IDENTIFICACION}"
+			emptyMessage="No se encontraron datos para mostrar" paginator="true"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="10,15,20" selectionMode="single"
+			selection="#{FrmcriteriosController.criterioSel}"
+			paginatorAlwaysVisible="false">
+			<p:columnGroup type="header">
+				<p:row>
+					<p:column headerText="Id criterio" sortBy="#{ob.ID}" width="8%"
+						style="#{columnHeader}" />
+					<p:column headerText="Descripción" width="30%"
+						style="#{columnHeader}" />
+					<p:column headerText="Mensaje" width="35%" style="#{columnHeader}" />
+					<p:column headerText="Función" width="10%" style="#{columnHeader}" />
+					<p:column headerText="Producto" width="12%" style="#{columnHeader}" />
+					<p:column headerText="Activo" width="5%" style="#{columnHeader}" />
+				</p:row>
+			</p:columnGroup>
+			<p:column style="#{columnContent}">
+				<h:outputText value="#{ob.ID}" />
+			</p:column>
+			<p:column style="#{columnContent}">
+				<h:outputText value="#{ob.DESCRIPCION}" />
+			</p:column>
+			<p:column style="#{columnContent}">
+				<h:outputText value="#{ob.MENSAJE}" />
+			</p:column>
+			<p:column style="#{columnContent}">
+				<h:outputText value="#{ob.FUNCION}" />
+			</p:column>
+			<p:column style="#{columnContent}">
+				<h:outputText value="#{ob.PRODUCTO}" />
+			</p:column>
+			<p:column style="#{columnContent}">
+				<h:outputText value="#{ob.ACTIVO eq '1' ? 'SI':'NO'}" />
+			</p:column>
+			<p:ajax event="rowSelect" update="frmCriterios"
+				listener="#{FrmcriteriosController.actualizar}" />
+		</p:dataTable>
+	</h:form>
+</h:body>
+</html>

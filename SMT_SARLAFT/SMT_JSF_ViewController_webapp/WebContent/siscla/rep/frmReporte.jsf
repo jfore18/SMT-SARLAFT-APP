@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head></h:head>
+    <h:body onload="#{FrmgestionController.iniciarDocumento()}  #{DatosreporteController.iniciarReporte('ReportarCliente')} ">
+        <c:set var="procesoRep" value="ReportarCliente" scope="session"/>
+        <p:panelGrid id="pgRepCliente" style="width:100%;height:auto;">
+            <p:row style="border:none;">
+                <p:column style="border:none;">
+                    <ui:include src="./frmReportar.jsf"/>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+    </h:body>
+</html>

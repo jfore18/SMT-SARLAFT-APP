@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body>
+        <h:form id="frmConsCli">
+            <p:panel id="pnlConsultarInd" style="width:100%;height:auto;padding:0px;">
+                <f:facet name="header">
+                    <c:if test="#{ConsultaclienteController.nivel != 31 and ConsultaclienteController.nivel != 34 and ConsultaclienteController.nivel != 38}">
+                        <p:commandButton id="btnVolver" tittle="Volver" style="width:30px;height:25px;float:left;"
+                                         update="frmConsCli" icon="ui-icon-seek-prev"
+                                         action="#{ConsultaclienteController.procesar('VOLVER')}"/>
+                    </c:if>
+                    <p:spacer width="50" height="10"/>
+                    <h:outputLabel style="#{tittle3}" value="#{ConsultaclienteController.nombreProceso}" />
+                </f:facet>
+                <h:outputLabel style="#{tittle}" value="#{ConsultaclienteController.encabezado}"/>
+                <p:dataTable id="tblConsCli" var="ob" value="#{ConsultaclienteController.listCliente}" rows="10"
+                             rowKey="#{ob.REGION != null ? ob.REGION:ob.ZONA != null ? ob.ZONA:ob.OFICINA}"
+                             emptyMessage="No se encontraron datos para mostrar" paginator="true" paginatorPosition="bottom"
+                             paginatorAlwaysVisible="false" selectionMode="single"
+                             selection="#{ConsultaclienteController.clienteSel}" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="10,15,20"
+                             style="width:100%;height:auto;">
+                             <p:columnGroup type="header">
+                        <p:row style="#{columnHeader}">
+                            <p:column headerText="#{ConsultaclienteController.miConsulta.alias[0]}"/>
+                            <p:column headerText="Total Clientes"/>
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.REGION != null ? ob.REGION:ob.ZONA != null ? ob.ZONA:ob.OFICINA}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{ob.TOTAL}"/>
+                    </p:column>
+                    <c:if test="#{LoginController.datosRegistro.CODIGO_PERFIL != '3'}">
+                        <p:ajax event="rowSelect" update="frmConsCli"
+                                listener="#{ConsultaclienteController.procesar('AVANZAR')}"/>
+                    </c:if>
+                    <p:columnGroup type="footer">
+                        <p:row style="#{columnFooter}">
+                            <p:column footerText="Total" style="#{totalAlign}"/>
+                            <p:column footerText="#{ConsultaclienteController.totalCli}" style="#{totalAlign}"/>
+                        </p:row>
+                    </p:columnGroup>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

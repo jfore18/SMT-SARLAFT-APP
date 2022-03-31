@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head>
+        <ui:include src="/siscla/compartido/lenguajecalendario.jsf"/>
+    </h:head>
+    <h:body>
+        <h:outputText value="Reportar Cliente" style="#{tittle}"/>
+         
+        <c:if test="#{DatosreporteController.proceso eq 'RealizarGestion_ReportarCliente'}">
+            <p:separator style="margin:0px;border:none;"/>
+            <h:outputText value="#{FrmgestionController.cliente}" style="#{tittle}"/>
+        </c:if>
+         
+        <h:form id="frmReportar">
+            <c:set var="idElmPadre" value="frmReportar:tabViewReporte"/>
+            <c:set var="elemPadre" value="frmReportar" scope="session"/>
+            <ui:include src="./an/datosReporte.jsf"/>
+            <p:panelGrid id="pgBtnsReporte" style="width:100%">
+                <p:row style="border:none;">
+                    <p:column style="border:none;text-align:right;">
+                        <p:commandButton id="btnAceptarRep" value="Aceptar" action="#{DatosreporteController.reportar}"
+                                         update="frmCabecera:messages frmReportar:tabViewReporte #{elemPadre}:dgReporte" style="#{button}"
+                                         process="@this,frmReportar:tabViewReporte:pnlgrdCliente"/>
+                        <c:if test="#{DatosreporteController.proceso eq 'RealizarGestion_ReportarCliente'}">
+                            <p:commandButton id="btnCancelarRep1" value="Cancelar" process="@this" style="#{button}"
+                                             action="#{ContenidoController.updateUrl('/siscla/rep/an/frmGestion.jsf')}"/>
+                        </c:if>
+                        <c:if test="#{DatosreporteController.proceso eq 'ReportarCliente'}">
+                            <p:commandButton id="btnCancelarRep2" value="Cancelar" process="@this" style="#{button}"
+                                             action="#{ContenidoController.updateUrl('/siscla/rep/frmReporte.jsf')}"/>
+                        </c:if>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+         
+        <ui:include src="/siscla/compartido/refrescarunavez.jsf"/>
+    </h:body>
+</html>

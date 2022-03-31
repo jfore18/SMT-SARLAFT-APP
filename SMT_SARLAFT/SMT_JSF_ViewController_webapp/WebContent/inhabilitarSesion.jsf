@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
+    <h:form id="formFinSess">
+        <p:idleMonitor timeout="#{session.maxInactiveInterval*1000}">
+            <p:ajax event="idle" oncomplete="PF('sessionTimeOutDialog').show()"
+                    actionListener="#{LoginController.terminarSesion('1')}"/>
+        </p:idleMonitor>
+        <p:dialog header="Sesión caducada" widgetVar="sessionTimeOutDialog" modal="true" closable="false" width="500"
+                  visible="false">
+            <br/>
+            <p:outputLabel value="No se ha detectado actividad en el sistema durante 30 minutos, 
+                                  por seguridad se ha inhabilitado su sesión, 
+                                  si desea volver a iniciar por favor dar click en --> " style="#{tittle}"/>
+            <a href="./login.jsf" style="#{tittle}">Recargar</a>
+            <br/>
+            <br/>
+        </p:dialog>
+    </h:form>
+</html>
+

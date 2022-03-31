@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body>
+        <p:growl id="grwUN" showDetail="true" life="5000"/>
+         
+        <h:form id="frmUN">
+            <p:panel id="pnlConsTr" style="width:100%;height:auto;padding:0px;">
+                <f:facet name="header">
+                    <p:commandButton id="btnBuscUN" action="#{FrmunidadnegocioController.buscarUN}" value=""
+                                     icon="ui-icon-search" update="frmUN:tablaUN" title="Buscar"
+                                     style="height:30px;width:35px"/>
+                    <p:commandButton id="btnLimpUN" value="" icon="ui-icon-star" style="height:30px;width:35px"
+                                     action="#{FrmunidadnegocioController.limpiar}" update="frmUN:tablaUN frmUN:pgrUN"
+                                     title="Limpiar"/>
+                    <p:commandButton id="btnNueZona" value="" icon="ui-icon-disk" style="height:30px;width:35px"
+                                     action="#{FrmunidadnegocioController.guardar}"
+                                     update="frmUN:tablaUN frmUN:pgrUN grwUN" title="Guardar"/>
+                    <p:spacer width="100" height="10"/>
+                     
+                    <h:outputLabel value="Administración de unidades de negocio" style="#{tittle3}"/>
+                </f:facet>
+                <p:spacer width="10"/>
+                <p:panelGrid id="pgrUN" style="border:none;width:100%;">
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;">
+                            <h:outputText value="Código: "/>
+                            <p:inputNumber id="codUN" value="#{FrmunidadnegocioController.codUN}" size="5"
+                                           maxlength="4" maxValue="9999" disabled="#{FrmunidadnegocioController.read}"
+                                           decimalPlaces="0" thousandSeparator=""/>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Nombre: "/>
+                            <p:inputText id="nombreUN" value="#{FrmunidadnegocioController.nombreUN}" size="30" maxlength="40"/>
+                        </p:column>
+                         <p:column style="border:none;">
+                            <h:outputText value="Región: "/>
+                            <p:selectOneMenu id="regionUN" value="#{FrmunidadnegocioController.regionUN}" effect="blind"
+                                             style="width:200px">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{FrmzonaController.regiones}" var="ob"
+                                               itemLabel="#{ob.DESC_LARGA}" itemValue="#{ob.CODIGO}"/>
+                                <p:ajax listener="#{FrmunidadnegocioController.buscarZonas}" event="change"
+                                        update="frmUN:zonaUN"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                          <p:column style="border:none;">
+                            <h:outputText value="Zona: "/>
+                            <p:selectOneMenu id="zonaUN" value="#{FrmunidadnegocioController.zonaUN}" effect="blind"
+                                             style="width:200px">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{FrmunidadnegocioController.zonas}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO_ZONA}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;width:50;" colspan="4">
+                            <h:outputText value="Ceo: "/>
+                            <p:selectBooleanCheckbox id="ceo" value="#{FrmunidadnegocioController.ceo}"/>
+                            <p:spacer width="30"/>
+                            <h:outputText value="Plaza crítica: "/>
+                            <p:selectBooleanCheckbox id="plzCrit" value="#{FrmunidadnegocioController.plzCrit}"/>
+                            <p:spacer width="30"/>
+                            <h:outputText value="Activa: "/>
+                            <p:selectBooleanCheckbox id="activa" value="#{FrmunidadnegocioController.activa}"/>
+                            <p:spacer width="30"/>
+                            <h:outputText value="Megabanco?: "/>
+                            <p:selectBooleanCheckbox id="megabco" value="#{FrmunidadnegocioController.megabco}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:spacer width="10"/>
+            <p:dataTable id="tablaUN" var="ob" value="#{FrmunidadnegocioController.udsn}" rows="15"
+                         rowKey="#{ob.CODIGO_UNIDAD_NEGOCIO}_#{ob.NOMBRE_UNIDAD_NEGOCIO}_#{ob.NOMBRE_REGION}"
+                         emptyMessage="No se encontraron datos para mostrar" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20" selectionMode="single" paginatorPosition="bottom"
+                         selection="#{FrmunidadnegocioController.un}" paginatorAlwaysVisible="false">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="Código" width="5%" style="#{columnHeader}"/>
+                        <p:column headerText="Nombre" style="#{columnHeader}"/>
+                        <p:column headerText="Zona" style="#{columnHeader}"/>
+                        <p:column headerText="Región" style="#{columnHeader}"/>
+                        <p:column headerText="Activa" width="5%" style="#{columnHeader}"/>
+                        <p:column headerText="Plaza Crítica" width="7%" style="#{columnHeader}"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.CODIGO_UNIDAD_NEGOCIO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.NOMBRE_UNIDAD_NEGOCIO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.NOMBRE_ZONA}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.NOMBRE_REGION}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.ACTIVA}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.PLAZA_CRITICA}"/>
+                </p:column>
+                <p:ajax event="rowSelect" update="frmUN:pgrUN" listener="#{FrmunidadnegocioController.actualizar}"/>
+            </p:dataTable>
+        </h:form>
+        <style>
+
+div[id="grwUN_container"] {
+    position:absolute;
+    top:60px;
+    left:70%;
+    font-size:11pt;
+    
+}	
+</style>  
+    </h:body>
+</html>

@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body>
+        <c:set var="elemPadre" value="frmDetalleTr:tabViewDetalleTr" scope="session"/>
+         
+        <h:form id="frmDetalleTr">
+            <p:panelGrid id="pnlgrdCliCRM" style="width:100%;margin:auto;">
+                <f:facet name="header">
+                    <p:row style="border:none">
+                        <p:column style="border:none;#{header}">
+                            <h:outputText value="Cliente" style="#{columnHeader}"/>
+                        </p:column>
+                        <p:column style="border:none;#{header}">
+                            <h:outputText value="Teléfono" style="#{columnHeader}"/>
+                        </p:column>
+                        <p:column style="border:none;#{header}">
+                            <h:outputText value="CIIU" style="#{columnHeader}"/>
+                        </p:column>
+                        <p:column style="border:none;#{header}">
+                            <h:outputText value="Segmento" style="#{columnHeader}"/>
+                        </p:column>
+                    </p:row>
+                </f:facet>
+                <p:row style="border:none;#{label}">
+                    <p:column style="border:none;text-align:center;">
+                        <c:if test="#{FrmpreinusualController.detalleTran.CLIENTE_CRM != 'null'}">
+                            <h:outputText value="#{FrmpreinusualController.detalleTran.CLIENTE_CRM}"/>
+                        </c:if>
+                    </p:column>
+                    <p:column style="text-align:center;border:none;">
+                        <c:if test="#{FrmpreinusualController.detalleTran.TELEFONO != 'null'}">
+                            <h:outputText value="#{FrmpreinusualController.detalleTran.TELEFONO}"/>
+                        </c:if>
+                    </p:column>
+                    <p:column style="text-align:center;border:none;">
+                        <c:if test="#{FrmpreinusualController.detalleTran.ACTIVIDAD_ECON != 'null'}">
+                            <h:outputText value="#{FrmpreinusualController.detalleTran.ACTIVIDAD_ECON}"/>
+                        </c:if>
+                    </p:column>
+                    <p:column style="text-align:center;border:none;">
+                        <c:if test="#{FrmpreinusualController.detalleTran.SEGMENTO != 'null'}">
+                            <h:outputText value="#{FrmpreinusualController.detalleTran.SEGMENTO}"/>
+                        </c:if>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:tabView id="tabViewDetalleTr" activeIndex="#{FrmpreinusualController.index}"
+                       style="width:100%;min-height:400px;padding-left:0px;" cache="false">
+                <p:tab id="tab1" title="Datos básicos" closable="false">
+                    <ui:include src="./datosBasicos.jsf"/>
+                </p:tab>
+                <p:tab id="tab2" title="Criterios inusualidad" closable="false">
+                    <ui:include src="./criteriosInu.jsf"/>
+                </p:tab>
+                <p:tab id="tab3" title="Histórico conceptos" closable="false">
+                    <ui:include src="./historicoConcep.jsf"/>
+                </p:tab>
+                <p:tab id="tab4" title="Comentarios" closable="false">
+                    <ui:include src="./comentarios.jsf"/>
+                </p:tab>
+                <p:ajax event="tabChange" listener="#{FrmpreinusualController.onTabChangeAction}"/>
+            </p:tabView>
+            <p:panelGrid id="pnlgrdBtns" style="width:100%;">
+                <p:row style="border:none">
+                    <p:column style="text-align:left;border:none">
+                        <p:commandButton value="Volver" title="Volver" update=":panelContenido" style="#{button}"
+                                         action="#{ContenidoController.updateUrl(FrmpreinusualController.urlVolver)}"/>
+                        <c:if test="#{FrmpreinusualController.puedeComentar}">
+                            <p:commandButton value="Últimas trans" title="Últimas trans" style="#{button}"
+                                             actionListener="#{FrmpreinusualController.ultimasTrans}"
+                                             action="#{ContenidoController.updateUrl('/siscla/tr/frmConsultaTr.jsf')}"/>
+                        </c:if>
+                    </p:column>
+                    <p:column style="text-align:right;border:none">
+                        <c:if test="#{FrmpreinusualController.puedeReportar}">
+                            <c:if test="#{FrmpreinusualController.rol == '2'}">
+                                <p:commandButton id="btnRep" value="Reportar" title="Reportar" style="#{button}"
+                                                 actionListener="#{FrmgestionController.ejecutarProceso('Reportar')}"
+                                                 action="#{ContenidoController.updateUrl('/siscla/rep/an/frmGestion.jsf')}"/>
+                                <c:if test="#{FrmpreinusualController.puedeReportarNormal}">
+                                    <p:commandButton id="btnNoRep" value="No Reportar" title="No Reportar"
+                                                     style="#{button}"
+                                                     actionListener="#{FrmgestionController.ejecutarProceso('NoReportar')}"
+                                                     action="#{ContenidoController.updateUrl('/siscla/rep/an/frmGestion.jsf')}"/>
+                                </c:if>
+                            </c:if>
+                            <c:if test="#{FrmpreinusualController.rol eq '5'}">
+                                <p:commandButton id="btnRealGest" value="Realizar Gestión" title="Realizar Gestión"
+                                                 actionListener="#{FrmgestionController.ejecutarProceso('RealizarGestion')}"
+                                                 action="#{ContenidoController.updateUrl('/siscla/rep/an/frmGestion.jsf')}"
+                                                 update=":panelContenido frmDetalleTr:pnlgrdBtns" style="#{button}"/>
+                            </c:if>
+                        </c:if>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+    </h:body>
+</html>

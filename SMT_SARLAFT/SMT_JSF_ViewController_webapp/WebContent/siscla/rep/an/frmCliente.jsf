@@ -1,0 +1,318 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    <ui:include src="/siscla/compartido/lenguajecalendario.jsf"/>
+    </h:head>
+    <h:body>
+        <c:set var="sizeCol1" value="25"/>
+         
+        <c:set var="sizeCol2" value="25"/>
+         
+        <c:set var="sizeCol3" value="25"/>
+         
+        <c:set var="noBorde" value="border:none;"/>
+         
+        <p:panelGrid id="pnlgrdCliente" style="width:100%;">
+            <p:row style="#{noBorde}#{tittle}">
+                <p:column style="#{noBorde};width:22%;">
+                    <h:outputText value="Tipo identificación:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:selectOneMenu id="selTipoId" value="#{DatosreporteController.tipoId}" style="width:200px;"
+                                     effect="blind">
+                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{ListavaloresController.tiposDocumento}" var="ob"
+                                       itemLabel="#{ob.NOMBRE_CORTO}" itemValue="#{ob.CODIGO}"/>
+                        <p:ajax event="change" listener="#{DatosreporteController.validarDisplayRazonSocial}"
+                                update="#{idElmPadre}:pnlgrdRepresentanteLegal #{idElmPadre}:pnlgrdCliente"/>
+                    </p:selectOneMenu>
+                </p:column>
+                <p:column style="#{noBorde};width:22%;">
+                    <h:outputText value="Número identificación:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtNumeroId" value="#{DatosreporteController.numeroId}" maxlength="11"
+                                size="#{sizeCol2}"/>
+                </p:column>
+                <p:column style="#{noBorde};width:56%;" colspan="3">
+                    <p:commandButton id="btnConsultarCU" value="Consultar Cliente Único" title="Consultar Cliente Único"
+                                     action="#{DatosreporteController.consultarCU}" style="#{button}"
+                                     update="frmCabecera:messages #{idElmPadre}:pnlgrdCliente"/>
+                </p:column>
+            </p:row>
+            <p:row style="#{noBorde}#{tittle}">
+                <p:column style="#{noBorde}">
+                    <h:outputText value="#{DatosreporteController.labelApellidos}"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtRazonComercial" value="#{DatosreporteController.valorApellidos}" maxlength="40"
+                                 size="#{sizeCol1}"/>
+                </p:column>
+                <p:column style="#{noBorde}">
+                    <h:outputText value="#{DatosreporteController.labelNombre}"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtRazonSocial" value="#{DatosreporteController.valorNombre}" maxlength="40"
+                                 size="#{sizeCol2}"/>
+                </p:column>
+                <p:column style="#{noBorde}" colspan="3">
+                    <h:outputText value="Email:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtEmail" value="#{DatosreporteController.email}" size="#{sizeCol3}"
+                                 maxlength="30"/>
+                </p:column>
+            </p:row>
+            <p:row style="#{noBorde}#{tittle}">
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Relación:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:selectOneMenu id="selRelacion" value="#{DatosreporteController.relacion}" style="width:200px;"
+                                     effect="blind">
+                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{ListavaloresController.relaciones}" var="ob"
+                                       itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                    </p:selectOneMenu>
+                </p:column>
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Cuál:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtOtraRelacion" value="#{DatosreporteController.otraRelacion}"
+                                 size="#{sizeCol2}"/>
+                </p:column>
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Inicio vinculación:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:datePicker id="pkrFechaInicioVinculacion"
+                                  value="#{DatosreporteController.fechaInicioVinculacion}" locale="es"
+                                  monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}" pattern="yyyy/MM/dd"
+                                  placeholder="Click aquí" size="#{sizeCol3}"/>
+                </p:column>
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Final vinculación:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:datePicker id="pkrFechaFinVinculacion" value="#{DatosreporteController.fechaFinVinculacion}"
+                                  locale="es" monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+                                  pattern="yyyy/MM/dd" placeholder="Click aquí" size="#{sizeCol2}">
+                        <p:ajax event="dateSelect" listener="#{DatosreporteController.validarRazonRetiro}"
+                                update="#{idElmPadre}:selRazonRet"/>
+                        <p:ajax event="change" listener="#{DatosreporteController.validarRazonRetiro}"
+                                update="#{idElmPadre}:selRazonRet"/>
+                    </p:datePicker>
+                </p:column>
+                <p:column style="#{noBorde};">
+                    <h:outputText value="Razon retiro:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:selectOneMenu id="selRazonRet" value="#{DatosreporteController.razonRetiro}" style="width:120px;"
+                                     disabled="#{DatosreporteController.disabledRazRet}" effect="blind">
+                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{ListavaloresController.razonesRetiro}" var="ob"
+                                       itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                    </p:selectOneMenu>
+                </p:column>
+            </p:row>
+            <p:row style="#{noBorde}#{tittle}">
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Ingresos Mensuales:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtIngresosMensuales" value="#{DatosreporteController.ingresosMensuales}"
+                                   minValue="0" symbol="$" size="#{sizeCol1}"/>
+                </p:column>
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Fecha Ingresos:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:datePicker id="pkrFechaIngresos" value="#{DatosreporteController.fechaIngresosMensual}"
+                                  locale="es" monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+                                  pattern="yyyy/MM/dd" placeholder="Click aquí" style="width:50px" size="#{sizeCol2}"/>
+                </p:column>
+                <p:column style="#{noBorde}">
+                    <h:outputText value="CIIU: "/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtCIIU" value="#{DatosreporteController.actEcoSel.DESCRIPCION}" readonly="true"
+                                 size="19"/>
+                    <p:spacer width="6" height="10"/>
+                    <p:commandButton id="btnCIIU" value="" process="@this" icon="ui-icon-eject"
+                                     style="width:34px;height:25px;vertical-align:bottom"
+                                     update="#{idElmPadre}:dgRefCIUU" action="#{DatosreporteController.consultaCiiu}"
+                                     oncomplete="PF('dgwvRefCIUU').show()"/>
+                </p:column>
+                <p:column style="#{noBorde}" colspan="2">
+                    <h:outputText value="Actividad económica:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtActividadEconomica" value="#{DatosreporteController.actividadEconomica}"
+                                 size="35" maxlength="30"/>
+                </p:column>
+            </p:row>
+            <p:row style="#{noBorde}#{tittle}">
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Tipo teléfono:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:selectOneMenu id="selTipoTelefono" value="#{DatosreporteController.tipoTelefono}"
+                                     style="width:200px;" effect="blind">
+                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{ListavaloresController.tiposTelefono}" var="ob"
+                                       itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                    </p:selectOneMenu>
+                </p:column>
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Teléfono:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtTelefono" value="#{DatosreporteController.telefono}" decimalPlaces="0"
+                                   minValue="0" size="#{sizeCol2}" thousandSeparator=""/>
+                </p:column>
+                <p:column style="#{noBorde}" colspan="3">
+                    <h:outputText value="Fax:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtFax" value="#{DatosreporteController.fax}" size="#{sizeCol3}"/>
+                </p:column>
+            </p:row>
+            <p:row style="#{noBorde}#{tittle}">
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Tipo dirección:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:selectOneMenu id="selTipoDireccion" value="#{DatosreporteController.tipoDireccion}"
+                                     style="width:200px;" effect="blind">
+                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{ListavaloresController.tiposDireccion}" var="ob"
+                                       itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                    </p:selectOneMenu>
+                </p:column>
+                <p:column style="#{noBorde}" colspan="2">
+                    <h:outputText value="Municipio:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtMunicipio"
+                                 value="#{DatosreporteController.municipioSel.CENTRO_POBLADO}-#{DatosreporteController.municipioSel.MUNICIPIO}-#{DatosreporteController.municipioSel.DEPARTAMENTO}"
+                                 size="50" readonly="true"/>
+                    <p:spacer width="6" height="10"/>
+                    <p:commandButton id="btnMunicipio" value="" process="@this" icon="ui-icon-eject"
+                                     style="width:34px;height:25px;vertical-align:bottom"
+                                     update="#{idElmPadre}:dgRefCIUU" action="#{DatosreporteController.consultaCiiu}"
+                                     oncomplete="PF('dgwvMunicipios').show()"/>
+                </p:column>
+                <p:column style="#{noBorde}" colspan="2">
+                    <h:outputText value="Dirección:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtDireccion" value="#{DatosreporteController.direccion}" size="35"/>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+         
+        <p:panelGrid id="pnlgrdRepresentanteLegal" style="width:100%;display:#{DatosreporteController.displayRepLeg};">
+            <p:row style="#{noBorde}#{tittle}">
+                <p:column style="text-align:left;#{noBorde}" colspan="4">
+                    <h:outputText value="Representante legal: "/>
+                </p:column>
+            </p:row>
+            <p:row style="#{noBorde}#{tittle}">
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Tipo identificación:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:selectOneMenu id="selTipoIdReprLegal" value="#{DatosreporteController.tipoIdReprLegal}"
+                                     style="width:200px;" effect="blind">
+                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{DatosreporteController.tiposDoc}" var="ob"
+                                       itemLabel="#{ob.NOMBRE_CORTO}" itemValue="#{ob.CODIGO}"/>
+                    </p:selectOneMenu>
+                </p:column>
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Número identificación:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtNumeroIdRepresLegal" value="#{DatosreporteController.numeroIdReprLegal}"
+                                   maxlength="11" size="25"/>
+                </p:column>
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Nombre:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtNombreRepresLegal" value="#{DatosreporteController.nombreReprLegal}" size="30"/>
+                </p:column>
+                <p:column style="#{noBorde}">
+                    <h:outputText value="Apellidos:"/>
+                    <p:separator style="margin:0px;#{noBorde};"/>
+                    <p:inputText id="txtApellidosRepresLegal" value="#{DatosreporteController.apellidosReprLegal}"
+                                 size="30"/>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+         
+        <p:dialog id="dgRefCIUU" header="Actividad económica " widgetVar="dgwvRefCIUU" modal="true" resizable="false"
+                  scroll="true" closable="true" width="950" height="550">
+            <p:dataTable id="tblRefCIUU" widgetVar="tblwvRefCIUU" var="ob" value="#{DatosreporteController.actdsEcon}"
+                         filteredValue="#{DatosreporteController.actdsEconFiltr}" rows="15" rowKey="#{ob.CODIGO}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         emptyMessage="No se encontraron datos para mostrar" paginator="true"
+                         selection="#{DatosreporteController.actEcoSel}" rowsPerPageTemplate="10,15,20"
+                         selectionMode="single">
+                <f:facet name="header">
+                    <p:outputPanel id="pnlConsCiuu">
+                        <p:inputText id="txtBuscCiiu" size="40" placeholder="Ingrese termino a buscar"
+                                     value="#{DatosreporteController.txtBuscCiiu}">
+                            <p:ajax event="change" update="#{idElmPadre}:tblRefCIUU:pnlConsCiuu"/>
+                        </p:inputText>
+                        <p:commandButton id="btnBuscCiiu" value="" process="@this" icon="ui-icon-search"
+                                         style="width:34px;height:25px;vertical-align:bottom"
+                                         action="#{DatosreporteController.consultaCiiu}"
+                                         update="#{idElmPadre}:tblRefCIUU"/>
+                    </p:outputPanel>
+                </f:facet>
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="Codigo" width="15%" style="#{columnHeader}"/>
+                        <p:column headerText="Descripción" width="85%" style="#{columnHeader}"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.CODIGO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.DESCRIPCION}"/>
+                </p:column>
+                <p:ajax event="rowSelect" oncomplete="PF('dgwvRefCIUU').hide();" update="#{idElmPadre}:txtCIIU"/>
+            </p:dataTable>
+        </p:dialog>
+         
+        <p:dialog id="dgMunicipios" header="Municipios " widgetVar="dgwvMunicipios" modal="true" resizable="false"
+                  scroll="true" closable="true" width="950" height="550">
+            <p:dataTable id="tblMunicipios" widgetVar="tblwvMunicipios" var="ob"
+                         value="#{DatosreporteController.municipios}" rows="15" rowKey="#{ob.CODIGO}"
+                         paginatorAlwaysVisible="false"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         emptyMessage="No se encontraron datos para mostrar" paginator="true"
+                         selection="#{DatosreporteController.municipioSel}" rowsPerPageTemplate="10,15,20"
+                         selectionMode="single">
+                <f:facet name="header">
+                    <p:outputPanel id="pnlBuscMun">
+                        <p:inputText id="txtBuscMun" size="40" placeholder="Ingrese termino a buscar"
+                                     value="#{DatosreporteController.txtBuscMun}">
+                            <p:ajax event="change" update="#{idElmPadre}:tblMunicipios:pnlBuscMun"/>
+                        </p:inputText>
+                        <p:commandButton id="btnBuscMun" value="" process="@this" icon="ui-icon-search"
+                                         style="width:34px;height:25px;vertical-align:bottom"
+                                         action="#{DatosreporteController.consultarMunicipios}"
+                                         update="#{idElmPadre}:tblMunicipios"/>
+                    </p:outputPanel>
+                </f:facet>
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="Centro poblado" width="40%" style="#{columnHeader}"/>
+                        <p:column headerText="Municipio" width="30%" style="#{columnHeader}"/>
+                        <p:column headerText="Departamento" width="30%" style="#{columnHeader}"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.CENTRO_POBLADO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.MUNICIPIO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.DEPARTAMENTO}"/>
+                </p:column>
+                <p:ajax event="rowSelect" oncomplete="PF('dgwvMunicipios').hide();"
+                        update="#{idElmPadre}:txtMunicipio"/>
+            </p:dataTable>
+        </p:dialog>
+         
+        <c:if test="#{DatosreporteController eq 'ActualizarReporte'}">
+            <!--p:remoteCommand autoRun="true" update="#{elemPadre}:pnlgrdCliente"/-->
+            <ui:include src="/siscla/compartido/refrescarunavez.jsf"/>
+        </c:if>
+    </h:body>
+</html>

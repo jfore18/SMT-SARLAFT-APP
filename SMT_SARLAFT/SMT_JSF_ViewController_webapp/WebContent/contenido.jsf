@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <c:if test="#{LoginController.datosRegistro.CODIGO_PERFIL eq '7'}">
+        <p:dialog id="dgVigPreg" header="Alerta" widgetVar="dgwvVigPreg" modal="true" resizable="false" scroll="false"
+                  closable="false">
+            <p:panelGrid>
+                <p:row style="border:none;">
+                    <p:column style="border:none;#{tittle}">
+                        <h:outputText value="Revise las fechas de vigencia de las preguntas, se encuentran vencidas"/>
+                    </p:column>
+                </p:row>
+                <p:row style="border:none;">
+                    <p:column style="border:none;">
+                        <p:commandButton id="btnAceptar" value="Aceptar" process="@this"
+                                         oncomplete="PF('dgwvVigPreg').hide();" style="#{button}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </p:dialog>
+        <p:remoteCommand autoRun="true" action="#{ContenidoController.validarFechaVencidaAdmin}"/>
+    </c:if>
+
+
+<p:dialog id="dgVigFil" header="Alerta" widgetVar="dgwvVigFil"
+	modal="true" resizable="false" scroll="false" closable="false">
+	<p:panelGrid>
+		<p:row style="border:none;">
+			<p:column style="border:none;#{tittle}">
+				<h:outputText value="Debe validar los filtros creados a sus clientes, por política de cambio de usuario y/o vigencia del filtro.
+				" />
+			</p:column>
+		</p:row>
+		<p:row style="border:none;">
+			<p:column style="border:none;text-align:right;">
+				<p:commandButton id="btnAcep" value="Aceptar" process="@this"
+					oncomplete="PF('dgwvVigFil').hide();" style="#{button}"
+					action="#{ContenidoController.updateUrl('/siscla/filtro/frmConsultarFiltros.jsf')}" />
+				<p:commandButton id="btnCancela" value="Cancelar" process="@this"
+					oncomplete="PF('dgwvVigFil').hide();" style="#{button}" />
+			</p:column>
+
+		</p:row>
+	</p:panelGrid>
+</p:dialog>
+
+
+<p:outputPanel id="panelContenido">
+        <ui:include src="#{ContenidoController.url}"/>
+    </p:outputPanel>
+</html>

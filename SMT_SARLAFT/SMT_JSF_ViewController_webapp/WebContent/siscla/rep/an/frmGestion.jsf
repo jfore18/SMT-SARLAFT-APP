@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body>
+        <c:set var="elemPadre" value="frmGestion:tabViewGestion" scope="session"/>
+         
+        <h:form id="frmGestion">
+		<p:panelGrid>
+			<p:row style="border:none">
+				<p:column style="border:none">
+					<h:outputText value="#{FrmgestionController.titulo}" style="#{tittle}"/>
+					
+
+				</p:column>
+			</p:row>
+			<p:row style="border:none;">
+				<p:column style="border:none;">
+					  <h:outputText value="#{FrmgestionController.cliente}" style="#{tittle}"/>
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+		
+    
+        <p:spacer width="10" />   
+       
+        <p:tabView id="tabViewGestion" activeIndex="#{FrmgestionController.index}"
+                       style="width:100%;min-height:450px;" cache="false">
+                <p:tab id="tabTrRel" title="TR. relacionadas" closable="false">
+                    <ui:include src="./frmTrRelacion.jsf"/>
+                </p:tab>
+                <c:if test="#{sessionScope.datosRegistro.CODIGO_PERFIL == '5'}">
+                    <p:tab id="tabAnal" title="Análisis" closable="false">
+                        <ui:include src="./frmAnalisis.jsf"/>
+                    </p:tab>
+                </c:if>
+                <c:if test="#{sessionScope.datosRegistro.CODIGO_PERFIL == '2'}">
+                    <c:if test="#{FrmgestionController.proceso eq 'Reportar'}">
+                        <p:tab id="tabReporte" title="Reporte" closable="false">
+                            <c:set var="idElmPadre" value="frmGestion:tabViewGestion:tabViewReporte"/>
+                            <ui:include src="/siscla/rep/an/datosReporte.jsf"/>
+                        </p:tab>
+                    </c:if>
+                    <c:if test="#{FrmgestionController.proceso eq 'NoReportar'}">
+                        <p:tab id="tabSoporte" title="Concepto" closable="false">
+                            <ui:include src="/siscla/rep/an/frmSoporte.jsf"/>
+                        </p:tab>
+                    </c:if>
+                    <p:tab id="tabHistConcep" title="Histórico" closable="false">
+                        <ui:include src="/siscla/tr/detalle/historicoConcep.jsf"/>
+                    </p:tab>
+                </c:if>
+               
+                <p:ajax event="tabChange" listener="#{FrmgestionController.onTabChange}" />
+        </p:tabView>
+        
+            <p:panelGrid id="pnlgrdBtns" style="width:100%;">
+                <p:row style="border:none">
+                    <c:if test="#{sessionScope.datosRegistro.CODIGO_PERFIL eq '5'}">
+                        <c:if test="#{FrmgestionController.idRep != null}">
+                            <p:column style="text-align:left;border:none">
+                                <p:commandButton value="Reportar" title="Reportar" style="#{button}"
+                                                 actionListener="#{DatosreporteController.iniciarReporte('RealizarGestion_ReportarCliente')}"
+                                                 action="#{ContenidoController.updateUrl('/siscla/rep/frmReportar.jsf')}"/>
+                                <c:if test="#{FrmpreinusualController.detalleTran.ESTADO_DUCC != 'NOR'}">
+                                    <p:commandButton value="No reportar" title="No reportar" style="#{button}"
+                                                     action="#{FrmgestionController.noReportar('NoReportar')}"
+                                                     update="frmCabecera:messages"/>
+                                </c:if>
+                            </p:column>
+                        </c:if>
+                    </c:if>
+                    <p:column style="text-align:right;border:none">
+                        <c:if test="#{sessionScope.datosRegistro.CODIGO_PERFIL eq '5'}">
+                            <c:if test="#{FrmgestionController.idRep != null}">
+                                <p:commandButton value="Actualizar gestión" title="Actualizar gestión"
+                                                 update="frmCabecera:messages" style="#{button}"
+                                                 action="#{FrmgestionController.regGestion}"/>
+                            </c:if>
+                            <c:if test="#{FrmgestionController.idRep == null}">
+                                <p:commandButton value="Registrar gestión" title="Registrar gestión"
+                                                 update="frmCabecera:messages" style="#{button}"
+                                                 action="#{FrmgestionController.regGestion}"/>
+                            </c:if>
+                        </c:if>
+                        <c:if test="#{sessionScope.datosRegistro.CODIGO_PERFIL eq '2' or sessionScope.datosRegistro.CODIGO_PERFIL eq '3'}">
+                            <c:set var="elemId"
+                                   value="#{FrmgestionController.proceso eq 'NoReportar' ? 'txtObserv':'tabViewReporte:txtOtroDoc,frmGestion:tabViewGestion:tabViewReporte:txtDescripcion'}"/>
+                            <c:if test="#{FrmgestionController.idRep == null}">
+       
+                                <c:set var="idTabRep"
+                                       value="#{FrmgestionController.proceso eq 'Reportar' ? 'frmGestion:tabViewGestion:tabViewReporte':''}"/>
+                                <p:commandButton value="Aceptar" title="Aceptar" style="#{button}" 
+                                                 update="frmCabecera:messages frmGestion:tabViewGestion #{idTabRep}"
+                                                 process="@this,frmGestion:tabViewGestion:#{elemId},frmGestion:tabViewGestion:tablaTranCli"
+                                                 action="#{FrmgestionController.regGestion}"/>
+                            </c:if>
+                        </c:if>
+                        <p:commandButton value="Cancelar" title="Cancelar" update="panelContenido" process="@this"
+                                         action="#{ContenidoController.updateUrl('/siscla/tr/detalle/frmDetalleTr.jsf')}"
+                                         style="#{button}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:dialog id="dgRegGest" header="Registrar gestión" widgetVar="dgwvRegGest" modal="true" showEffect="fade"
+                      hideEffect="explode" resizable="false" scroll="true" closable="false">
+                <p:panelGrid style="width:100%">
+                    <p:row style="border:none;">
+                        <p:column colspan="2" style="border:none;">
+                            <h:outputText value="#{FrmgestionController.msg}" style="#{tittle2};font-size:12pt"/>
+                            <p:separator/>
+                        </p:column>
+                    </p:row>
+                    <c:if test="#{FrmgestionController.continuar}">
+                        <p:row style="border:none;">
+                            <p:column style="border:none;text-align:left;">
+                                <p:commandButton id="btnRep" value="Reportar" onclick="PF('dgwvRegGest').close()"
+                                                 actionListener="#{DatosreporteController.iniciarReporte('RealizarGestion_ReportarCliente')}"
+                                                 action="#{ContenidoController.updateUrl('/siscla/rep/frmReportar.jsf')}"
+                                                 style="#{button}"/>
+                                <p:commandButton value="No reportar" title="No reportar" update="frmGestion:dgRegGest"
+                                                 action="#{FrmgestionController.noReportar('RegistrarGestion_NoReportar')}"
+                                                 style="#{button}"/>
+                            </p:column>
+                        </p:row>
+                    </c:if>
+                    <p:row style="border:none;text-align:right;">
+                        <p:column colspan="2" style="border:none;">
+                            <p:commandButton id="btnAceptar" value="Aceptar" onclick="PF('dgwvRegGest').close()"
+                                             action="#{FrmpreinusualController.regresar()}"
+                                             style="#{button}" />
+                                  
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </h:body>
+</html>

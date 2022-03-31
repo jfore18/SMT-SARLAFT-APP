@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <link type="text/css" rel="stylesheet" href="css/default.css"/>
+    </h:head>
+    <h:body>
+        <div id="cabecera"  style ="background-color: #005ea2;" class="ui-corner-all" >
+            <div id="cabIzq" class="cabIzq ui-corner-all">
+  
+                                 
+                <p:graphicImage id="imgLogo" value="/siscla/img/logoBB.png" style="width:230px;height:56px;"
+                                class="ui-corner-all"/>
+            </div>
+            <div id="cabDer">
+                <h2>
+                     <h:outputText value="Bienvenido a SMT-SARLAFT: #{sessionScope.datosRegistro.NOMBRE_USUARIO}"
+                                  style="font-family: Tahoma;font-weight:normal;color:#ffffff;font-size:13pt"/>
+                </h2>
+            </div>
+        </div>
+        <div id="menubar">
+            <h:form id="frmCabecera">
+                <p:growl id="messages" showDetail="true" life="5000"/>
+            </h:form>
+             
+            <ui:include src="/menu.jsf"/>
+        </div>
+<style>
+
+div[id="frmCabecera:messages_container"] {
+    position:absolute;
+    top:60px;
+    left:70%;
+    font-size:11pt;
+    
+}	
+</style>  
+    </h:body>
+</html>
+

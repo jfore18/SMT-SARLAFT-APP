@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head></h:head>
+<h:body>
+	<p:panelGrid id="pgConsultarAnalisis" style="width:100%">
+		<p:row>
+			<p:column>
+				<p:dataTable id="tablaAnalisis" var="ob"
+					value="#{DatosreporteController.listAnalisis}" rows="15"
+					rowKey="#{ob.NO_ACTA}"
+					emptyMessage="No se encontraron datos para mostrar"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="#{ListavaloresController.rowsPerPage}"
+					selectionMode="single" paginatorPosition="bottom"
+					paginatorAlwaysVisible="false">
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column headerText="Numero Acta" width="10%"
+								style="#{columnHeader}" />
+							<p:column headerText="Fecha Acta " width="12%"
+								style="#{columnHeader}" />
+							<p:column headerText="Estado Reporte" width="10%"
+								style="#{columnHeader}" />
+							<p:column headerText="Tipo Reporte" width="10%"
+								style="#{columnHeader}" />
+							<p:column headerText="ROS" width="10%" style="#{columnHeader}" />
+						</p:row>
+					</p:columnGroup>
+					<p:column style="#{columnContent}">
+						<h:outputText value="#{ob.NO_ACTA}" />
+					</p:column>
+					<p:column style="#{columnContent}">
+						<h:outputText value="#{ob.FECHA_ACTA}" />
+					</p:column>
+					<p:column style="#{columnContent}">
+						<h:outputText value="#{ob.ESTADO_R}" />
+					</p:column>
+					<p:column style="#{columnContent}">
+						<h:outputText value="#{ob.TIPO_R}" />
+					</p:column>
+					<p:column style="#{columnContent}">
+						<h:outputText value="#{ob.ROS}" />
+					</p:column>
+				</p:dataTable>
+
+			</p:column>
+
+		</p:row>
+
+
+	</p:panelGrid>
+	<p:dialog id="dgJust" header="Justificación" widgetVar="dgwvJust"
+		modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+		scroll="true" closable="false" style="#{tittle3}">
+		<p:panelGrid style="width:100%">
+			<p:row style="border:none;">
+				<p:column style="border:none;#{label}">
+					<h:outputText id="txtDescJustif"
+						value="#{DatosreporteController.detalleJust}" />
+				</p:column>
+			</p:row>
+			<p:row style="border:none;">
+				<p:column style="border:none;text-align:right">
+					<p:commandButton id="btnCerrarJust" value="Cerrar"
+						oncomplete="PF('dgwvJust').hide()" style="#{button}" />
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+	</p:dialog>
+
+	<ui:include src="/siscla/compartido/funciones.jsf" />
+</h:body>
+</html>

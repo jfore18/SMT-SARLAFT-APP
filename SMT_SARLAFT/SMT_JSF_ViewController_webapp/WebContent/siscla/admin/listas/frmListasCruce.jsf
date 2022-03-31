@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head></h:head>
+    <h:body onload="#{ListascruceController.inicio()}">
+        <p:growl id="grwListasCruce" showDetail="true" life="5000"/>
+         
+        <h:form id="frmListasCruce">
+            <p:panel id="pnlListasCruce" style="width:100%;height:auto;padding:0px;">
+                <f:facet name="header">
+                    <p:commandButton id="btnBuscar" value="" update="frmListasCruce" icon="ui-icon-search"
+                                     style="height:30px;width:35px;margin:0px"
+                                     action="#{ListascruceController.buscarListasCruce}" title="Buscar"/>
+                    <p:commandButton id="btnLimpiar" value="" icon="ui-icon-star" style="height:30px;width:35px"
+                                     action="#{ListascruceController.limpiar('1')}" update="frmListasCruce"
+                                     title="Limpiar"/>
+                    <p:commandButton id="btnGuardar" value="" icon="ui-icon-disk" style="height:30px;width:35px"
+                                     action="#{ListascruceController.guardar}" update="frmListasCruce grwListasCruce"
+                                     title="Guardar"/>
+                    <c:if test="#{ListascruceController.disabled}">
+                        <p:commandButton id="btnEliminar" value="" icon="ui-icon-trash" style="height:30px;width:35px"
+                                         action="#{ListascruceController.eliminar}"
+                                         update="frmListasCruce grwListasCruce" title="Eliminar"/>
+                    </c:if>
+                    <p:spacer width="100" height="10"/>
+                    <h:outputLabel value="Administración listas de cruce" style="#{tittle3}"/>
+                </f:facet>
+                <p:panelGrid id="pnlgrdListasCruce" style="width:100%;height:auto;">
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;">
+                            <h:outputText value="Motivo:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="selMotivo" value="#{ListascruceController.motivoSel}" effect="blind"
+                                             style="width:250px;" disabled="#{ListascruceController.disabled}">
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListascruceController.listMotivos}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Tipo identificación:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="selTipoDoc" value="#{ListascruceController.tipoDocSel}" effect="blind"
+                                             style="width:180px;" disabled="#{ListascruceController.disabled}">
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListascruceController.listTiposDoc}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Número identificación:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtNumeroDoc" value="#{ListascruceController.numeroDoc}" size="15"
+                                         disabled="#{ListascruceController.disabled}" maxlength="11"/>
+                        </p:column>
+                                                <p:column style="border:none">
+                            <h:outputText value="Nombres/Razon comercial:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtNombres" value="#{ListascruceController.nombres}" size="35"
+                                         maxlength="60"/>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none">
+                            <h:outputText value="Apellidos/Razon social:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtApellidos" value="#{ListascruceController.apellidos}" size="35"
+                                         maxlength="60"/>
+                        </p:column>
+                             <p:column style="border:none">
+                            <h:outputText value="Alias:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtEmail" value="#{ListascruceController.alias}" size="25" maxlength="20"/>
+                        </p:column>
+                           <p:column style="border:none">
+                            <h:outputText value="Fecha ingreso:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtFechaIngreso" value="#{ListascruceController.fechaIngreso}" size="15"
+                                         disabled="true"/>
+                        </p:column>
+
+                        <p:column style="border:none" rowspan="2">
+                            <h:outputText value="Comentario:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputTextarea id="txtComentario" value="#{ListascruceController.comentario}" rows="4"
+                                             cols="35" maxlength="100"/>
+                        </p:column>
+                    </p:row>
+                   <p:row style="border:none;#{tittle}">
+                           <p:column style="border:none;">
+                            <h:outputText value="Tipo reporte:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="selTipoRep" value="#{ListascruceController.tipoRepSel}" effect="blind"
+                                             style="width:250px;" disabled="#{ListascruceController.disabled2}">
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListascruceController.listTiposRep}" var="ob"
+                                               itemLabel="#{ob.DESCRIPCION}" itemValue="#{ob.CODIGO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Número reporte:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtNumeroRep" value="#{ListascruceController.numeroRep}" size="25" maxlength="10"
+                                         disabled="true"/>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="ROS:"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="txtRos" value="#{ListascruceController.ros}" size="15"
+                                         disabled="#{ListascruceController.disabled2}"/>
+                        </p:column>
+                
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="tblListasCruce" var="ob" value="#{ListascruceController.listasCruce}" rows="10"
+                         rowKey="#{ob.TIPO_IDENTIFICACION}-#{ob.NUMERO_IDENTIFICACION}-#{ob.NOMBRE_MOTIVO}-#{ob.ALIAS}-#{ob.FECHA_INGRESO}"
+                         emptyMessage="No se encontraron datos para mostrar" paginator="true"  paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20" selectionMode="single"
+                         selection="#{ListascruceController.listaSel}" paginatorAlwaysVisible="false">
+                <p:columnGroup type="header">
+                    <p:row style="#{columnHeader}">
+                       
+                        <p:column headerText="Identificacion"/>
+                        <p:column headerText="Nombre"/>
+                        <p:column headerText="Motivo"/>
+                        <p:column headerText="Alias"/>
+                        <p:column headerText="Fecha ingreso"/>
+                        <p:column headerText="Ros"/>
+                    </p:row>
+                    <p:row style="#{columnHeader}">
+                       
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.TIPO_IDENTIFICACION}-#{ob.NUMERO_IDENTIFICACION}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.APELLIDOS_RAZON_SOCIAL} #{ob.NOMBRES_RAZON_COMERCIAL}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.NOMBRE_MOTIVO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.ALIAS}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.FECHA_INGRESO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.ROS}"/>
+                </p:column>
+                <p:ajax event="rowSelect" update="frmListasCruce" listener="#{ListascruceController.actualizar}"/>
+            </p:dataTable>
+        </h:form>
+                <style>
+
+div[id="grwListasCruce_container"] {
+    position:absolute;
+    top:60px;
+    left:70%;
+    font-size:11pt;
+    
+}	
+</style> 
+    </h:body>
+</html>

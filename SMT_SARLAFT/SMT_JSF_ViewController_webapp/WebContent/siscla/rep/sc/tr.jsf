@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head></h:head>
+    <h:body>
+        <p:dataTable id="tablaTransRep" var="ob" value="#{ConsultarrepController.listTransRep}" rows="10"
+                     rowsPerPageTemplate="10,15,20" rowKey="#{ob.ID_TRANSACCION}#{ob.FECHA_PROCESO}#{ob.CODIGO_ARCHIVO}"
+                     emptyMessage="No se encontraron datos para mostrar" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     paginatorAlwaysVisible="false" paginator="true"  paginatorPosition="bottom" style="width:100%;height:auto;">
+            <p:columnGroup type="header">
+                <p:row>
+                    <p:column headerText="Fecha" sortBy="#{obj.FECHA}" width="6%" style="#{columnHeader}"/>
+                    <p:column headerText="Fuente" width="3.5%" style="#{columnHeader}"/>
+                    <p:column headerText="Producto" width="6.5%" style="#{columnHeader}"/>
+                    <p:column headerText="Tipo transacción" width="29%" style="#{columnHeader}"/>
+                    <p:column headerText="Valor ($)" width="9%" style="#{columnHeader}"/>
+                    <p:column headerText="+R" width="3.5%" style="#{columnHeader}"/>
+                    <p:column headerText="Estado" width="5%" style="#{columnHeader}"/>
+                    
+                   <c:if test="#{FrmpreinusualController.rol eq '5'}">
+                    <p:column headerText="Estado Ducc" width="6.5%" style="#{columnHeader}"/>
+                    </c:if>
+                </p:row>
+            </p:columnGroup>
+            <p:column style="#{columnContent}">
+                <h:outputText value="#{ob.FECHA}"/>
+            </p:column>
+            <p:column style="#{columnContent}">
+                <h:outputText value="#{ob.FUENTE}"/>
+            </p:column>
+            <p:column style="#{columnContent}">
+                <h:outputText value="#{ob.N_PRODUCTO}"/>
+            </p:column>
+            <p:column style="#{columnContent}">
+                <h:outputText value="#{ob.CODIGO_TR}-#{ob.DESCRIPCION_TIPO_TR}"/>
+            </p:column>
+            <p:column style="#{columnContent}">
+                <h:outputText value="#{ob.VALOR}"/>
+            </p:column>
+            <p:column style="#{columnContent}">
+                <h:outputText value="#{ob.MAYOR_RIESGO}"/>
+            </p:column>
+            <p:column style="#{columnContent}">
+                <h:outputText value="#{ob.ESTADO_OFICINA}"/>
+            </p:column>
+            <c:if test="#{FrmpreinusualController.rol eq '5'}">
+            <p:column style="#{columnContent}">
+                <h:outputText value="#{ob.ESTADO_DUCC}"/>
+            </p:column>
+            </c:if>
+        </p:dataTable>
+    </h:body>
+</html>

@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body>
+        <h:form id="frmTt">
+            <p:panel id="pnlTt" style="width:100%;height:auto;padding:0px;">
+                <f:facet name="header">
+                    <p:commandButton id="btnBuscar" action="#{FrmttController.buscarTt}" value="" icon="ui-icon-search"
+                                     update="frmTt" title="Buscar" style="height:30px;width:35px"/>
+                    <p:commandButton id="btnLimpiar" value="" icon="ui-icon-star" style="height:30px;width:35px"
+                                     action="#{FrmttController.limpiar}" update="frmTt" title="Limpiar"/>
+                    <p:commandButton id="btnNuevo" value="" icon="ui-icon-disk" style="height:30px;width:35px"
+                                     action="#{FrmttController.guardar}" update="frmTt frmCabecera:messages"
+                                     title="Guardar"/>
+                    <p:spacer width="100" height="10"/>
+                    <h:outputLabel value="Administración de tipos de transacción" style="#{tittle3}"/>
+                </f:facet>
+                <p:panelGrid id="pgrTt" style="border:none;">
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;">
+                            <h:outputText value="Producto: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="prod" value="#{FrmttController.producto}" style="width:250px"
+                                             disabled="#{FrmttController.disabled}" effect="blind">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListavaloresController.productos}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;" colspan="3">
+                            <h:outputText value="Código transacción: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="codTx" value="#{FrmttController.codigoTx}" size="13" maxlength="8"
+                                         disabled="#{FrmttController.disabled}"/>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Descripción: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="desc" value="#{FrmttController.descripcion}" size="70"/>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;">
+                            <h:outputText value="Mayor riesgo: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneRadio id="mr" value="#{FrmttController.mayorRiesgo}" unselectable="true">
+                                <f:selectItem itemLabel="Si" itemValue="1"/>
+                                <f:selectItem itemLabel="No" itemValue="0"/>
+                            </p:selectOneRadio>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Naturaleza: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneRadio id="nat" value="#{FrmttController.naturaleza}" unselectable="true">
+                                <f:selectItem itemLabel="Débito" itemValue="D"/>
+                                <f:selectItem itemLabel="Crédito" itemValue="C"/>
+                            </p:selectOneRadio>
+                        </p:column>
+                        <p:column style="border:none;"></p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="tblTt" var="ob" value="#{FrmttController.listTt}" rows="10"
+                         rowKey="#{ob.CODIGO_TRANSACCION}_#{ob.CODIGO_PRODUCTO_V}"
+                         emptyMessage="No se encontraron datos para mostrar" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20" selectionMode="single" selection="#{FrmttController.ttSel}"
+                         paginatorAlwaysVisible="false">
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="Producto" width="30%" sortBy="#{ob.PRODUCTO}" style="#{columnHeader}"/>
+                        <p:column headerText="Código" width="15%" sortBy="#{ob.CODIGO_TRANSACCION}"
+                                  style="#{columnHeader}"/>
+                        <p:column headerText="Descripción" width="40%" style="#{columnHeader}"/>
+                        <p:column headerText="Mayor riesgo" width="10%" style="#{columnHeader}"/>
+                        <p:column headerText="Naturaleza" width="10%" style="#{columnHeader}"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.PRODUCTO}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.CODIGO_TRANSACCION}" width="10%"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.DESCRIPCION}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.MAYOR_RIESGO eq '1' ? 'X':''}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.NATURALEZA eq 'D' ? 'DÉBITO':ob.NATURALEZA eq 'C' ? 'CRÉDITO':''}"/>
+                </p:column>
+                <p:ajax event="rowSelect" update="frmTt" listener="#{FrmttController.actualizar}"/>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>

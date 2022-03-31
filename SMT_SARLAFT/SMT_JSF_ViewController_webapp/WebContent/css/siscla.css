@@ -1,0 +1,276 @@
+.pnlGrdDlg{
+    width:400px;
+    height:200px;
+}.ui-button{
+    width: 150px; 
+    height: 30px; 
+    text-align: center; 
+    font-weight: bold
+}
+
+
+
+
+
+
+
+
+
+
+INPUT, SELECT, TEXTAREA  {
+	font-family: Arial;
+	font-size : 8pt;
+}
+
+A {
+	color: #C36;
+	font-family : Arial;
+	font-size : 8pt;
+	text-decoration : none;
+	font-weight : bolder;
+} 
+
+TABLE  {
+	font-family : Arial;
+	font-size : 8pt;
+	vertical-align : top;
+	font-weight : bolder;
+} 
+
+
+TH {
+	background-color : #FC6;	
+	font-family : Arial;
+	font-size : 8pt;
+	font-weight : bolder;
+	height : 20px;
+	color:#007;
+}
+
+
+TR.tit{
+	color: white;
+	background-color : #1366A0;
+	font-family : Arial;
+	font-size : 8pt;
+        font-weight : normal;
+	height : 20px;
+	text-align : center;	
+}
+
+BODY {
+	margin-left:10px;
+	margin-top:10px;
+	font-family:Arial;
+	background-color : white;	
+	color: #069;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+BODY.fondo {
+	margin-left:0;
+	margin-top:0;
+	background-color: #00377b;
+	color: #FFF;
+}
+
+INPUT.inv{
+	border : 0;
+	background-color:#FFF;	
+	color : Red;
+	font-size : 10pt;
+}
+
+TD.tabOFF {
+	color: #028;
+	background-color: #DED;
+	font-family:Arial;
+	font-size:8pt;
+	font-weight:bolder;
+	text-align:center;
+	width:135px;
+	height:30px;
+	cursor:pointer;
+} 
+
+TD.tabON {
+	color : #028;
+	font-family:Arial;
+	font-size:8pt;
+	font-weight : bolder;
+	text-align : center;
+	width:196px;
+	height:30px;
+	border-right-color:#028;
+	border-right-style:solid;
+	border-right-width:1px;
+	border-top-color: #028;
+	border-top-style:solid;
+	border-top-width:1px;
+	border-left-color:#028;
+	border-left-style:solid;
+	border-left-width:1px;
+} 
+
+
+.ico {
+	color: 	#069;
+	font-family : Wingdings;
+	font-size : 20pt;
+} 
+
+A.ico  {
+	color: 	#FFF;
+	font-family : Wingdings;
+	font-size : 20pt;
+	cursor:pointer;
+	text-decoration : none;
+} 
+
+A.icow  {
+	color: 	#FFF;
+	font-family : Webdings;
+	font-size : 20pt;
+	cursor:pointer;
+	text-decoration : none;
+} 
+
+.titulo  {
+	color: #EEE;
+	font-family : Arial;
+	font-style : italic;
+	font-weight : bold;
+	font-size : 24px;
+} 
+.txt  {
+	color: #000;
+	font-family : Arial;
+	font-size : 8pt;
+	vertical-align : top;
+	font-weight : normal;
+} 
+
+.txtN  {
+	color: #000;
+	font-family : Arial;
+	font-size : 8pt;
+	vertical-align : top;
+	font-weight : bolder;
+} 
+
+TR.slct {
+	color: #000;
+	background-color : #fafad2;
+	font-family : Arial;
+	font-size : 8pt;
+	height : 15%;
+}
+
+TR.A{
+	color: #000;
+	background-color : #FFF;
+	font-family : Arial;
+	font-size : 8pt;
+}
+
+TR.B{
+	color: #000;
+	background-color : #EFF;
+	font-family : Arial;
+	font-size : 8pt;
+}
+.usuario  {
+	font-family:  Arial;
+	font-size: 10pt;
+	color: #699;
+	font-weight: bolder;
+}
+input.boton{
+	background-color : navy;
+	color : white;
+	text-align : center;
+	font-family : Arial;
+	font-weight : bolder;
+	font-size: 10pt;
+	cursor : pointer;
+        border-color : F 0 0 F;
+        width:auto;
+        padding-left: 5px ;
+        padding-right: 5px ;
+}
+td.accion{
+	background-color : navy;
+	color : white;
+	text-align : center;
+	font-family : Wingdings;
+	font-weight : bolder;
+	font-size: 8pt;
+	cursor : pointer;
+        height:20px;
+}
+div.link{
+cursor : pointer;
+text-decoration:underline;
+color : Gray;
+}
+div.linkT{
+cursor : pointer;
+text-decoration:underline;
+color : #FFF;
+}
+TR.filaBot {
+	background-color : #FFF;
+	font-family : Arial;
+	font-size : 8pt;
+	height : 15;
+}
+TD.master {
+	color: #545454;
+	font-family : Tahoma, Verdana, Arial;
+	font-size : 8pt;
+	font-weight : bolder;
+}
+TD.master1{
+    color: #069;
+}
+.mensajes{
+	font-family : Tahoma, Verdana, Arial;
+	font-size : 9pt;
+	color : black;
+	font-weight : bolder;
+}
+DIV.aviso {
+    color: #000000;
+    font-family: Tahoma,Verdana,Arial;
+    font-size: 8pt;
+    font-weight: bold;
+    position: relative;
+    background-color: #FFCC33;
+    text-align: center;
+    vertical-align: bottom;
+    padding-top: 2px;
+}
+DIV.peq {
+	font-family : Arial Narrow;
+	font-size : 8pt;
+	height : 10;
+}
+.iframeBanner{
+    width: 100%;
+    height: 70px;
+    border: none ;
+    margin-bottom: -1px ;
+}
+.iframeMenu{
+    width: 100%;
+    height: 40px;
+    border: none ;
+    margin-top: -2px ;
+}
+.iframeCuerpo{
+    width: 100%;
+    height: auto;
+    border: none ;
+    margin: 0px ;
+}

@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <h:form id="formMenu">
+            <p:menubar style="height: 33px;" class="ui-state-content ui-corner-buttom">
+                <c:forEach var="opMenu" items="#{MenuController.elementos}" varStatus="i">
+                    <c:if test="#{(opMenu.TITLE != 'Salir') and (opMenu.TITLE != 'Cambiar clave')}">
+                        <p:menuitem id="opMenu#{opMenu.OPCION}" style="height:30px;margin-top:-5px;"
+                                    action="#{ContenidoController.updateUrl(opMenu.PAGINA)}"
+                                    actionListener="#{MenuController.opcSelec(opMenu)}" title="#{opMenu.TITLE}">
+                            <h:graphicImage value="#{FacesContext.getCurrentInstance().getExternalContext()}/siscla/img/ico/op#{opMenu.OPCION}.png"
+                                            width="35px" height="35px" style="margin-top:-5px;"/>
+                         
+                                            
+                        </p:menuitem>
+                    </c:if>
+                </c:forEach>
+                <p:menuitem id="opMenuSalir" style="height:30px;position: absolute; right: 5px;margin-top:-5px"
+                            title="Salir" onclick="PF('dgwvSalir').show()">
+                    <h:graphicImage value="#{FacesContext.getCurrentInstance().getExternalContext()}/siscla/img/ico/opSalir.png"
+                                    width="35px" height="35px" style="margin-top:-4px;"/>
+                </p:menuitem>
+            </p:menubar>
+            <p:confirmDialog header="Salir" message="Seguro que desea salir?" closable="false" modal="true"
+                             showEffect="fade" hideEffect="fade" widgetVar="dgwvSalir" style="#tittle3">
+                <p:commandButton value="Si" process="@this" oncomplete="PF('dgwvSalir').hide()"
+                                 action="#{LoginController.terminarSesion('0')}" style="#{button}"/>
+                <p:commandButton value="No" process="@this" oncomplete="PF('dgwvSalir').hide()" style="#{button}"/>
+            </p:confirmDialog>
+        </h:form>
+         
+        <ui:include src="/siscla/compartido/resaltaMenu.jsf"/>
+    </h:body>
+</html>

@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head></h:head>
+    <h:body onload="#{DatosreporteController.iniciarReporte('ActualizarReporte')} #{FrmgestionController.iniciarAnalisis()}">
+        <c:set var="idElmPadre" value="frmActRep:tabViewActReporte:tabViewReporte"/>
+         
+        <c:set var="elemPadre" value="frmActRep:tabViewActReporte"/>
+         
+        <h:form id="frmActRep">
+            <p:tabView id="tabViewActReporte" activeIndex="#{DatosreporteController.tabIndex}" style="width:100%;"
+                       cache="false">
+                <c:if test="#{sessionScope.listTransRep != null and not empty sessionScope.listTransRep}">
+                    <p:tab id="tabTr" title="Tr relacionadas" closable="false">
+                        <ui:include src="/siscla/rep/sc/tr.jsf"/>
+                    </p:tab>
+                </c:if>
+                <p:tab id="tabReporte" title="Reporte" closable="false">
+                     <p:panelGrid style="width:100%;"  >
+                     <p:row>
+                     <p:column>
+                     
+                    <ui:include src="/siscla/rep/an/datosReporte.jsf"/>
+                    <c:set var="verBotonAceptar"
+                           value="#{sessionScope.procesoRep eq 'ActualizarReporte' ? 'block':'none'}"/>
+                    </p:column>       
+                  </p:row>
+                        <p:row >
+                        
+                             <p:column>
+                                <p:commandButton  id="btnAceptarActRep" value="Aceptar"
+                                                 action="#{DatosreporteController.reportar()}"
+                                                 update="frmCabecera:messages #{elemPadre}:dgReporte #{idElmPadre}"
+                                                 style="#{button};display:#{verBotonAceptar};"
+                                                 process="@this,#{idElmPadre}:pnlgrdCliente"/>
+                            </p:column>
+                    
+                        </p:row>
+                    </p:panelGrid>
+                </p:tab>
+                <p:tab id="tabAnalisis" title="Análisis" closable="false">
+                    <p:panelGrid style="width:100%;">
+                    <p:row>
+                    <p:column>
+                    
+                    <ui:include src="/siscla/rep/an/frmAnalisis.jsf"/>
+                    <c:set var="verBtnActAnal"
+                           value="#{sessionScope.procesoRep eq 'ActualizarReporte' ? 'block':'none'}"/>
+                   </p:column>
+                   </p:row>
+                        <p:row >
+                            <p:column style="border:none;">
+                                <p:commandButton id="btnActAnal" value="Actualizar análisis"
+                                                 action="#{FrmgestionController.actualizarAnalisis()}"
+                                                 update="frmCabecera:messages #{elemPadre}:pgFuentes"
+                                                 style="#{button};display:#{verBtnActAnal};"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:dialog id="dgActAnal" header="Actualizar análisis" widgetVar="dgwvActAnal" modal="true"
+                              showEffect="fade" hideEffect="fade" resizable="false" scroll="false" closable="false">
+                        <p:panelGrid style="width:100%">
+                            <p:row style="border:none;">
+                                <p:column style="border:none;">
+                                    <h:outputText value="#{FrmgestionController.msg}" style="#{tittle}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row style="border:none;text-align:right;">
+                                <p:column colspan="2" style="border:none;">
+                                    <p:commandButton id="btnAcepActAnal" value="Aceptar"
+                                                     onclick="PF('dgwvActAnal').hide()" style="#{button}"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:dialog>
+                </p:tab>
+                <p:tab id="tabProcAnalis" title="Proceso análisis" closable="false">
+                    <ui:include src="/siscla/rep/an/frmPAnalisis.jsf"/>
+                </p:tab>
+                <p:ajax event="tabChange" listener="#{DatosreporteController.onTabActReporteChange}"
+                        update="#{elemPadre}:pgConsultarRep #{elemPadre}:pgFuentes #{elemPadre}:tablaAnalisis "/>
+            </p:tabView>
+         
+          <p:panelGrid style="width:100%">
+                            <p:row style="border:none;">
+                            <p:column colspan="2" style="border:none;">
+                                     <p:commandButton id="btnCancActRep" value="Cancelar" title="Cancelar" style="#{button}"
+                             action="#{ContenidoController.updateUrl('/siscla/rep/frmConsultarRep.jsf')}"/>
+                                </p:column>
+                            </p:row>
+            </p:panelGrid>                  
+         
+           
+        </h:form>
+    </h:body>
+</html>

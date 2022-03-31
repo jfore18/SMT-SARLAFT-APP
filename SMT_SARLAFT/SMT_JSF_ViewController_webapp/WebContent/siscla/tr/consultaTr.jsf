@@ -1,0 +1,356 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<ui:include src="/siscla/compartido/lenguajecalendario.jsf" />
+</h:head>
+<h:body >
+	<h:form id="frmConsTr">
+		<p:panel id="pnlConsTr">
+			<f:facet name="header">
+				<p:commandButton id="btnConsTran" value=""
+					update="frmConsTr:tablaTran frmCabecera:messages"
+					icon="ui-icon-search"
+					style="height:25px;width:30px;margin-top:-5px;margin-left:-12px;"
+					process="@all" action="#{FrmpreinusualController.buscarTrans}" />
+				<p:commandButton id="btnLimpiar" value="" icon="ui-icon-star"
+					style="height:30px;width:35px"
+					action="#{FrmpreinusualController.limpiarElementos}"
+					update="frmConsTr " title="Limpiar" />
+				<p:spacer width="100" height="10" />
+				<h:outputLabel value="Consulta de transacciones" style="#{tittle3}" />
+			</f:facet>
+			<p:panelGrid id="pnlGrdConsTr">
+				<p:row style="border:none;#{tittle2}">
+					<p:column width="100%" style="border:none;">
+						<h:outputText value="Fecha:" style="" />
+						<p:separator style="margin:0px;border:none;" />
+						<p:datePicker id="pkrFechTr"
+							value="#{FrmpreinusualController.fecha}" locale="es"
+							monthNavigator="true" yearNavigator="true"
+							yearRange="#{ListavaloresController.rangoAnios}"
+							pattern="yyyy/MM/dd" placeholder="Click aquí" />
+					</p:column>
+					<p:column style="width:20px;border:none;">
+						<p:panelGrid>
+							<p:row style="width:20px;border:none;#{tittle2}">
+								<p:column style="border:none;">
+									<h:outputText value="Fuente:" style="" />
+									<p:separator style="margin:0px;border:none;" />
+									<p:selectOneMenu id="selFuente"
+										value="#{FrmpreinusualController.fuente}" effect="blind"
+										style="width:40px;">
+										<f:selectItem itemLabel="" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems value="#{FrmpreinusualController.tiposFuente}"
+											var="fte" itemLabel="#{fte.NOMBRE_CORTO}"
+											itemValue="#{fte.NOMBRE_CORTO}" />
+									</p:selectOneMenu>
+
+								</p:column>
+								<p:column style="border:none;">
+									<h:outputText value="Transaccion:" style="" />
+									<p:separator style="margin:0px;border:none;" />
+									<p:inputText id="txtCodTr"
+										value="#{FrmpreinusualController.codTr}" style="width:80px" />
+								</p:column>
+
+
+							</p:row>
+						</p:panelGrid>
+					</p:column>
+					<p:column style="width:180px;border:none">
+						<h:outputText value="Identificación:" style="" />
+						<p:separator style="margin:0px;border:none;" />
+						<p:selectOneMenu id="selTipDoc"
+							value="#{FrmpreinusualController.tipDoc}" effect="blind"
+							style="width:40px;">
+							<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{FrmpreinusualController.tiposDoc}"
+								var="tDoc" itemLabel="#{tDoc.NOMBRE_CORTO}"
+								itemValue="#{tDoc.CODIGO}" />
+						</p:selectOneMenu>
+						<p:spacer width="5" />
+						<p:inputText id="txtIdent"
+							value="#{FrmpreinusualController.identi}" style="width:80px" />
+					</p:column>
+					<p:column style="width:100px;border:none">
+						<h:outputText value="Nombre:" style="" />
+						<p:separator style="margin:0px;border:none;" />
+						<p:inputText id="txtNombr"
+							value="#{FrmpreinusualController.nombre}" style="width:200px" />
+					</p:column>
+					<p:column style="width:60px;border:none">
+						<h:outputText value="Estado O:" style="" />
+						<p:separator style="margin:0px;border:none;" />
+						<p:selectOneMenu id="selEstado"
+							value="#{FrmpreinusualController.estadoTr}" style="width:40px"
+							effect="blind">
+							<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+							<c:forEach var="est"
+								items="#{FrmpreinusualController.tiposEstado}">
+								<c:if test="#{est.APLICA_GERENTE != 0}">
+									<f:selectItem itemLabel="#{est.NOMBRE_CORTO}"
+										itemValue="#{est.NOMBRE_CORTO}" />
+								</c:if>
+							</c:forEach>
+						</p:selectOneMenu>
+					</p:column>
+					<p:column style="width:60px;border:none">
+						<c:if test="#{FrmpreinusualController.rol eq '5'}">
+							<h:outputText value="Estado D:" style="" />
+							<p:separator style="margin:0px;border:none;" />
+							<p:selectOneMenu id="selEstadoD"
+								value="#{FrmpreinusualController.estadoD}" style="width:40px"
+								effect="blind">
+								<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{FrmpreinusualController.tiposEstado}"
+									var="estD" itemLabel="#{estD.NOMBRE_CORTO}"
+									itemValue="#{estD.CODIGO}" />
+							</p:selectOneMenu>
+						</c:if>
+					</p:column>
+				</p:row>
+				<p:row style="border:none;#{tittle2}">
+					<p:column style="width:90px;border:none">
+
+						<p:panelGrid>
+							<p:row style="border:none;#{tittle2}">
+								<p:column style="border:none;#{tittle2}">
+									<h:outputText value="Región:" style="" />
+									<p:separator style="margin:0px;border:none;" />
+									<p:selectOneMenu id="selRegion"
+										value="#{FrmpreinusualController.regionStr}" effect="blind"
+										style="width:40px"
+										disabled="#{FrmpreinusualController.disabled}">
+										<f:selectItem itemLabel="" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems value="#{FrmpreinusualController.regnsConsTr}"
+											var="reg" itemLabel="#{reg.NOMBRE_CORTO}"
+											itemValue="#{reg.NOMBRE_CORTO}" />
+										<p:ajax listener="#{FrmpreinusualController.buscaZonas}"
+											event="change" update="frmConsTr:selZona" />
+									</p:selectOneMenu>
+
+								</p:column>
+								<p:column style="border:none;#{tittle2}">
+									<h:outputText value="Zona:" style="" />
+									<p:separator style="margin:0px;border:none;" />
+									<p:selectOneMenu id="selZona"
+										value="#{FrmpreinusualController.zonaStr}" style="width:40px"
+										disabled="#{FrmpreinusualController.disabled2}" effect="blind">
+										<f:selectItem itemLabel="" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems value="#{FrmpreinusualController.zonasConsTr}"
+											var="zon" itemLabel="#{zon.NOMBRE_CORTO}"
+											itemValue="#{zon.NOMBRE_CORTO}" />
+									</p:selectOneMenu>
+								</p:column>
+
+							</p:row>
+						</p:panelGrid>
+					</p:column>
+					<p:column style="width:100px;border:none">
+						<h:outputText value="Oficina:" style="" />
+						<p:separator style="margin:0px;border:none;" />
+						<p:inputText id="txtOfi"
+							value="#{FrmpreinusualController.oficina}" style="width:150px" maxlength="40"
+							disabled="#{sessionScope.datosRegistro.CODIGO_PERFIL != '2' or sessionScope.datosRegistro.CODIGO_TIPO_CARGO eq 'N' ? 'false':'true'}" />
+					</p:column>
+
+					<p:column style="width:100px;border:none">
+						<h:outputText value="No. Producto:" style="" />
+						<p:separator style="margin:0px;border:none;" />
+						<p:inputText id="txtNoProd"
+							value="#{FrmpreinusualController.nroProd}" style="width:150px" />
+					</p:column>
+					<p:column style="width:100px;border:none">
+						<p:panelGrid>
+							<p:row style="border:none">
+								<p:column style="width:100px;border:none;#{tittle2}">
+									<h:outputText value="Valor:" style="" />
+									<p:separator style="margin:0px;border:none;" />
+									<p:inputText id="txtValor"
+										value="#{FrmpreinusualController.valor}" style="width:80px" />
+								</p:column>
+								<p:column style="width:100px;border:none;#{tittle2}">
+
+									<h:outputText value="Coment:" style="" />
+									<p:separator style="margin:0px;border:none;" />
+									<p:inputText id="txtComent"
+										value="#{FrmpreinusualController.coment}" style="width:110px" />
+								</p:column>
+
+							</p:row>
+						</p:panelGrid>
+
+					</p:column>
+					<p:column style="width:100px;border:none" colspan="2">
+						<p:panelGrid>
+							<p:row  style="border:none" >
+								<p:column style="width:100px;border:none;#{tittle2}">
+									<h:outputText value="Filtro: " style="" />
+									<p:selectBooleanCheckbox id="chkFiltro"
+										value="#{FrmpreinusualController.filtro}" />
+								</p:column>
+								<p:column style="width:100px;border:none;#{tittle2}">
+									<h:outputText value="Nueva: " style="" />
+									<p:selectBooleanCheckbox id="chkNueva"
+										value="#{FrmpreinusualController.nueva}" />
+								</p:column>
+
+								<p:column style="width:100px;border:none;#{tittle2}">
+
+									<h:outputText value="+R: " style="" />
+									<p:selectBooleanCheckbox id="chkMayR"
+										value="#{FrmpreinusualController.mayorR}" />
+								</p:column>
+								<p:column style="width:100px;border:none;#{tittle2}">
+									<c:if test="#{FrmpreinusualController.rol eq '5'}">
+										<h:outputText value="F.Ducc: " style="#{label}" />
+										<p:selectBooleanCheckbox id="chkFducc"
+											value="#{FrmpreinusualController.fducc}" />
+										<p:spacer width="10" />
+									</c:if>
+								</p:column>
+
+							</p:row>
+						</p:panelGrid>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+		<c:set var="estado" value="" />
+		<p:dataTable id="tablaTran" var="tran"
+			value="#{FrmpreinusualController.trans}"
+			rows="#{ListavaloresController.rows}" rowKey="#{tran.IDENTIFICACION}"
+			emptyMessage="No se encontraron datos para mostrar" paginator="true"
+			paginatorAlwaysVisible="false"  paginatorPosition="bottom"
+			selection="#{FrmpreinusualController.tranSelec}"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="#{ListavaloresController.rowsPerPage}"
+			style="width:100%;height:auto;">
+			<p:columnGroup type="header">
+				<p:row>
+				
+					<p:column headerText="Fecha" width="5%" style="#{columnHeader}"
+						sortBy="#{tran.FECHA}" />
+					<p:column headerText="Identificacion" width="8%" style="#{columnHeader}" sortBy="#{tran.IDENTIFICACION}" />
+					<p:column headerText="Nombre Cliente" width="20%"
+						style="#{columnHeader}" sortBy="#{tran.CLIENTE}" />
+					<p:column headerText="Producto" width="6%" style="#{columnHeader}"  sortBy="#{tran.N_PRODUCTO}" />
+					<p:column headerText="Fuente" width="3%" style="#{columnHeader}" />
+					<p:column headerText="Transacción" width="6%" style="#{columnHeader}" />
+					<p:column headerText="Valor ($)" width="8%"
+						style="#{columnHeader}"  sortBy="#{tran.VALOR}" />
+					<p:column headerText="Estado O." width="6%" style="#{columnHeader}" />
+					
+					<c:if test="#{FrmpreinusualController.rol eq '5'}">
+						<p:column headerText="Estado D." width="5%" style="#{columnHeader}" />
+					</c:if>
+		
+					<p:column headerText="+R" width="2%" style="#{columnHeader}" />
+					<c:if test="#{FrmpreinusualController.rol eq '5'}">
+						<p:column headerText="Oficina" width="5%" style="#{columnHeader}"  sortBy="#{tran.CODIGO_OFICINA}"/>
+						<p:column headerText="Región" width="3.5%" style="#{columnHeader}" />
+						<p:column headerText="Zona" width="3.5%" style="#{columnHeader}" />
+					</c:if>
+						<c:if test="#{FrmpreinusualController.rol eq '3' or sessionScope.datosRegistro.CODIGO_TIPO_CARGO eq 'N'}">
+						<p:column headerText="Oficina" width="3.6%" style="#{columnHeader}" />
+					</c:if>
+				</p:row>
+			</p:columnGroup>
+			<p:column style="#{label}">
+				<h:outputText value="#{tran.FECHA}" />
+			</p:column>
+			<p:column style="#{label}">
+				<h:outputText value="#{tran.IDENTIFICACION}" />
+			</p:column>
+			<p:column style="#{label}">
+				<h:outputText value="#{tran.CLIENTE}" />
+			</p:column>
+			<p:column style="#{label}">
+				<p:commandLink id="cmmProd" style="color:#54df4d;font-size:8pt;text-decoration : underline;font-weight: bold;"
+					action="#{FrmpreinusualController.irDetalleTr(tran)}">
+					<h:outputText value="#{tran.N_PRODUCTO}" />
+				</p:commandLink>
+			</p:column>
+			<p:column style="#{label}">
+				<h:outputText value="#{tran.FUENTE}" />
+			</p:column>
+			<p:column style="#{label}">
+				<h:outputText value="#{tran.CODIGO_TR}" />
+			</p:column>
+			<p:column style="#{label}">
+				<h:outputText value="#{tran.VALOR}" />
+			</p:column>
+			<p:column style="#{label}">
+				<p:row rendered="#{tran.ESTADO_OFICINA eq 'PRE' or tran.FILTRO_OF == 'X' }">
+					<p:column style="#{label}">
+						<h:outputText value="#{tran.ESTADO_OFICINA}" />
+					</p:column>
+				</p:row>
+				<p:row rendered="#{tran.ESTADO_OFICINA != 'PRE' and tran.FILTRO_OF != 'X'}">
+					<p:column style="#{label}">
+						<p:commandLink style="color:#54df4d;font-size:8pt;text-decoration : underline;font-weight: bold;"
+							actionListener="#{FrmpreinusualController.irReporteGer(tran)}"
+							action="#{ConsultarrepController.consultarDatosRep('ConsultarRepTr')}"
+							update="frmCabecera:messages">
+							<h:outputText value="#{tran.ESTADO_OFICINA}" />
+						</p:commandLink>
+					</p:column>
+				</p:row>
+			</p:column>
+		 <c:if test="#{FrmpreinusualController.rol eq '5'}">
+				<p:column style="#{label}">
+					<p:row rendered="#{tran.ESTADO_DUCC eq 'PRE' or tran.FILTRO_DUCC == 'X'}">
+						<p:column style="#{label}">
+							<h:outputText value="#{tran.ESTADO_DUCC}" />
+						</p:column>
+					</p:row>
+					<p:row rendered="#{tran.ESTADO_DUCC != 'PRE' and tran.FILTRO_DUCC != 'X'}">
+						<p:column style="#{label}">
+							<p:commandLink style="color:#54df4d;font-size:8pt;text-decoration : underline;font-weight: bold;"
+								actionListener="#{FrmpreinusualController.irReporteDucc(tran)}"
+								action="#{ConsultarrepController.consultarDatosRep('ConsultarRepTr')}"
+								update="frmCabecera:messages">
+								<h:outputText value="#{tran.ESTADO_DUCC}" />
+							</p:commandLink>
+						</p:column>
+					</p:row>
+				</p:column>
+			</c:if>
+			<p:column style="#{label}">
+				<h:outputText value="#{tran.MAYOR_RIESGO}" />
+			</p:column>
+			<c:if test="#{FrmpreinusualController.rol eq '5'}">
+				<p:column style="#{label}">
+					<h:outputText value="#{tran.CODIGO_OFICINA}" />
+				</p:column>
+				<p:column style="#{label}">
+					<h:outputText value="#{tran.NC_REGION}" />
+				</p:column>
+				<p:column style="#{label}">
+					<h:outputText value="#{tran.NC_ZONA}" />
+				</p:column>
+			</c:if>
+			<c:if test="#{FrmpreinusualController.rol eq '3' or sessionScope.datosRegistro.CODIGO_TIPO_CARGO eq 'N'}">
+				<p:column style="#{label}">
+					<h:outputText value="#{tran.CODIGO_OFICINA}" />
+				</p:column>				
+			</c:if>
+	
+		</p:dataTable>
+	
+	</h:form>
+
+	<ui:include src="/siscla/compartido/refrescarunavez.jsf" />
+</h:body>
+</html>

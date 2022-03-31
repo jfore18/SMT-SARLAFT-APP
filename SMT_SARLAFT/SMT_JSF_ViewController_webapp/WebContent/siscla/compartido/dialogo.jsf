@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <h:outputScript library="../js" name="primeFaces.js"/>
+            <link type="text/css" rel="stylesheet" href="../../css/siscla.css"/>
+        </h:head>
+        <h:body>
+            <p:dialog id="dlgGener1" header="#{ElegirarchController.msgTituloDlg}" widgetVar="wvdlgGener1" modal="true"
+                      showEffect="fade" hideEffect="explode" resizable="false">
+                <p:panelGrid column="2" style="width:400px;height:290px">
+                    <p:row>
+                        <p:column style="vertical-align:text-top;border:none;">
+                            <h:outputLabel value="#{ElegirarchController.msgProceso}"/>
+                            <br/>
+                            <br/>
+                            <p:datePicker id="dpkFechProcArch" value="#{ElegirarchController.fechaSelec}" locale="es"
+                                          monthNavigator="true" yearNavigator="true" yearRange="#{ListavaloresController.rangoAnios}"
+                                          pattern="yyyy/MM/dd" placeholder="#{ElegirarchController.fechaActual}"
+                                          style="width:500px"/>
+                            <br/>
+                            <br/>
+                            <p:separator/>
+                            <p:commandButton value="Aceptar"
+                                             style="width: 150px; height: 30px; text-align: center; font-weight: bold"
+                                             onclick="PF('wvdlgGener1').hide(); PF('dlgwvConfirmProcArch').show()"
+                                             action="#{ElegirarchController.preProcesoArch3}"/>
+                            <p:commandButton value="Cancelar"
+                                             style="width: 150px; height: 30px; text-align: center; font-weight: bold"
+                                             onclick="PF('wvdlgGener1').hide()"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+             
+            <p:confirmDialog id="dlgConfirmProcArch" header="#{ElegirarchController.msgTituloDlg}"
+                             widgetVar="dlgwvConfirmProcArch" showEffect="fade"
+                             message="#{ElegirarchController.msgProceso}" hideEffect="explode">
+                <p:commandButton value="Aceptar" icon="ui-icon-disc" process="@this"
+                                 style="width: 150px; height: 30px; text-align: center; font-weight: bold"
+                                 onclick="PF('dlgwvConfirmProcArch').hide()"
+                                 action="#{ElegirarchController.procesoArch}"/>
+                <p:commandButton value="Cancelar" icon="ui-icon-close"
+                                 style="width: 150px; height: 30px; text-align: center; font-weight: bold"
+                                 onclick="PF('dlgwvConfirmProcArch').hide()"/>
+            </p:confirmDialog>
+             
+            <p:dialog id="dlgProcArch" header="#{ElegirarchController.msgTituloDlg}" widgetVar="dlgwvProcArch"
+                      modal="true" showEffect="fade" hideEffect="explode" resizable="false" severity="alert">
+                <h:outputLabel value="#{ElegirarchController.msgProceso}"/>
+                <p:commandButton value="Aceptar"
+                                 style="width: 150px; height: 30px; text-align: center; font-weight: bold"
+                                 onclick="PF('dlgwvProcArch').hide()"/>
+            </p:dialog>
+        </h:body>
+    </html>
+</f:view>

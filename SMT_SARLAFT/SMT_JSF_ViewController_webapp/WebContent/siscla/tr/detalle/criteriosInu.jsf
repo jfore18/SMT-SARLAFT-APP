@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://primefaces.org/ui">
+    <h:head></h:head>
+    <h:body>
+        <p:panel id="pnlCritInu" style="border:none;">
+            <c:if test="#{FrmpreinusualController.criteriosTr != null}">
+                <c:forEach var="cTr" items="#{FrmpreinusualController.criteriosTr}">
+                    <h:outputText value="* #{cTr.MENSAJE}" class="ui-icon-bullet" style="#{label}"/>
+                    <p:separator style="margin:0px;border:none;"/>
+                </c:forEach>
+            </c:if>
+            <c:if test="#{FrmpreinusualController.criteriosTr == null or empty FrmpreinusualController.criteriosTr}">
+                <h:outputText value="Alerta por monto de transacción" class="ui-icon-bullet" style="#{label}"/>
+            </c:if>
+        </p:panel>
+    </h:body>
+</html>

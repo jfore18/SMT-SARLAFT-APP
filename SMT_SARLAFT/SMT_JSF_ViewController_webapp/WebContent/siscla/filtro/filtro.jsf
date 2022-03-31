@@ -1,0 +1,260 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head></h:head>
+    <h:body>
+        <p:growl id="gwlFiltro" showDetail="true" life="12000"/>
+         
+        <h:form id="frmFiltro">
+            <p:panel id="pnlConsultarRep" style="width:100%;height:auto;border:none">
+                <c:set var="titulo" value="Gestión de filtros"/>
+                <f:facet name="header">
+                    <c:if test="#{ConsultarfiltrosController.peticion eq 'FILTROS'}">
+                        <p:commandButton id="btnVolver" tittle="Volver" icon="ui-icon-seek-prev"
+                                         style="width:35px;height:30px;float:left;"
+                                         action="#{ContenidoController.updateUrl('siscla/filtro/frmConsultarFiltros.jsf')}"/>
+                    </c:if>
+                    <c:if test="#{ConsultarfiltrosController.peticion eq 'FILTROS_GRAL'}">
+                        <c:set var="titulo" value="Filtros"/>
+                        <p:commandButton id="btnVolver" tittle="Volver" icon="ui-icon-seek-prev"
+                                         style="width:35px;height:25px;float:left;"
+                                         action="#{ContenidoController.updateUrl('siscla/filtro/frmFiltros.jsf')}"/>
+                    </c:if>
+                    <c:if test="#{ConsultarfiltrosController.peticion eq 'FILTROS_SUPERVISOR'}">
+                        <c:set var="titulo" value="Aprobación de filtros"/>
+                        <p:commandButton id="btnVolver" tittle="Volver" icon="ui-icon-seek-prev"
+                                         style="width:35px;height:25px;float:left;"
+                                         action="#{ContenidoController.updateUrl('siscla/filtro/frmConsultaFiltrosSupervisor.jsf')}"/>
+                    </c:if>
+                    <p:spacer width="50" height="10"/>
+                    <h:outputLabel value="#{titulo}" style="#{tittle3}"/>
+                </f:facet>
+                <p:panelGrid id="pgInfoClienteFiltro" style="">
+                    <p:row style="border:none">
+                        <p:column style="border:none">
+                            <h:outputLabel value="Tipo de identificación" style="#{tittle}"/>
+                             <p:separator style="margin:0px;border:none;"/>
+                            <h:outputText value="#{ConsultarfiltrosController.clienteSel.TIPO_IDENTIFICACION}"
+                                          style="#{label}"/>
+                        </p:column>
+                        
+                        
+                        <p:column style="border:none">
+                            <h:outputLabel value="Numero de identificación" style="#{tittle}"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <h:outputText value="#{ConsultarfiltrosController.clienteSel.NUMERO_IDENTIFICACION}"
+                                          style="#{label}"/>
+                        </p:column>
+                        <p:column style="border:none" colspan="2">
+                            <h:outputLabel value="Nombre del cliente" style="#{tittle}"/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <h:outputText value="#{ConsultarfiltrosController.clienteSel.NOMBRE != null ? ConsultarfiltrosController.clienteSel.NOMBRE:ConsultarfiltrosController.clienteSel.NOMBRE_CLIENTE}"
+                                          style="#{label}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panelGrid id="pgConsultarRep" style="width:100%">
+                    <c:if test="#{ConsultarfiltrosController.peticion eq 'FILTROS'}">
+                        <p:row style="border:none">
+                            <p:column style="border:none">
+                                <h:outputLabel value="Filtro" style="#{tittle}"/>
+                            </p:column>
+                            <p:column style="border:none" colspan="3">
+                                <h:outputLabel value="Escriba el valor o rango de valores a partir de los cuales el sistema filtrará las transacciones que usted NO desea visualizar"
+                                               style="#{label}"/>
+                                <p:separator style="margin:0px;border:none;"/>
+                                <p:inputText id="txtFiltro" value="#{ConsultarfiltrosController.filtro}" size="40"/>
+                            </p:column>
+                        </p:row>
+                        <p:row style="border:none">
+                            <p:column style="border:none">
+                                <h:outputLabel value="Justificación" style="#{tittle}"/>
+                            </p:column>
+                            <p:column style="border:none">
+                                <p:inputTextarea id="txtJustif" value="#{ConsultarfiltrosController.justFilt}" rows="3"
+                                                 cols="45" autoResize="true"/>
+                            </p:column>
+                            <p:column style="border:none;text-align:right;vertical-align:bottom" colspan="2">
+                                <p:commandButton id="btnCrearFilt" value="Crear filtro" update="gwlFiltro"
+                                                 action="#{ConsultarfiltrosController.validaciones('CREAR')}"
+                                                 style="#{button}"/>
+                                <p:commandButton id="btnInactivarFiltr" value="Inactivar filtro" update="gwlFiltro"
+                                                 action="#{ConsultarfiltrosController.validaciones('INACTIVAR')}"
+                                                 style="#{button}"/>
+                             <c:if test="#{ConsultarfiltrosController.confirmaFiltro}">                     
+							<p:commandButton id="btnConfirmarFiltro" value="Confirmar filtro"
+								update="gwlFiltro"
+								action="#{ConsultarfiltrosController.validaciones('CONFIRMAR')}"
+								style="#{button}"/>
+								</c:if>
+						</p:column>
+                        </p:row>
+                    </c:if>
+                    <c:if test="#{ConsultarfiltrosController.peticion eq 'FILTROS_SUPERVISOR'}">
+                        <p:row style="border:none">
+                            <p:column style="border:none" colspan="2">
+                                <h:outputLabel value="Concepto supervisor" style="#{tittle}"/>
+                                <p:separator style="margin:0px;border:none;"/>
+                                <p:inputTextarea id="txtJustif" value="#{ConsultarfiltrosController.justFilt}" rows="4"
+                                                 cols="40" autoResize="true"/>
+                            </p:column>
+                            <p:column style="border:none">
+                                
+                            </p:column>
+                            <p:column style="border:none;text-align:right;vertical-align:bottom">
+                                <p:commandButton id="btnAprobarFilt" value="Aprobar filtro" update="gwlFiltro"
+                                                 action="#{ConsultarfiltrosController.validaciones('APROBAR')}"
+                                                 disabled="#{ConsultarfiltrosController.estadoFilt != '0' ? true:false}"
+                                                 style="#{button}"/>
+                                <p:commandButton id="btnRechazarFiltr" value="Rechazar filtro" update="gwlFiltro"
+                                                 action="#{ConsultarfiltrosController.validaciones('RECHAZAR')}"
+                                                 disabled="#{ConsultarfiltrosController.estadoFilt != '0' ? true:false}"
+                                                 style="#{button}"/>
+                              
+                            </p:column>
+                        </p:row>
+                    </c:if>
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="tblFilt" var="ob" value="#{ConsultarfiltrosController.listFiltros}" rows="10"
+                         rowKey="#{ob.NUMERO_NEGOCIO}" emptyMessage="No se encontraron datos para mostrar"
+                         paginator="true" paginatorAlwaysVisible="false"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         selection="#{ConsultarfiltrosController.listFiltrosSel}" rowsPerPageTemplate="10,15,20"
+                         style="width:100%;height:auto;#{columnContent}#{columnHeader}">
+                <c:if test="#{ConsultarfiltrosController.peticion eq 'FILTROS' or ConsultarfiltrosController.peticion eq 'FILTROS_SUPERVISOR'}">
+                    <p:column id="chk_#{ob.NUMERO_NEGOCIO}" selectionMode="multiple"
+                              style="width:4%;text-align:center"/>
+                </c:if>
+                <p:column headerText="Aplicación">
+                    <h:outputText value="#{ob.TIPO_PRODUCTO}" style="#{columnContent}"/>
+                </p:column>
+                <p:column headerText="Producto">
+                    <p:commandLink id="cmmProdHist" action="#{ConsultarfiltrosController.consultaHistoricoFiltros(ob)}"
+                                   update="frmFiltro:dgHistFiltro" oncomplete="PF('dgwvHistFiltro').show()"
+                                   style="text-decoration: underline; #{columnContent}">
+                        <h:outputText value="#{ob.NUMERO_NEGOCIO}"/>
+                    </p:commandLink>
+                </p:column>
+                <p:column headerText="Filtro" width="25%">
+                    <h:outputText value="#{ob.ESTADO != '2' ? ob.CONDICION:''}" style="#{columnContent}"/>
+                </p:column>
+                <c:if test="#{ConsultarfiltrosController.peticion eq 'FILTROS'}">
+                    <p:column headerText="Fecha aprobación">
+                        <h:outputText value="#{ob.ESTADO eq '2' ? '':ob.F_VIGENTE_DESDE}" style="#{columnContent}"/>
+                    </p:column>
+                </c:if>
+                <c:if test="#{ConsultarfiltrosController.peticion eq 'FILTROS_GRAL'}">
+                    <p:column headerText="Fecha creación">
+                        <h:outputText value="#{ob.ESTADO != '2' ? ob.FECHA_CREACION:''}" style="#{columnContent}"/>
+                    </p:column>
+                </c:if>
+                <c:if test="#{ConsultarfiltrosController.peticion eq 'FILTROS_SUPERVISOR'}">
+                    <p:column headerText="Fecha creación">
+                        <h:outputText value="#{ob.FECHA_CREACION}" style="#{columnContent}"/>
+                    </p:column>
+                </c:if>
+                <p:column headerText="Justificación">
+                    <p:commandLink id="cmmJustFilt" action="#{ConsultarfiltrosController.updateDescJust(ob)}"
+                                   style="text-decoration: underline ;#{columnContent}">
+                        <h:outputText value="#{ob.ESTADO != '2' ? not empty ob.JUSTIFICACION ? 'Ver detalle':'':'' }"/>
+                    </p:commandLink>
+                </p:column>
+                <c:if test="#{ConsultarfiltrosController.peticion != 'FILTROS'}">
+                    <p:column headerText="Usuario creación" width="25%">
+                        <h:outputText value="#{ob.ESTADO != '2' ? ob.NOMBRE_USUARIO_CREACION != null ? ob.NOMBRE_USUARIO_CREACION:ob.USUARIO_CREACION:''}"
+                                      style="#{columnContent}"/>
+                    </p:column>
+                </c:if>
+                <c:if test="#{ConsultarfiltrosController.peticion != 'FILTROS_GRAL'}">
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{not empty ob.DESCRIPCION_ESTADO ? ob.DESCRIPCION_ESTADO:'Sin filtro'}"
+                                      style="#{columnContent}"/>
+                    </p:column>
+                </c:if>
+            </p:dataTable>
+            <p:dialog widgetVar="dgwvAccionFilt" header="Confirmación " modal="true" showEffect="fade" hideEffect="fade"
+                      style="#{tittle3}">
+                <h:outputText value="Esta seguro de ejecutar la acción?" style="#{label}"/>
+                <p:separator style="margin:5px;border:none;"/>
+                <p:commandButton id="btnAcepProcFiltr" value="Aceptar" oncomplete="PF('dgwvAccionFilt').hide()"
+                                 actionListener="#{ConsultarfiltrosController.actualizarFiltro}"
+                                 update="frmFiltro:tblFilt frmFiltro:pgConsultarRep gwlFiltro" style="#{button}"/>
+                <p:commandButton id="btnCancProcFiltr" value="Cancelar" oncomplete="PF('dgwvAccionFilt').hide()"/>
+            </p:dialog>
+            <p:dialog id="dgJust" header="Justificación" widgetVar="dgwvJust" modal="true" showEffect="fade"
+                      hideEffect="fade" resizable="false" scroll="true" closable="false" style="#{tittle3}">
+                <p:panelGrid style="width:100%">
+                    <p:row style="border:none;">
+                        <p:column style="border:none;#{label}">
+                            <h:outputText id="txtDescJustif" value="#{ConsultarfiltrosController.descJust}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none;">
+                        <p:column style="border:none;text-align:right">
+                            <p:commandButton id="btnCerrarJust" value="Cerrar" oncomplete="PF('dgwvJust').hide()"
+                                             style="#{button}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+            <p:dialog id="dgHistFiltro"
+                      header="Histórico de filtros para el producto #{ConsultarfiltrosController.productoSel.NUMERO_NEGOCIO}"
+                      widgetVar="dgwvHistFiltro" modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+                      scroll="true" closable="false" width="98%" style="#{tittle3}">
+                <p:panelGrid style="width:100%">
+                    <p:row style="border:none">
+                        <p:column style="border:none;">
+                            <p:dataTable id="tblHistFilt" var="ob" value="#{ConsultarfiltrosController.listHistFilt}"
+                                         rows="15" rowKey="#{ob.ID}" emptyMessage="No se encontraron datos para mostrar"
+                                         paginator="true" paginatorAlwaysVisible="false"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,15,20" style="width:100%;height:auto;#{columnContent}#{columnHeader}">
+                                <p:column headerText="F.creación">
+                                    <h:outputText value="#{ob.FECHA_CREACION}" style="#{columnContent}"/>
+                                </p:column>
+                                <p:column headerText="U.creación" width="10%">
+                                    <h:outputText value="#{ob.NOMBRE_USUARIO_CREACION}" style="#{columnContent}"/>
+                                </p:column>
+                                <p:column headerText="Filtro" width="10%">
+                                    <h:outputText value="#{ob.CONDICION}" style="#{columnContent}"/>
+                                </p:column>
+                                <p:column headerText="Vig.desde" width="5%">
+                                    <h:outputText value="#{not empty ob.VIGENTE_DESDE ? ob.VIGENTE_DESDE:'Sin fecha'}"
+                                                  style="#{columnContent}"/>
+                                </p:column>
+                                <p:column headerText="Vig.hasta" width="5%">
+                                    <h:outputText value="#{not empty ob.VIGENTE_HASTA ? ob.VIGENTE_HASTA:'Sin fecha'}"
+                                                  style="#{columnContent}"/>
+                                </p:column>
+                                <p:column headerText="Justificación" width="%20">
+                                    <h:outputText value="#{ob.JUSTIFICACION}" style="#{columnContent} "/>
+                                </p:column>
+                                <p:column headerText="U.supervisor">
+                                    <h:outputText value="#{ob.NOMBRE_USUARIO_SUPERVISOR}" style="#{columnContent}"/>
+                                </p:column>
+                                <p:column headerText="F.supervisión">
+                                    <h:outputText value="#{ob.FECHA_SUPERVISOR}" style="#{columnContent}"/>
+                                </p:column>
+                                <p:column headerText="Concepto supervisor"  width="15%">
+                                    <h:outputText value="#{ob.CONCEPTO_SUPERVISOR}" style="#{columnContent}"/>
+                                </p:column>
+                                <p:column headerText="Estado" width="6%">
+                                    <h:outputText value="#{ob.DESCRIPCION_ESTADO}" style="#{columnContent}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none">
+                        <p:column style="border:none;text-align:right;">
+                            <p:commandButton id="btnCerrarHistFilt" value="Cerrar"
+                                             oncomplete="PF('dgwvHistFiltro').hide()" style="#{button}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </h:body>
+</html>

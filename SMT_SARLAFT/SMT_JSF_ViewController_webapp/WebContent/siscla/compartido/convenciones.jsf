@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body>
+        <p:panelGrid id="pnlGrdConsTr" style="width:100%;margin:auto;vertical-align:top;" cellpadding="1">
+            <p:row style="border:none">
+                <p:column style="vertical-align:top;border:none;padding:0px;">
+                    <p:dataTable id="tblRegiones" var="ob" value="#{ListavaloresController.regiones}"
+                                 rowKey="#{ob.CODIGO}" emptyMessage="No se encontraron datos para mostrar"
+                                 style="width:100%;height:auto;border:none;">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Regiones" style="#{columnHeader}"/>
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column style="#{columnContent}">
+                            <h:outputText value="#{ob.NOMBRE_CORTO} - #{ob.NOMBRE_LARGO}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:column>
+                <p:column style="vertical-align:top;border:none;padding:0px;">
+                    <p:dataTable id="tblZonas" var="ob" value="#{ListavaloresController.zonas}" rowKey="#{ob.CODIGO}"
+                                 emptyMessage="No se encontraron datos para mostrar" style="width:100%;height:auto;">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Zonas" style="#{columnHeader}"/>
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column style="#{columnContent}">
+                            <h:outputText value="#{ob.NOMBRE_CORTO} - #{ob.NOMBRE_LARGO}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:column>
+                <p:column style="vertical-align:top;border:none;padding:0px;">
+                    <p:dataTable id="tblFuentes" var="ob" value="#{ListavaloresController.fuentes}"
+                                 rowKey="#{ob.CODIGO}" emptyMessage="No se encontraron datos para mostrar"
+                                 style="width:100%;height:auto;">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column headerText="Fuentes" style="#{columnHeader}"/>
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column style="#{columnContent}">
+                            <h:outputText value="#{ob.NOMBRE_CORTO} - #{ob.NOMBRE_LARGO}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+    </h:body>
+</html>

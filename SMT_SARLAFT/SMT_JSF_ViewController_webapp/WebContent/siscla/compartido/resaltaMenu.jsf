@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head></h:head>
+        <h:body>
+            <script type="text/javascript">
+                  var op = "#{MenuController.opSel}";
+                  var opAnt = "#{MenuController.opAnt}";
+                  opSelect(op, opAnt);
+        
+                  function opSelect(op, opAnt) {
+                      var nombreElemAnt = "formMenu:opMenu" + opAnt;
+                      var nombreElem = "formMenu:opMenu" + op;
+                      var elemAnt = document.getElementById(nombreElemAnt);
+                      var elem = document.getElementById(nombreElem);
+                      if (elemAnt != null) {
+                          elemAnt.className = ' ui-menuitem-link ui-corner-all';
+                      }
+                      if (elem != null) {
+                          elem.className = ' ui-menuitem-link ui-corner-all ui-state-highlight';
+                      }
+                  }
+            </script>
+        </h:body>
+    </html>
+</f:view>

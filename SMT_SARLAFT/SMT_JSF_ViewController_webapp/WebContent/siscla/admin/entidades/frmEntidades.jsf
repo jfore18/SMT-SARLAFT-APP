@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body onload="#{FrmentidadesController.limpiar()}">
+        <h:form id="frmEntidades">
+            <p:panel id="pnlEntidades" style="width:100%;height:auto;padding:0px;">
+                <f:facet name="header">
+                    <p:commandButton id="btnBuscar" action="#{FrmentidadesController.buscarEntidades}" value=""
+                                     icon="ui-icon-search" update="frmEntidades:tblEntidades" title="Buscar"
+                                     style="height:30px;width:35px"/>
+                    <p:commandButton id="btnLimpiar" value="" icon="ui-icon-star" style="height:30px;width:35px"
+                                     action="#{FrmentidadesController.limpiar}"
+                                     update="frmEntidades" title="Limpiar"/>
+                    <p:commandButton id="btnNuevo" value="" icon="ui-icon-disk" style="height:30px;width:35px"
+                                     action="#{FrmentidadesController.guardar}"
+                                     update="frmEntidades:tblEntidades frmEntidades:pgrEntidades frmCabecera:messages"
+                                     title="Guardar"/>
+                    <c:if test="#{FrmentidadesController.disabled}">
+                        <p:commandButton id="btnEliminar" value="" icon="ui-icon-trash" style="height:30px;width:35px"
+                                         action="#{FrmentidadesController.eliminar}"
+                                         update="frmEntidades frmCabecera:messages" title="Eliminar"/>
+                    </c:if>
+                    <p:spacer width="100" height="10"/>
+                    <h:outputLabel value="Administración de entidades excluidas"
+                                   style="#{tittle3}"/>
+                </f:facet>
+                <p:panelGrid id="pgrEntidades" style="border:none;">
+                    <p:row style="border:none;#{tittle}">
+                        <p:column style="border:none;">
+                            <h:outputText value="Tipo de entidad: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="tipoEnt" value="#{FrmentidadesController.tipoEntidad}" effect="blind"
+                                             style="width:200px" disabled="#{FrmentidadesController.disabled}">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListavaloresController.tiposEntidades}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Tipo de identificación: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:selectOneMenu id="tipoId" value="#{FrmentidadesController.tipoId}" style="width:220px"
+                                             disabled="#{FrmentidadesController.disabled}" effect="blind">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{ListavaloresController.tiposDocumento}" var="ob"
+                                               itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="border:none">
+                            <h:outputText value="Número de identificación: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="numId" value="#{FrmentidadesController.numeroId}" size="20" maxlength="11"
+                                         disabled="#{FrmentidadesController.disabled}"/>
+                        </p:column>
+                                                <p:column style="border:none;">
+                            <h:outputText value="Nombre: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="nombreEnt" value="#{FrmentidadesController.nombre}" size="40"/>
+                        </p:column>
+                    </p:row>
+                    <p:row style="border:none;#{tittle}">
+
+                        <p:column style="border:none;">
+                            <h:outputText value="Obligar carga: "/>
+                            <p:selectOneRadio id="cargaOblEnt" value="#{FrmentidadesController.cargaObl}"
+                                              unselectable="true">
+                                <f:selectItem itemLabel="Si" itemValue="1"/>
+                                <f:selectItem itemLabel="No" itemValue="0"/>
+                            </p:selectOneRadio>
+                        </p:column>
+                        <p:column style="border:none;">
+                            <h:outputText value="Fecha actualización: "/>
+                            <p:separator style="margin:0px;border:none;"/>
+                            <p:inputText id="fechaActEnt" value="#{FrmentidadesController.fechaAct}" size="20"
+                                         readonly="true"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:dataTable id="tblEntidades" var="ob" value="#{FrmentidadesController.listEntidades}" rows="10"
+                         rowKey="#{ob.TIPO_IDENTIFICACION}_#{ob.NUMERO_IDENTIFICACION}"
+                         emptyMessage="No se encontraron datos para mostrar" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20" selectionMode="single"
+                         selection="#{FrmentidadesController.entidadSel}" paginatorAlwaysVisible="false">
+                          <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="Entidad" width="50%" style="#{columnHeader}"/>
+                            <p:column headerText="Obligar carga" width="25%" style="#{columnHeader}"/>
+                            <p:column headerText="Fecha actualización" width="25%" style="#{columnHeader}"/>
+                        </p:row>
+                    </p:columnGroup>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.TIPO_IDENTIFICACION} - #{ob.NUMERO_IDENTIFICACION} - #{ob.NOMBRE}"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.OBLIGAR_CARGA eq '1' ? 'SI':'NO'}" width="25%"/>
+                </p:column>
+                <p:column style="#{columnContent}">
+                    <h:outputText value="#{ob.FECHA_ACTUALIZACION}"/>
+                </p:column>
+                <p:ajax event="rowSelect" update="frmEntidades" listener="#{FrmentidadesController.actualizar}"/>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>

@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <head></head>
+    <body>
+        <p:panelGrid id="pgAnalisisRep" style="width:50%;" >
+            <p:row >
+                <p:column style="border:none">
+                    <h:outputLabel value="Tipo consulta:" style="#{tittle}"/>
+                </p:column>
+                <p:column style="border:none" colspan="3">
+                    <h:outputText value="#{ConsultarrepController.respuestasAnal.TIPO_CONSULTA}" style="#{label}"/>
+                </p:column>
+            </p:row>
+            <p:row >
+                <p:column style="border:none">
+                    <h:outputLabel value="Indagación:" style="#{tittle}"/>
+                </p:column>
+                <p:column style="border:none" colspan="3">
+                    <h:outputText value="#{ConsultarrepController.respuestasAnal.INDAGACION}" style="#{label}"/>
+                </p:column>
+            </p:row>
+            <p:spacer width="10" />             
+            <c:forEach var="ob" items="#{ConsultarrepController.listDocsAnalisis}" varStatus="i">
+                <c:if test="#{i.index == 0}">
+                <p:separator style="margin:0px;border:none;"/>
+                    <p:row style="border:none;background-color:coral;">
+                        <p:column style="border:none;background: rgb(203,193,197);background: radial-gradient(circle, rgba(203,193,197,1) 0%, rgba(228,232,237,1) 100%);"
+                                  colspan="2">
+                            <h:outputLabel value="Fuentes de información: " style="#{tittle}"/>
+                        </p:column>
+                    </p:row>
+                </c:if>
+                <p:row >
+                    <p:column style="border:none">
+                        <h:outputLabel value="#{ob.DESCRIPCION}" style="#{tittle}"/>
+                    </p:column>
+                    <p:column style="border:none">
+                        <h:outputText value="#{ob.CHECKED ? 'SI':'NO'}" style="#{label}"/>
+                    </p:column>
+                </p:row>
+            </c:forEach>
+            <p:row >
+                <p:column style="border:none">
+                    <h:outputLabel value="Otra" style="#{tittle}"/>
+                </p:column>
+                <p:column style="border:none" colspan="3">
+                    <h:outputText value="#{ConsultarrepController.respuestasAnal.OTRA_FUENTE_INFORMACION}" style="#{label}"/>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+    </body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head></h:head>
+        <h:body>
+            <script type="text/javascript">
+                function cambiarDisplay(valor) {
+                    if(valor=='5'){
+                        document.getElementById('frmCargo:colReg').style.display ='block';
+                    }
+                }
+            </script>
+            <script type="text/javascript">
+                function enfocarElemento(elemento) {
+                    document.getElementById(elemento).focus();
+                }
+            </script>
+        </h:body>
+    </html>
+</f:view>

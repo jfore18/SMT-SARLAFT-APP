@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head></h:head>
+<h:body>
+	<h:form id="frmGenLog">
+		<p:panelGrid id="pnlGenLog" style="width:100%;">
+			<f:facet name="header">
+				<p:row style="border:none">
+					<p:column colspan="3">
+						<h:outputText value="Generación archivo log" style="#{tittle3}" />
+					</p:column>
+				</p:row>
+			</f:facet>
+			<p:row>
+			<p:column>
+				<p:panelGrid id="table">
+					<p:row style="border:none">
+					<p:column style="border:none">
+						<h:outputText value="Fecha de proceso actual:" style="#{tittle}" />
+					</p:column>
+					<p:column style="border:none">
+						<p:inputText id="txtFechProcAct"
+							value="#{GenerarlogController.fechaProcAct}" readonly="true" />
+					</p:column>
+					<p:column style="border:none">
+						<p:commandButton id="btnGenLog" value="Generar Archivo"
+							update="frmCabecera:messages"
+							action="#{GenerarlogController.generarArchivoLog}"
+							style="#{buttom}" />
+					</p:column>
+					</p:row>
+				</p:panelGrid>
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+	</h:form>
+</h:body>
+</html>

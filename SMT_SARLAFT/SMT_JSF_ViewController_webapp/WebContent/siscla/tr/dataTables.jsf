@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    
+    </h:head>
+    <h:body>
+        <h:form id="frmPrein">
+            <h:outputText value="#{FrmpreinusualController.titulo}" style="#{tittle}"/>
+            <p:separator style="margin:1px;border:none;"/>
+            <h:outputText value="#{FrmpreinusualController.encabezado}" style="#{tittle2}"/>
+            <c:if test="#{FrmpreinusualController.rol eq '5'}">
+                <p:dataTable id="tblRegiones" var="reg" value="#{FrmpreinusualController.regiones}" rows="10"
+                             rowKey="#{reg.REGION}" emptyMessage="No se encontraron datos para mostrar" paginator="true"
+                             paginatorAlwaysVisible="false" paginatorPosition="top"
+                             selection="#{FrmpreinusualController.region}" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,20,25,30" selectionMode="single"
+                             style="width:100%;height:auto;">
+                    <f:facet name="header">
+                        <h:outputText value="Regiones" style="#{tittle3}"/>
+                    </f:facet>
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="Nombre" sortBy="#{reg.NOMBRE_REG} (#{reg.REGION})" width="40%"
+                                      style="#{columnHeader}"/>
+                            <p:column headerText="Hoy" width="20%" style="#{columnHeader}">
+                                <p:commandLink style="color:#676F76;"
+                                               action="#{FrmpreinusualController.irDetalleTr(tran)}">
+                                    <h:outputText value="Hoy"/>
+                                </p:commandLink>
+                            </p:column>
+                            <p:commandLink style="color:#676F76;" ajax="false"
+                                           action="#{FrmpreinusualController.irDetalleTr(tran)}">
+                                <p:column headerText="Anteriores" width="20%" style="#{columnHeader}"/>
+                            </p:commandLink>
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{reg.NOMBRE_REG} (#{reg.REGION})"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{reg.HOY}"/>
+                    </p:column>
+                    <p:column style="#{columnContent}">
+                        <h:outputText value="#{reg.ANTERIORES}"/>
+                    </p:column>
+                    <p:ajax event="rowSelect"
+                            update=":frmPrein:tblRegiones frmPrein:tblZonas frmPrein:tblUnregs frmPrein:tblFtes"
+                            listener="#{FrmpreinusualController.consultar('4')}" oncomplete="displayTablas(1);"/>
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column footerText="Total" style="#{totalAlign}#{columnFooter}"/>
+                            <p:column footerText="#{FrmpreinusualController.totalReg.HOY}"
+                                      style="#{totalContentAlign}#{columnFooter}"/>
+                            <p:column footerText="#{FrmpreinusualController.totalReg.ANT}"
+                                      style="#{totalContentAlign}#{columnFooter}"/>
+                        </p:row>
+                    </p:columnGroup>
+                </p:dataTable>
+            </c:if>
+            <c:if test="#{FrmpreinusualController.rol eq '5' or FrmpreinusualController.rol eq '4'}">
+                <p:dataTable id="tblZonas" var="zon" value="#{FrmpreinusualController.zonas}" rows="10"
+                             rowKey="#{zon.ZONA}" emptyMessage="No se encontraron datos para mostrar" paginator="true"
+                             paginatorAlwaysVisible="false" paginatorPosition="top"
+                             selection="#{FrmpreinusualController.zona}" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,20,25,30" selectionMode="single"
+                             style="width:100%;height:auto;margin-top:5px">
+                    <f:facet name="header">
+                        <h:outputText value="Zonas" style="#{tittle3}"/>
+                    </f:facet>
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="Nombre" sortBy="#{zon.ZONA}" width="40%" style="#{columnHeader}"/>
+                            <p:column headerText="Hoy" width="20%" style="#{columnHeader}"/>
+                            <p:column headerText="Anteriores" width="20%" style="#{columnHeader}"/>
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column style="#{columnContent2}">
+                        <h:outputText value="#{zon.NOMBRE_ZONA} (#{zon.ZONA})"/>
+                    </p:column>
+                    <p:column style="#{columnContent2}">
+                        <h:outputText value="#{zon.HOY}"/>
+                    </p:column>
+                    <p:column style="#{columnContent2}">
+                        <h:outputText value="#{zon.ANTERIORES}"/>
+                    </p:column>
+                    <p:ajax event="rowSelect" update=":frmPrein:tblZonas frmPrein:tblUnregs frmPrein:tblFtes"
+                            listener="#{FrmpreinusualController.consultar('5')}" oncomplete="displayTablas(2);"/>
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column footerText="Total" style="#{totalAlign}#{columnFooter}"/>
+                            <p:column footerText="#{FrmpreinusualController.totalZon.HOY}"
+                                      style="#{totalAlign}#{columnFooter}"/>
+                            <p:column footerText="#{FrmpreinusualController.totalZon.ANT}"
+                                      style="#{totalAlign}#{columnFooter}"/>
+                        </p:row>
+                    </p:columnGroup>
+                </p:dataTable>
+            </c:if>
+            <c:if test="#{FrmpreinusualController.rol eq '5' or FrmpreinusualController.rol eq '4' or FrmpreinusualController.rol eq '3' or FrmpreinusualController.tipoCargo eq 'N'}">
+                <p:dataTable id="tblUnregs" var="und" value="#{FrmpreinusualController.unRegs}" rows="5"
+                             rowKey="#{und.OFICINA}" emptyMessage="No se encontraron datos para mostrar"
+                             paginator="true" paginatorAlwaysVisible="false" paginatorPosition="top"
+                             selection="#{FrmpreinusualController.unReg}" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15,20,25,30" selectionMode="single"
+                             style="width:100%;height:auto;margin-top:5px">
+                    <f:facet name="header">
+                        <h:outputText value="Unidades de Negocio" style="#{tittle3}"/>
+                    </f:facet>
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column headerText="Nombre" sortBy="#{und.OFICINA}" width="40%" style="#{columnHeader}"/>
+                            <p:column headerText="Hoy" width="20%" style="#{columnHeader}"/>
+                            <p:column headerText="Anteriores" width="20%" style="#{columnHeader}"/>
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column style="#{columnContent2}">
+                        <h:outputText value="#{und.OFICINA}"/>
+                    </p:column>
+                    <p:column style="#{columnContent2}">
+                        <h:outputText value="#{und.HOY}"/>
+                    </p:column>
+                    <p:column style="#{columnContent2}">
+                        <h:outputText value="#{und.ANTERIORES}"/>
+                    </p:column>
+                    <p:ajax event="rowSelect" update=":frmPrein:tblUnregs frmPrein:tblFtes"
+                            listener="#{FrmpreinusualController.consultar('6')}" oncomplete="displayTablas(3);"/>
+                    <p:columnGroup type="footer">
+                        <p:row>
+                            <p:column footerText="Total" style="#{totalAlign}#{columnFooter}"/>
+                            <p:column footerText="#{FrmpreinusualController.totalOfi.HOY}"
+                                      style="#{totalAlign}#{columnFooter}"/>
+                            <p:column footerText="#{FrmpreinusualController.totalOfi.ANT}"
+                                      style="#{totalAlign}#{columnFooter}"/>
+                        </p:row>
+                    </p:columnGroup>
+                </p:dataTable>
+            </c:if>
+            <p:dataTable id="tblFtes" var="fte" value="#{FrmpreinusualController.ftes}" rows="5" rowKey="#{fte.FUENTE}"
+                         emptyMessage="No se encontraron datos para mostrar" paginator="true"
+                         paginatorAlwaysVisible="false" paginatorPosition="top"
+                         selection="#{FrmpreinusualController.fte}" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,25,30" selectionMode="single"
+                         style="width:100%;height:auto;margin-top:5px">
+                <f:facet name="header">
+                    <h:outputText value="Lista de fuentes" style="#{tittle3}"/>
+                </f:facet>
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column headerText="Fuente" sortBy="#{fte.FUENTE}" width="40%" style="#{columnHeader}"/>
+                        <p:column headerText="Hoy" width="20%" style="#{columnHeader}"/>
+                        <p:column headerText="Anteriores" width="20%" style="#{columnHeader}"/>
+                    </p:row>
+                </p:columnGroup>
+                <p:column style="#{columnContent2}">
+                    <h:outputText value="#{fte.NOMBRE_FUENTE} (#{fte.FUENTE})"/>
+                </p:column>
+                <p:column style="#{columnContent2}">
+                    <h:outputText value="#{fte.HOY}"/>
+                </p:column>
+                <p:column style="#{columnContent2}">
+                    <h:outputText value="#{fte.ANTERIORES}"/>
+                </p:column>
+                <p:ajax event="rowSelect" listener="#{FrmpreinusualController.consultar('0')}"/>
+                <p:columnGroup type="footer">
+                    <p:row>
+                        <p:column footerText="Total" style="#{totalAlign}#{columnFooter}"/>
+                        <p:column footerText="#{FrmpreinusualController.totalFte.HOY}"
+                                  style="#{totalAlign}#{columnFooter}"/>
+                        <p:column footerText="#{FrmpreinusualController.totalFte.ANT}"
+                                  style="#{totalAlign}#{columnFooter}"/>
+                    </p:row>
+                </p:columnGroup>
+            </p:dataTable>
+        </h:form>
+         
+        <ui:include src="/siscla/compartido/displayTablas.jsf"/>
+    </h:body>
+</html>

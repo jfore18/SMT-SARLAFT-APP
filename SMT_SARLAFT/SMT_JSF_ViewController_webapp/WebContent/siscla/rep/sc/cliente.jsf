@@ -1,0 +1,262 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<h:head></h:head>
+<h:body>
+	<p:panelGrid id="pgClienteRep" style="width:auto;" cellpadding="1">
+		<c:choose>
+			<c:when test="#{ConsultarrepController.clienteRep != null}">
+				<p:row >
+					<p:column style="border:none">
+						<h:outputLabel value="Tipo identificación:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.TIPO_IDENTIFICACION}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none" colspan="3">
+						<h:outputLabel value="Número identificación:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.NUMERO_IDENTIFICACION}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+				<p:row >
+					<p:column style="border:none;">
+						<h:outputLabel
+							value="#{ConsultarrepController.labelNombresRazonComercial}"
+							style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.NOMBRES_RAZON_COMERCIAL}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel
+							value="#{ConsultarrepController.labelApellidosRazonSocial}"
+							style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.APELLIDOS_RAZON_SOCIAL}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none" colspan="2">
+						<h:outputLabel value="Email:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.DIRECCION_EMAIL}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+				<p:row >
+					<p:column style="border:none">
+						<h:outputLabel value="Relación:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.TIPO_RELACION_V}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel value="Inicio vinculación:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.INICIO_VINCULACION}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none" colspan="1">
+						<h:outputLabel value="Final vinculación:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.FINAL_VINCULACION}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel value="Razón Retiro:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.RAZON_RETIRO_V}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+				<p:row >
+					<p:column style="border:none">
+						<h:outputLabel value="Ingresos mensuales:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.INGRESOS_MENSUALES}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel value="Fecha ingresos:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.FECHA_INGRESOS}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel value="CIIU:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.CODIGO_CIIU}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel value="Actividad económica:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.DESCRIPCION_ACTIVIDAD_EC}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column style="border:none">
+						<h:outputLabel value="Tipo teléfono:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.CODIGO_TIPO_TELEFONO_V}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel value="Teléfono:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.TELEFONO}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none" colspan="2">
+						<h:outputLabel value="Fax:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText value="#{ConsultarrepController.clienteRep.FAX}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column style="border:none">
+						<h:outputLabel value="Tipo dirección:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.CODIGO_TIPO_DIRECCION_V}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel value="Municipio:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.CODIGO_MUNICIPIO}"
+							style="#{label}" />
+					</p:column>
+					<p:column style="border:none" colspan="2">
+						<h:outputLabel value="Dirección:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<h:outputText
+							value="#{ConsultarrepController.clienteRep.DIRECCION}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+				<c:if
+					test="#{ConsultarrepController.labelNombresRazonComercial == 'Razon comercial:'}">
+					<p:row >
+						<p:column style="border:none" colspan="4">
+							<h:outputLabel value="Representante legal" style="#{tittle}" />
+						</p:column>
+					</p:row>
+					<p:row >
+						<p:column style="border:none">
+							<h:outputLabel value="Tipo identificación:" style="#{tittle}" />
+							<p:separator style="margin:0px;border:none;" />
+							<h:outputText
+								value="#{ConsultarrepController.clienteRep.TI_REP_LEGAL}"
+								style="#{label}" />
+						</p:column>
+						<p:column style="border:none">
+							<h:outputLabel value="Numero identificación:" style="#{tittle}" />
+							<p:separator style="margin:0px;border:none;" />
+							<h:outputText
+								value="#{ConsultarrepController.clienteRep.NI_REP_LEGAL}"
+								style="#{label}" />
+						</p:column>
+						<p:column style="border:none" colspan="1">
+							<h:outputLabel value="Nombres:" style="#{tittle}" />
+							<p:separator style="margin:0px;border:none;" />
+							<h:outputText
+								value="#{ConsultarrepController.clienteRep.NOMBRES_REP_LEGAL}"
+								style="#{label}" />
+						</p:column>
+						<p:column style="border:none" colspan="1">
+							<h:outputLabel value="Apellidos:" style="#{tittle}" />
+							<p:separator style="margin:0px;border:none;" />
+							<h:outputText
+								value="#{ConsultarrepController.clienteRep.APELLIDOS_REP_LEGAL}"
+								style="#{label}" />
+						</p:column>
+					</p:row>
+				</c:if>
+			</c:when>
+			<c:otherwise>
+				<p:row >
+					<p:column style="border:none">
+						<h:outputLabel value="Tipo de identificación:" style="#{tittle}" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputText
+							value="#{ConsultarrepController.tranRep.TIPO_IDENTIFICACION}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column style="border:none">
+						<h:outputLabel value="Número de identificación:" style="#{tittle}" />
+
+					</p:column>
+
+					<p:column style="border:none">
+						<h:outputText
+							value="#{ConsultarrepController.tranRep.NUMERO_IDENTIFICACION}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+
+				<p:row >
+					<p:column style="border:none">
+						<h:outputLabel value="Nombre:" style="#{tittle}" />
+
+					</p:column>
+					<p:column style="border:none" colspan="2">
+						<h:outputText value="#{ConsultarrepController.tranRep.CLIENTE}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+
+				<p:row >
+					<p:column style="border:none">
+						<h:outputLabel value="Tipo de producto:" style="#{tittle}" />
+
+					</p:column>
+
+					<p:column style="border:none">
+						<h:outputText value="#{ConsultarrepController.tranRep.FUENTE}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+				<p:row >
+					<p:column style="border:none">
+						<h:outputLabel value="Número producto:" style="#{tittle}" />
+
+					</p:column>
+					<p:column style="border:none">
+						<h:outputText value="#{ConsultarrepController.tranRep.N_PRODUCTO}"
+							style="#{label}" />
+					</p:column>
+				</p:row>
+			</c:otherwise>
+		</c:choose>
+	</p:panelGrid>
+</h:body>
+</html>

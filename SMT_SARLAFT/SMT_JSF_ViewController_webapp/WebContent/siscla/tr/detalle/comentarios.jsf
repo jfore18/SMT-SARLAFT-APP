@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head></h:head>
+<h:body>
+	<p:panelGrid column="3" style="border:none">
+		<p:row style="border:none">
+			<p:column style="border:none;">
+				<c:if test="#{FrmpreinusualController.puedeComentar}">
+					<p:commandLink value="Comentar" onclick="displayComent()"
+						style="#{tittle}" />
+				</c:if>
+				</p:column>
+				<p:column style="border:none;width:100px">
+					<div id="divComent" style="display: none">
+						<p:inputTextarea id="txtComent"
+							value="#{FrmpreinusualController.coment}" rows="3" cols="30"
+							autoResize="false" />
+					</div>
+				</p:column>
+
+				<p:column style="border:none;width:100px">
+				<div id="divBoton" style="display: none">
+					<p:commandButton icon="ui-icon-disk" title="Guardar"
+						onclick="displayComent()" style="heigh:12px;width:25px"
+						update="frmDetalleTr:tabViewDetalleTr:tablaComent frmCabecera:messages frmDetalleTr:tabViewDetalleTr:txtComent"
+						action="#{FrmpreinusualController.guardarComent}" />
+
+					<p:commandButton icon="ui-icon-close" title="Cancelar"
+						onclick="displayComent()"
+						update="frmDetalleTr:tabViewDetalleTr:txtComent"
+						style="heigh:12px;width:25px;" />
+					</div>	
+				</p:column>
+		</p:row>
+	</p:panelGrid>
+
+	<p:dataTable id="tablaComent" var="ob"
+		value="#{FrmpreinusualController.comentarios}" rows="10"
+		rowKey="#{ob.ID}" emptyMessage="No se encontraron datos para mostrar"
+		selectionMode="single" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom"
+		paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                                {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		paginator="true" selection="#{FrmpreinusualController.comentarioSel}"
+		rowsPerPageTemplate="10,15,20" style="width:50%;height:auto;">
+		<p:columnGroup type="header">
+			<p:row>
+				<p:column headerText="Fecha" sortBy="#{ob.FECHA}" width="5%"
+					style="#{columnHeader}" />
+				<p:column headerText="Usuario" width="6%" sortBy="#{ob.USUARIO}"
+					style="#{columnHeader}" />
+				<p:column headerText="Perfil" width="6%" sortBy="#{ob.PERFIL}"
+					style="#{columnHeader}" />
+			</p:row>
+		</p:columnGroup>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.FECHA}" />
+		</p:column>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.USUARIO}" />
+		</p:column>
+		<p:column style="#{columnContent}">
+			<h:outputText value="#{ob.PERFIL}" />
+		</p:column>
+		<p:ajax event="rowSelect"
+			update="frmDetalleTr:tabViewDetalleTr:tablaComent frmDetalleTr:tabViewDetalleTr:dlgDetalleComent"
+			listener="#{FrmpreinusualController.detalleComent}" />
+	</p:dataTable>
+
+	<p:dialog id="dlgDetalleComent" header="Detalles comentario"
+		widgetVar="dlgwvDetalleComent" showEffect="fade" hideEffect="explode"
+		severity="info" style="width:200px;height:600px;float:auto;"
+		closable="false" resizable="false" modal="true">
+		<p:panelGrid style="border:none">
+			<p:row style="border:none">
+				<p:column style="border:none;#{tittle}">Fecha y hora:</p:column>
+				<p:column style="border:none;#{label}">
+					<h:outputText
+						value="#{FrmpreinusualController.detalleComentario.FECHA_CREACION}" />
+				</p:column>
+			</p:row>
+			<p:row style="border:none;">
+				<p:column style="border:none;#{tittle}">Usuario:</p:column>
+				<p:column style="border:none;#{label}">
+					<h:outputText
+						value="#{FrmpreinusualController.detalleComentario.NOMBRE}" />
+				</p:column>
+			</p:row>
+			<p:row style="border:none">
+				<p:column style="border:none;#{tittle}">Perfil:</p:column>
+				<p:column style="border:none;#{label}">
+					<h:outputText
+						value="#{FrmpreinusualController.detalleComentario.PERFIL}" />
+				</p:column>
+			</p:row>
+			<p:row style="border:none">
+				<p:column style="border:none;#{tittle}">Comentario:</p:column>
+				<p:column style="border:none;#{label}">
+					<h:outputText
+						value="#{FrmpreinusualController.detalleComentario.COMENTARIO}" />
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+		<p:separator />
+		<p:commandButton value="Cerrar" icon="ui-icon-close" style="#{button}"
+			onclick="PF('dlgwvDetalleComent').hide()" />
+	</p:dialog>
+	<script>
+		function displayComent() {
+			if (document.getElementById("divComent").style.display == "none") {
+				document.getElementById('frmDetalleTr:tabViewDetalleTr:txtComent').value = '';
+				document.getElementById("divComent").style.display = "block";
+				document.getElementById("divBoton").style.display = "block";
+			} else {
+				document.getElementById("divComent").style.display = "none";
+				document.getElementById("divBoton").style.display = "none";
+			}
+		}
+	</script>
+</h:body>
+</html>

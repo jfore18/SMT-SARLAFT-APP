@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<h:head></h:head>
+<h:body>
+	<p:panelGrid id="pgEncabezadoRep" style="width:auto;"
+		cellpadding="1">
+		<p:row >
+			<p:column style="border:none;width:100px;">
+				<h:outputLabel value="Numero interno: " style="#{tittle}" />
+				
+			</p:column>
+			<p:column style="border:none;width:150px;">
+				
+				<h:outputText
+					value="#{ConsultarrepController.reporteSel.ID_REPORTE}"
+					style="#{label}" />
+			</p:column>
+			<p:column style="border:none ;width:100px;">
+				<h:outputLabel value="Fecha creación:" style="#{tittle}" />
+				
+			</p:column>
+			<p:column style="border:none;width:300px;">	
+				<h:outputText
+					value="#{ConsultarrepController.reporteSel.FECHA_CREACION}"
+					style="#{label}" />
+			</p:column>
+		</p:row>
+	    	<p:row >
+
+			<p:column style="border:none">
+				<h:outputLabel value="Usuario creación:" style="#{tittle}" />
+		
+			</p:column>
+			<p:column style="border:none">	
+				<h:outputText value="#{ConsultarrepController.reporteSel.USUARIO}"
+					style="#{label}" />
+			</p:column>
+			<p:column style="border:none">
+				<h:outputLabel value="Unidad de negocio:" style="#{tittle}" />
+		
+			</p:column>
+			<p:column style="border:none">	
+				<h:outputText value="#{ConsultarrepController.reporteSel.OFICINA}"
+					style="#{label}" />
+			</p:column>
+		</p:row>
+		<p:row>
+			<p:column style="border:none">
+				<h:outputLabel value="Perfil:" style="#{tittle}" />
+		
+			</p:column>
+			<p:column style="border:none">	
+				<h:outputText value="#{ConsultarrepController.reporteSel.PERFIL}"
+					style="#{label}" />
+			</p:column>
+			<p:column style="border:none">
+				<h:outputLabel value="Clase:" style="#{tittle}" />
+				
+			</p:column>
+			<p:column style="border:none">	
+				<h:outputText
+					value="#{ConsultarrepController.reporteSel.CLASE_REPORTE}"
+					style="#{label}" />
+			</p:column>
+		</p:row>
+		<p:row>
+
+			<p:column style="border:none">
+				<h:outputLabel value="Tipo:" style="#{tittle}" />
+			
+			</p:column>
+			<p:column style="border:none">	
+				<h:outputText
+					value="#{ConsultarrepController.reporteSel.TIPO_REPORTE}"
+					style="#{label}" />
+			</p:column>
+			<p:column style="border:none">
+				<h:outputLabel value="Estado:" style="#{tittle}" />
+				<p:separator style="margin:0px;border:none;" />
+				</p:column>
+			<p:column style="border:none">
+				<h:outputText value="#{ConsultarrepController.reporteSel.ESTADO}"
+					style="#{label}" />
+			</p:column>
+			
+		</p:row>
+		<p:row >
+			<p:column style="border:none">
+				<h:outputLabel value="Ros:" style="#{tittle}" />
+			
+			</p:column>
+			<p:column style="border:none">	
+				<h:outputText value="#{ConsultarrepController.reporteSel.ROS}"
+					style="#{label}" />
+			</p:column>
+		</p:row>
+		<p:row>	
+		<p:column style="border:none" colspan="1" >
+		<h:outputLabel value="Descripción de la operación:" style="#{tittle}" />
+			
+				
+		</p:column>
+		
+		</p:row>
+		
+		<p:row >
+		<p:column style="border:none" colspan="3" >
+		<p:outputPanel style="width:800px;height:200px;text-align:justify">
+					<p ALIGN="justify">
+						<h:outputText id="txtJustif"
+							value="#{ConsultarrepController.justificacionInicial}"
+							style="#{label}" />
+					</p>
+				</p:outputPanel>
+		</p:column>
+		</p:row>
+		
+	
+	</p:panelGrid>
+</h:body>
+</html>

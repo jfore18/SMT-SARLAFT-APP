@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<h:head>
+	<ui:include src="/siscla/compartido/lenguajecalendario.jsf" />
+</h:head>
+<h:body>
+	<h:form id="frmConsFil">
+		<p:panel id="pnlConsFilr" style="width:100%;height:auto;padding:0px;">
+			<f:facet name="header">
+				<p:commandButton id="btnConsFiltr" value=""
+					update="frmConsFil:tblFilt frmCabecera:messages"
+					icon="ui-icon-search" style="height:25px;width:30px"
+					action="#{ConsultarfiltrosController.buscarFiltros}"
+					disabled="#{ConsultarfiltrosController.disabledD}" />
+
+				<p:spacer width="100" height="10" />
+				<h:outputLabel value="#{titulo}" style="#{tittle3}" />
+
+			</f:facet>
+
+			<p:panelGrid id="pgConsFilt">
+				<c:if test="#{ConsultarfiltrosController.disabledD}">
+					<p:row style="border:none">
+						<p:column style="border:none" colspan="6">
+
+							<div class="ui-g-12 ui-md-3">
+								<p:staticMessage severity="warn" summary="INFO"
+									detail=" Funcionalidad no disponible para este perfil." />
+							</div>
+
+						</p:column>
+					</p:row>
+				</c:if>
+				<p:row style="border:none">
+					<p:column style="border:none">
+						<h:outputLabel value="Tipo identificación:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<p:selectOneMenu id="selTipoIdenti"
+							value="#{ConsultarfiltrosController.tipoIdentiFilt}"
+							style="width:160px;" effect="blind">
+							<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{ConsultarfiltrosController.listTiposId}"
+								var="ob" itemLabel="#{ob.NOMBRE_LARGO}" itemValue="#{ob.CODIGO}" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel value="Número identificación:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<p:inputText id="txtIdentiFilt"
+							value="#{ConsultarfiltrosController.identiFilt}"
+							style="width:200px;" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel value="Nombre:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<p:inputText id="txtNombreFilt"
+							value="#{ConsultarfiltrosController.nombreFilt}"
+							style="width:200px" />
+					</p:column>
+					<p:column style="border:none">
+						<h:outputLabel value="Estado:" style="#{tittle}" />
+						<p:separator style="margin:0px;border:none;" />
+						<p:selectOneMenu id="selEstadoFilt"
+							value="#{ConsultarfiltrosController.estadoFilt}"
+							style="width:150px;" effect="blind">
+							<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+							<f:selectItems
+								value="#{ConsultarfiltrosController.listEstadosFilt}" var="ob"
+								itemLabel="#{ob.DESCRIPCION}" itemValue="#{ob.CODIGO}" />
+						</p:selectOneMenu>
+					</p:column>
+					
+						<c:if test="#{sessionScope.datosRegistro.CODIGO_TIPO_CARGO eq 'N'}">
+				<p:column style="border:none">
+							<h:outputLabel value="Oficina:" style="#{tittle}" />
+							<p:separator style="margin:0px;border:none;" />
+							<p:inputText id="txtOficina"
+								value="#{ConsultarfiltrosController.oficina}"
+								style="width:200px" />
+						</p:column>
+				
+				</c:if>
+					
+					<c:if
+						test="#{ConsultarfiltrosController.peticion eq 'FILTROS_GRAL'}">
+						<p:column style="border:none">
+							<h:outputLabel value="Condición filtro:" style="#{tittle}" />
+							<p:separator style="margin:0px;border:none;" />
+							<p:selectOneMenu id="selCondi"
+								value="#{ConsultarfiltrosController.condicion}"
+								style="width:150px;" effect="blind">
+								<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+								<f:selectItem itemLabel="Menor a" itemValue="MENOR_A" />
+								<f:selectItem itemLabel="Mayor a" itemValue="MAYOR_A" />
+								<p:ajax listener="#{ConsultarfiltrosController.habilitaValor}"
+									event="change" update="frmConsFil:txtValor" />
+							</p:selectOneMenu>
+						</p:column>
+					</c:if>
+				</p:row>
+				<c:if
+					test="#{ConsultarfiltrosController.peticion eq 'FILTROS_GRAL' or ConsultarfiltrosController.peticion eq 'FILTROS_SUPERVISOR'}">
+					<p:row style="border:none">
+						<p:column style="border:none">
+							<h:outputLabel value="Región:" style="#{tittle}" />
+							<p:separator style="margin:0px;border:none;" />
+							<p:selectOneMenu id="selRegion"
+								value="#{ConsultarfiltrosController.region}"
+								style="width:150px;" effect="blind"
+								disabled="#{ConsultarfiltrosController.disabledR}">
+								<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{ListavaloresController.regiones}"
+									var="ob" itemLabel="#{ob.NOMBRE_LARGO}"
+									itemValue="#{ob.CODIGO}" />
+								<p:ajax listener="#{ConsultarfiltrosController.consultarZonas}"
+									event="change" update="frmConsFil:selZona" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column style="border:none">
+							<h:outputLabel value="Zona:" style="#{tittle}" />
+							<p:separator style="margin:0px;border:none;" />
+							<p:selectOneMenu id="selZona"
+								value="#{ConsultarfiltrosController.zona}" style="width:150px;"
+								effect="blind"
+								disabled="#{ConsultarfiltrosController.disabledZ}">
+								<f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{ConsultarfiltrosController.listZonas}"
+									var="ob" itemLabel="#{ob.NOMBRE_LARGO}"
+									itemValue="#{ob.CODIGO_ZONA}" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column style="border:none">
+							<h:outputLabel value="Oficina:" style="#{tittle}" />
+							<p:separator style="margin:0px;border:none;" />
+							<p:inputText id="txtOficina"
+								value="#{ConsultarfiltrosController.oficina}"
+								style="width:200px" />
+						</p:column>
+						<c:if
+							test="#{ConsultarfiltrosController.peticion eq 'FILTROS_GRAL'}">
+							<p:column style="border:none">
+								<h:outputLabel value="Fecha aprobación:" style="#{tittle}" />
+								<p:separator style="margin:0px;border:none;" />
+								<p:datePicker id="pkrFechAprob"
+									value="#{ConsultarfiltrosController.fechaAprob}" locale="es"
+									monthNavigator="true" yearNavigator="true"
+									yearRange="#{ListavaloresController.rangoAnios}"
+									pattern="yyyy/MM/dd" placeholder="Click aquí"
+									style="width:50px" />
+							</p:column>
+							<p:column style="border:none">
+								<h:outputLabel value="Valor filtro:" style="#{tittle}" />
+								<p:separator style="margin:0px;border:none;" />
+								<p:inputText id="txtValor"
+									value="#{ConsultarfiltrosController.valor}"
+									style="width:150px;"
+									disabled="#{ConsultarfiltrosController.disabled}" />
+							</p:column>
+						</c:if>
+					</p:row>
+				</c:if>
+			
+				
+			</p:panelGrid>
+		</p:panel>
+		<p:dataTable id="tblFilt" var="ob"
+			value="#{ConsultarfiltrosController.listClientes}" rows="10"
+			rowKey="#{ob.NUMERO_IDENTIFICACION}_#{ob.CODIGO_REGION}"
+			emptyMessage="No se encontraron datos para mostrar" paginator="true"
+			paginatorAlwaysVisible="false" paginatorPosition="bottom"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			selection="#{ConsultarfiltrosController.clienteSel}"
+			rowsPerPageTemplate="10,15,20" selectionMode="single"
+			style="width:100%;height:auto;">
+			<p:columnGroup type="header">
+				<p:row>
+					<c:if
+						test="#{ConsultarfiltrosController.peticion eq 'FILTROS_GRAL' or ConsultarfiltrosController.peticion eq 'FILTROS_SUPERVISOR'}">
+						<p:column headerText="Region" sortBy="#{zon.ZONA}" width="8%"
+							style="#{columnHeader}" />
+						<p:column headerText="Zona" width="8%" style="#{columnHeader}" />
+						<p:column headerText="Oficina" style="#{columnHeader}" />
+					</c:if>
+					<c:if
+						test="#{sessionScope.datosRegistro.CODIGO_TIPO_CARGO eq 'N'}">
+						<p:column headerText="Oficina" style="#{columnHeader}" />
+					</c:if>
+					
+					<p:column headerText="Identificacion cliente"
+						style="#{columnHeader}" />
+					<p:column headerText="Nombre cliente" style="#{columnHeader}" />
+				</p:row>
+			</p:columnGroup>
+			<c:if
+				test="#{ConsultarfiltrosController.peticion eq 'FILTROS_GRAL' or ConsultarfiltrosController.peticion eq 'FILTROS_SUPERVISOR'}">
+				<p:column style="#{columnContent}">
+					<h:outputText value="#{ob.REGION}" style="#{columnContent}" />
+				</p:column>
+				<p:column style="#{columnContent}">
+					<h:outputText value="#{ob.ZONA}" style="#{columnContent}" />
+				</p:column>
+				<p:column style="#{columnContent}">
+					<h:outputText value="#{ob.NOMBRE_UNIDAD_NEGOCIO}"
+						style="#{columnContent}" />
+				</p:column>
+			</c:if>
+				<c:if
+						test="#{sessionScope.datosRegistro.CODIGO_TIPO_CARGO eq 'N'}">
+				<p:column style="#{columnContent}">
+					<h:outputText value="#{ob.OFICINA}"
+						style="#{columnContent}" />
+				</p:column>
+					</c:if>
+			<p:column style="#{columnContent}">
+				<h:outputText
+					value="#{ob.TIPO_IDENTIFICACION} - #{ob.NUMERO_IDENTIFICACION}"
+					style="#{columnContent}" />
+			</p:column>
+			<p:column style="#{columnContent}">
+				<h:outputText
+					value="#{ob.NOMBRE != null ? ob.NOMBRE:ob.NOMBRE_CLIENTE}"
+					style="#{columnContent}" />
+			</p:column>
+			<p:ajax event="rowSelect"
+				listener="#{ContenidoController.updateUrl('/siscla/filtro/filtro.jsf')}" />
+			<p:ajax event="rowSelect"
+				listener="#{ConsultarfiltrosController.irAfiltros}" />
+		</p:dataTable>
+
+
+	</h:form>
+	<ui:include src="/siscla/compartido/refrescarunavez.jsf" />
+	<!--p:remoteCommand autoRun="true" update="frmConsFil"/-->
+</h:body>
+</html>

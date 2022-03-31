@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head></h:head>
+    <h:body>
+        <h:form id="frmGenCrm">
+            <p:confirmDialog id="dlgCfrGnrCRM" widgetVar="wvdlgCfrGnrCRM">
+                <f:facet name="header">
+                    <h:outputText value="Confirmación" style="#{tittle3}"/>
+                </f:facet>
+                <f:facet name="message">
+                    <h:outputText value="Desea generar el archivo de clientes para CRM?" style="#{tittle}"/>
+                </f:facet>
+                <p:commandButton value="Aceptar" process="@this" style="#{buttom}" onclick="PF('wvdlgCfrGnrCRM').hide()"
+                                 update="frmCabecera:messages" action="#{ProcesosController.procesos('GENERA')}"/>
+               <p:commandButton value="Cancelar" style="#{buttom}" onclick="PF('wvdlgCfrGnrCRM').hide()"/>
+            </p:confirmDialog>
+            <p:remoteCommand name="rcmGenCrm" autoRun="true" oncomplete="PF('wvdlgCfrGnrCRM').show()"/>
+        </h:form>
+    </h:body>
+</html>

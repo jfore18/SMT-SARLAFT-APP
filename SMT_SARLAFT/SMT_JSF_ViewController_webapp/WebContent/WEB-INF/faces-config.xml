@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<faces-config version="2.1" xmlns="http://java.sun.com/xml/ns/javaee">
+<application>
+        <locale-config>
+            <default-locale>es</default-locale>
+            <supported-locale>en</supported-locale>
+            <supported-locale>es_CO</supported-locale>
+            <supported-locale>en_US</supported-locale> 
+        </locale-config>
+        <resource-bundle>
+            <base-name>util.language_es</base-name>
+            <var>msg</var>
+        </resource-bundle>
+    </application>
+</faces-config>

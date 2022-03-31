@@ -1,0 +1,16 @@
+body{
+    background-color: #f1f2f1;
+}.contenedor{
+    width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 85%;
+    color:#005ea2;
+}.panel{
+    width: 410px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    font-size: 85%;
+    
+}

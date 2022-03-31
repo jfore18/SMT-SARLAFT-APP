@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<title>#{msg['loginTitle']}</title>
+	<ui:include src="/siscla/compartido/Estilos.jsf" />
+	<link href="./css/login.css" rel="stylesheet" type="text/css" />
+</h:head>
+<h:body>
+	<div
+		style="dth: auto; height: 100px; margin-bottom: 0px; text-align: center;">
+		<p:graphicImage id="imgLogoBcoBta" value="/siscla/img/BancoLogo.png"
+			style="width:340px;height:auto;margin-top:25px" />
+	</div>
+	<div style="width:auto;height:50px;text-align:center;#{tittle}">
+		<h2>Sistema de Monitoreo Transaccional SMT-SARLAFT</h2>
+	</div>
+	<div class="contenedor" style="margin-top: -20px">
+		<p:growl id="growl" showDetail="true" life="6000" />
+
+		<h:form id="formLogin">
+			<p:panel id="pLogin" class="panel">
+				<f:facet name="header">
+					<h:outputText value="#{msg['pTitle']}" style="#{header}" />
+				</f:facet>
+				<p:focus context="pLogin" />
+				<h:panelGrid columns="2" cellpadding="6">
+					<h:outputLabel value="#{msg['olUser']}" style="#{labelLogin}" />
+					<p:inputText value="#{LoginController.usuario.nombre}"
+						required="true" id="username" requiredMessage="#{msg['reqUser']}"
+						size="17" style="#{labelLogin}" />
+					<h:outputLabel value="#{msg['olPassword']}" style="#{labelLogin}" />
+					<p:password value="#{LoginController.usuario.password}"
+						required="true" id="password"
+						requiredMessage="#{msg['reqPassword']}" size="15" />
+					<h:outputLabel value="#{msg['loginDominio']}" style="#{labelLogin}" />
+					<p:selectOneMenu id="dominio"  style="#{labelLogin};width:150px" required="true"
+						requiredMessage="Debe seleccionar un Dominio"
+						value="#{LoginController.usuario.dominioUsuario}">
+						<f:selectItems var="ob" value="#{LoginController.dominios}" 
+							itemLabel="#{ob}" itemValue="#{ob}" />
+					</p:selectOneMenu>
+				
+
+				</h:panelGrid>
+					<f:facet name="footer" style="width:300" >
+						<div style="text-align: right;">
+						<p:commandButton id="loginButton" value="#{msg['cbStartSession']}"
+							update=":growl" process="@this, password, username, dominio"
+							action="#{LoginController.autenticarUsuario()}"
+							 />
+							</div>
+					</f:facet>
+			</p:panel>
+		</h:form>
+
+		<ui:include src="./selPerfil.jsf" />
+		<script type="text/javascript">
+			function logueoRequest(xhr, status, args) {
+				if (args.validationFailed || !args.logueo) {
+					jQuery('#formLogin').effect("shake", {
+						times : 20
+					}, 100)
+				}
+			}
+		</script>
+	</div>
+</h:body>
+</html>
